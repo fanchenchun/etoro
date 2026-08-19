@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eToro 投資組合追蹤儀表板 - miulatw</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            500: '#10b981',
+                            600: '#059669',
+                            dark: '#0a0f1d',
+                            card: '#111827',
+                            border: '#1f2937'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #090d16;
+            color: #e2e8f0;
+        }
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .glow-border {
+            box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.15), 0 0 10px -5px rgba(56, 189, 248, 0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #111827;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #4b5563;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500/30 selection:text-emerald-300">
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-50 backdrop-blur-xl bg-[#090d16]/80 border-b border-gray-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                    <i data-lucide="trending-up" class="w-5 h-5 text-gray-950 font-bold"></i>
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="font-bold text-lg text-white tracking-tight">eToro Tracker</span>
+                        <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Live</span>
+                    </div>
+                    <p class="text-xs text-gray-400">追蹤對象：<span class="text-gray-200 font-medium">@miulatw</span> (eToro 明星投資者)</p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <div class="hidden sm:flex items-center text-xs text-gray-400 bg-gray-900/90 px-3 py-1.5 rounded-lg border border-gray-800">
+                    <i data-lucide="clock" class="w-3.5 h-3.5 mr-1.5 text-cyan-400"></i>
+                    最後更新：<span class="text-gray-200 font-mono ml-1">2026-08-19 16:26:03</span>
+                </div>
+                <a href="https://www.etoro.com/zh-tw/people/miulatw/portfolio" target="_blank" rel="noopener noreferrer" 
+                   class="inline-flex items-center px-3.5 py-1.5 text-xs font-medium rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 hover:border-gray-600 transition duration-150">
+                    <span>eToro 個人頁</span>
+                    <i data-lucide="external-link" class="w-3.5 h-3.5 ml-1.5 text-gray-400"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- AI Summary Card -->
+        <section class="relative rounded-2xl bg-gradient-to-b from-gray-900/90 to-gray-950/90 border border-gray-800 p-6 sm:p-8 glow-border overflow-hidden">
+            <div class="absolute -top-24 -right-24 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative flex flex-col md:flex-row md:items-start justify-between gap-6">
+                <div class="space-y-4 flex-1">
+                    <div class="flex items-center space-x-3">
+                        <div class="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+                            <i data-lucide="sparkles" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                                AI 每日調倉洞察總結
+                                <span class="text-xs font-normal px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">Gemini 1.5 Flash</span>
+                            </h2>
+                            <p class="text-xs text-gray-400">自動比對今日與前一交易日持股權重變動</p>
+                        </div>
+                    </div>
+
+                    <!-- AI Summary Text -->
+                    <div class="text-gray-200 text-sm sm:text-base leading-relaxed bg-gray-900/50 p-4 rounded-xl border border-gray-800/80">
+                        【建立持倉基準】miulatw 目前投資組合共持有 37 檔美股與 ETF 標的。前五大核心重倉依序為：QQQ(5.65%)、META(3.7%)、GOOG(3.55%)、COPX(3.52%)、AMZN(3.47%)。系統已建立今日歷史基準快照，自下一個交易日起將每日自動追蹤比對調倉增減與新開平倉動作。
+                    </div>
+
+                    <!-- Change Highlights Tags -->
+                    <div class="flex flex-wrap gap-2 pt-1">
+                        
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-emerald-950/70 text-emerald-300 border border-emerald-500/30">
+                                📌 基準建立：共 37 檔標的
+                            </span>
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-cyan-950/70 text-cyan-300 border border-cyan-500/30">
+                                👑 最大持倉：QQQ (5.65%)
+                            </span>
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KPI Summary Cards -->
+        <section class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <!-- Total Holdings -->
+            <div class="rounded-xl bg-gray-900/70 border border-gray-800 p-5 flex flex-col justify-between hover:border-gray-700 transition">
+                <div class="flex items-center justify-between text-gray-400 text-xs">
+                    <span>當前持股檔數</span>
+                    <i data-lucide="layers" class="w-4 h-4 text-emerald-400"></i>
+                </div>
+                <div class="mt-3 flex items-baseline justify-between">
+                    <span class="text-3xl font-bold text-white mono">37</span>
+                    <span class="text-xs text-gray-400">基準日</span>
+                </div>
+            </div>
+
+            <!-- New Positions -->
+            <div class="rounded-xl bg-gray-900/70 border border-gray-800 p-5 flex flex-col justify-between hover:border-emerald-500/30 transition">
+                <div class="flex items-center justify-between text-emerald-400 text-xs">
+                    <span>🆕 今日新開倉</span>
+                    <i data-lucide="plus-circle" class="w-4 h-4 text-emerald-400"></i>
+                </div>
+                <div class="mt-3 flex items-baseline justify-between">
+                    <span class="text-3xl font-bold text-emerald-400 mono">0</span>
+                    <span class="text-xs text-gray-400">首日基準</span>
+                </div>
+            </div>
+
+            <!-- Closed Positions -->
+            <div class="rounded-xl bg-gray-900/70 border border-gray-800 p-5 flex flex-col justify-between hover:border-rose-500/30 transition">
+                <div class="flex items-center justify-between text-rose-400 text-xs">
+                    <span>❌ 今日已清倉</span>
+                    <i data-lucide="minus-circle" class="w-4 h-4 text-rose-400"></i>
+                </div>
+                <div class="mt-3 flex items-baseline justify-between">
+                    <span class="text-3xl font-bold text-rose-400 mono">0</span>
+                    <span class="text-xs text-gray-400">首日基準</span>
+                </div>
+            </div>
+
+            <!-- Reallocated -->
+            <div class="rounded-xl bg-gray-900/70 border border-gray-800 p-5 flex flex-col justify-between hover:border-cyan-500/30 transition">
+                <div class="flex items-center justify-between text-cyan-400 text-xs">
+                    <span>⚡ 權重增減標的</span>
+                    <i data-lucide="refresh-cw" class="w-4 h-4 text-cyan-400"></i>
+                </div>
+                <div class="mt-3 flex items-baseline justify-between">
+                    <span class="text-3xl font-bold text-cyan-400 mono">0</span>
+                    <span class="text-xs text-gray-400">首日基準</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Donut Chart: Portfolio Allocation -->
+            <div class="lg:col-span-6 rounded-2xl bg-gray-900/70 border border-gray-800 p-6 flex flex-col">
+                <div class="flex items-center justify-between pb-4 border-b border-gray-800">
+                    <div>
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            <i data-lucide="pie-chart" class="w-4 h-4 text-emerald-400"></i>
+                            資產配置佔比 (Portfolio Allocation)
+                        </h3>
+                        <p class="text-xs text-gray-400">當前持股佔比分佈 (Top Holdings)</p>
+                    </div>
+                </div>
+                <div class="relative flex-1 flex items-center justify-center p-4 min-h-[300px]">
+                    <canvas id="allocationDonutChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Bar Chart: Top Holdings / Changes -->
+            <div class="lg:col-span-6 rounded-2xl bg-gray-900/70 border border-gray-800 p-6 flex flex-col">
+                <div class="flex items-center justify-between pb-4 border-b border-gray-800">
+                    <div>
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            <i data-lucide="bar-chart-2" class="w-4 h-4 text-cyan-400"></i>
+                            前十大持股佔比排行
+                        </h3>
+                        <p class="text-xs text-gray-400">依投資佔比由高到低排序</p>
+                    </div>
+                </div>
+                <div class="relative flex-1 flex items-center justify-center p-4 min-h-[300px]">
+                    <canvas id="changesBarChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Positions & Changes Table Section -->
+        <section class="rounded-2xl bg-gray-900/70 border border-gray-800 overflow-hidden">
+            <div class="p-6 border-b border-gray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-base font-bold text-white flex items-center gap-2">
+                        <i data-lucide="list-filter" class="w-4 h-4 text-emerald-400"></i>
+                        持股部位明細對照表
+                    </h3>
+                    <p class="text-xs text-gray-400">完整依投資佔比由高到低排序，包含標的名稱、佔比與變動狀態</p>
+                </div>
+
+                <!-- Table Filter & Search Controls -->
+                <div class="flex flex-wrap items-center gap-3">
+                    <!-- Status Filter Tabs -->
+                    <div class="flex rounded-lg bg-gray-950 p-1 border border-gray-800 text-xs">
+                        <button onclick="filterTable('ALL')" class="filter-btn active px-3 py-1 rounded-md text-white bg-gray-800 font-medium transition" data-filter="ALL">全部 (37)</button>
+                        
+                    </div>
+
+                    <!-- Search Input -->
+                    <div class="relative">
+                        <i data-lucide="search" class="w-3.5 h-3.5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+                        <input type="text" id="tableSearchInput" onkeyup="searchTable()" placeholder="搜尋代號或名稱..." 
+                               class="pl-9 pr-3 py-1.5 rounded-lg bg-gray-950 border border-gray-800 text-xs text-gray-200 placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Responsive Container -->
+            <div class="overflow-x-auto custom-scrollbar">
+                <table class="w-full text-left text-xs sm:text-sm" id="holdingsTable">
+                    <thead class="bg-gray-950/80 text-gray-400 uppercase tracking-wider text-xs border-b border-gray-800">
+                        <tr>
+                            <th scope="col" class="py-3.5 px-6 font-semibold">代號 (Symbol)</th>
+                            <th scope="col" class="py-3.5 px-6 font-semibold">資產名稱 (Name)</th>
+                            <th scope="col" class="py-3.5 px-6 font-semibold text-right">昨日佔比</th>
+                            <th scope="col" class="py-3.5 px-6 font-semibold text-right">今日佔比</th>
+                            <th scope="col" class="py-3.5 px-6 font-semibold text-right">變動量 (Δ%)</th>
+                            <th scope="col" class="py-3.5 px-6 font-semibold text-center">狀態標籤</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-800/60 font-mono">
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="QQQ" data-name="Invesco QQQ">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">QQQ</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Invesco QQQ</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">5.65%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="META" data-name="Meta Platforms Inc">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">META</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Meta Platforms Inc</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">3.7%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="GOOG" data-name="Alphabet">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">GOOG</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Alphabet</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">3.55%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="COPX" data-name="Global X Copper Miners Etf">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">COPX</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Global X Copper Miners Etf</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">3.52%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="AMZN" data-name="Amazon.com Inc">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">AMZN</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Amazon.com Inc</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">3.47%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="MSFT" data-name="Microsoft">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">MSFT</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Microsoft</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">3.29%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="AAPL" data-name="Apple">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">AAPL</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Apple</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">3.05%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="XLV" data-name="State Street Health Care Select Sector SPDR ETF">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">XLV</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">State Street Health Care Select Sector SPDR ETF</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">2.82%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="ETOR" data-name="eToro Group LTD">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">ETOR</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">eToro Group LTD</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">2.81%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="TSLA" data-name="Tesla Motors, Inc.">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">TSLA</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Tesla Motors, Inc.</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">2.73%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="TSM" data-name="Taiwan Semiconductor Manufacturing Co Ltd - ADR">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">TSM</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Taiwan Semiconductor Manufacturing Co Ltd - ADR</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">2.63%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="SPACEX" data-name="Space Exploration Technologies Corp">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">SPACEX</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Space Exploration Technologies Corp</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">2.58%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="NFLX" data-name="Netflix, Inc.">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">NFLX</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Netflix, Inc.</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">2.54%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="PANW" data-name="Palo Alto Networks">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">PANW</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Palo Alto Networks</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">2.54%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="MU" data-name="Micron Technology, Inc.">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">MU</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Micron Technology, Inc.</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">2.44%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="PLTR" data-name="Palantir Technologies Inc.">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">PLTR</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Palantir Technologies Inc.</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">2.41%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="SKHYNIX" data-name="SK hynix Inc ADR">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">SKHYNIX</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">SK hynix Inc ADR</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">2.4%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="NVDA" data-name="NVIDIA Corporation">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">NVDA</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">NVIDIA Corporation</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">2.39%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="ROK" data-name="Rockwell Automation Inc">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">ROK</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Rockwell Automation Inc</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">2.37%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="VRT" data-name="Vertiv Holdings Co">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">VRT</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Vertiv Holdings Co</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">2.35%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="MP" data-name="MP Materials Corp.">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">MP</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">MP Materials Corp.</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">2.13%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="AVGO" data-name="Broadcom Inc">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">AVGO</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Broadcom Inc</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">2.06%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="GEV" data-name="GE Vernova LLC">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">GEV</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">GE Vernova LLC</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">1.91%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="RDW" data-name="Redwire Corp">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">RDW</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Redwire Corp</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">1.78%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="ANET" data-name="Arista Networks Inc">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">ANET</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Arista Networks Inc</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">1.77%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="ETN" data-name="Eaton Corp PLC">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">ETN</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Eaton Corp PLC</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">1.63%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="BTC" data-name="Bitcoin">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">BTC</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Bitcoin</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">1.39%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="CRWD" data-name="Crowdstrike Holdings">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">CRWD</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Crowdstrike Holdings</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">1.33%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="SLV" data-name="iShares Silver Trust">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">SLV</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">iShares Silver Trust</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">1.2%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="STX" data-name="Seagate Technology PLC">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">STX</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Seagate Technology PLC</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">1.18%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="ACHR" data-name="Archer Aviation Inc">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">ACHR</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Archer Aviation Inc</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">1.1%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="COHR" data-name="Coherent Corp">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">COHR</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Coherent Corp</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">1.06%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="LITE" data-name="Lumentum Holdings Inc">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">LITE</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Lumentum Holdings Inc</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">1.01%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="SE" data-name="Sea Ltd-ADR">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">SE</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Sea Ltd-ADR</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">0.96%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="CRDO" data-name="Credo Technology Group Holding Ltd">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">CRDO</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Credo Technology Group Holding Ltd</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">0.78%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="TER" data-name="Teradyne Inc">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">TER</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Teradyne Inc</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">0.61%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="NET" data-name="Cloudflare">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-sm font-bold text-gray-100">NET</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">Cloudflare</td>
+                            <td class="py-4 px-6 text-right text-gray-400">-</td>
+                            <td class="py-4 px-6 text-right font-bold text-white">0.41%</td>
+                            <td class="py-4 px-6 text-right font-bold text-gray-500">
+                                -
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800/80 bg-[#090d16] py-6 mt-12 text-center text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <p>本專案由 GitHub Actions 每日美股收盤後自動排程更新 | 數據源自 eToro 公開個人投資組合</p>
+            <p class="text-gray-600">免責聲明：本網站所有數據與 AI 分析僅供量化研究與個人追蹤記錄使用，不構成任何形式之投資建議。</p>
+        </div>
+    </footer>
+
+    <!-- Initialize Charts & Client-side Filter Script -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Data from Server Template
+        const portfolioData = [{"symbol": "QQQ", "name": "Invesco QQQ", "allocation": 5.65, "instrument_type": "Stocks", "net_profit": 11.54}, {"symbol": "META", "name": "Meta Platforms Inc", "allocation": 3.7, "instrument_type": "Stocks", "net_profit": 89.23}, {"symbol": "GOOG", "name": "Alphabet", "allocation": 3.55, "instrument_type": "Stocks", "net_profit": 104.55}, {"symbol": "COPX", "name": "Global X Copper Miners Etf", "allocation": 3.52, "instrument_type": "Stocks", "net_profit": 22.67}, {"symbol": "AMZN", "name": "Amazon.com Inc", "allocation": 3.47, "instrument_type": "Stocks", "net_profit": 109.06}, {"symbol": "MSFT", "name": "Microsoft", "allocation": 3.29, "instrument_type": "Stocks", "net_profit": 123.67}, {"symbol": "AAPL", "name": "Apple", "allocation": 3.05, "instrument_type": "Stocks", "net_profit": 85.33}, {"symbol": "XLV", "name": "State Street Health Care Select Sector SPDR ETF", "allocation": 2.82, "instrument_type": "Stocks", "net_profit": 6.82}, {"symbol": "ETOR", "name": "eToro Group LTD", "allocation": 2.81, "instrument_type": "Stocks", "net_profit": 0.84}, {"symbol": "TSLA", "name": "Tesla Motors, Inc.", "allocation": 2.73, "instrument_type": "Stocks", "net_profit": 115.33}, {"symbol": "TSM", "name": "Taiwan Semiconductor Manufacturing Co Ltd - ADR", "allocation": 2.63, "instrument_type": "Stocks", "net_profit": 171.49}, {"symbol": "SPACEX", "name": "Space Exploration Technologies Corp", "allocation": 2.58, "instrument_type": "Stocks", "net_profit": 26.85}, {"symbol": "NFLX", "name": "Netflix, Inc.", "allocation": 2.54, "instrument_type": "Stocks", "net_profit": 15.97}, {"symbol": "PANW", "name": "Palo Alto Networks", "allocation": 2.54, "instrument_type": "Stocks", "net_profit": 19.93}, {"symbol": "MU", "name": "Micron Technology, Inc.", "allocation": 2.44, "instrument_type": "Stocks", "net_profit": 78.98}, {"symbol": "PLTR", "name": "Palantir Technologies Inc.", "allocation": 2.41, "instrument_type": "Stocks", "net_profit": 215.21}, {"symbol": "SKHYNIX", "name": "SK hynix Inc ADR", "allocation": 2.4, "instrument_type": "Stocks", "net_profit": 22.26}, {"symbol": "NVDA", "name": "NVIDIA Corporation", "allocation": 2.39, "instrument_type": "Stocks", "net_profit": 210.23}, {"symbol": "ROK", "name": "Rockwell Automation Inc", "allocation": 2.37, "instrument_type": "Stocks", "net_profit": 20.52}, {"symbol": "VRT", "name": "Vertiv Holdings Co", "allocation": 2.35, "instrument_type": "Stocks", "net_profit": 20.98}, {"symbol": "MP", "name": "MP Materials Corp.", "allocation": 2.13, "instrument_type": "Stocks", "net_profit": 42.62}, {"symbol": "AVGO", "name": "Broadcom Inc", "allocation": 2.06, "instrument_type": "Stocks", "net_profit": 40.25}, {"symbol": "GEV", "name": "GE Vernova LLC", "allocation": 1.91, "instrument_type": "Stocks", "net_profit": 16.1}, {"symbol": "RDW", "name": "Redwire Corp", "allocation": 1.78, "instrument_type": "Stocks", "net_profit": 60.2}, {"symbol": "ANET", "name": "Arista Networks Inc", "allocation": 1.77, "instrument_type": "Stocks", "net_profit": 60.33}, {"symbol": "ETN", "name": "Eaton Corp PLC", "allocation": 1.63, "instrument_type": "Stocks", "net_profit": 30.94}, {"symbol": "BTC", "name": "Bitcoin", "allocation": 1.39, "instrument_type": "Stocks", "net_profit": 8.07}, {"symbol": "CRWD", "name": "Crowdstrike Holdings", "allocation": 1.33, "instrument_type": "Stocks", "net_profit": 134.06}, {"symbol": "SLV", "name": "iShares Silver Trust", "allocation": 1.2, "instrument_type": "Stocks", "net_profit": 13.28}, {"symbol": "STX", "name": "Seagate Technology PLC", "allocation": 1.18, "instrument_type": "Stocks", "net_profit": 28.38}, {"symbol": "ACHR", "name": "Archer Aviation Inc", "allocation": 1.1, "instrument_type": "Stocks", "net_profit": 37.77}, {"symbol": "COHR", "name": "Coherent Corp", "allocation": 1.06, "instrument_type": "Stocks", "net_profit": 37.21}, {"symbol": "LITE", "name": "Lumentum Holdings Inc", "allocation": 1.01, "instrument_type": "Stocks", "net_profit": 46.79}, {"symbol": "SE", "name": "Sea Ltd-ADR", "allocation": 0.96, "instrument_type": "Stocks", "net_profit": 213.36}, {"symbol": "CRDO", "name": "Credo Technology Group Holding Ltd", "allocation": 0.78, "instrument_type": "Stocks", "net_profit": 176.06}, {"symbol": "TER", "name": "Teradyne Inc", "allocation": 0.61, "instrument_type": "Stocks", "net_profit": 270.33}, {"symbol": "NET", "name": "Cloudflare", "allocation": 0.41, "instrument_type": "Stocks", "net_profit": 609.28}];
+        const changesData = [{"symbol": "QQQ", "name": "Invesco QQQ", "instrument_type": "Stocks", "yesterday_alloc": 5.65, "today_alloc": 5.65, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "META", "name": "Meta Platforms Inc", "instrument_type": "Stocks", "yesterday_alloc": 3.7, "today_alloc": 3.7, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "GOOG", "name": "Alphabet", "instrument_type": "Stocks", "yesterday_alloc": 3.55, "today_alloc": 3.55, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "COPX", "name": "Global X Copper Miners Etf", "instrument_type": "Stocks", "yesterday_alloc": 3.52, "today_alloc": 3.52, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "AMZN", "name": "Amazon.com Inc", "instrument_type": "Stocks", "yesterday_alloc": 3.47, "today_alloc": 3.47, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "MSFT", "name": "Microsoft", "instrument_type": "Stocks", "yesterday_alloc": 3.29, "today_alloc": 3.29, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "AAPL", "name": "Apple", "instrument_type": "Stocks", "yesterday_alloc": 3.05, "today_alloc": 3.05, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "XLV", "name": "State Street Health Care Select Sector SPDR ETF", "instrument_type": "Stocks", "yesterday_alloc": 2.82, "today_alloc": 2.82, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "ETOR", "name": "eToro Group LTD", "instrument_type": "Stocks", "yesterday_alloc": 2.81, "today_alloc": 2.81, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "TSLA", "name": "Tesla Motors, Inc.", "instrument_type": "Stocks", "yesterday_alloc": 2.73, "today_alloc": 2.73, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "TSM", "name": "Taiwan Semiconductor Manufacturing Co Ltd - ADR", "instrument_type": "Stocks", "yesterday_alloc": 2.63, "today_alloc": 2.63, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "SPACEX", "name": "Space Exploration Technologies Corp", "instrument_type": "Stocks", "yesterday_alloc": 2.58, "today_alloc": 2.58, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "NFLX", "name": "Netflix, Inc.", "instrument_type": "Stocks", "yesterday_alloc": 2.54, "today_alloc": 2.54, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "PANW", "name": "Palo Alto Networks", "instrument_type": "Stocks", "yesterday_alloc": 2.54, "today_alloc": 2.54, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "MU", "name": "Micron Technology, Inc.", "instrument_type": "Stocks", "yesterday_alloc": 2.44, "today_alloc": 2.44, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "PLTR", "name": "Palantir Technologies Inc.", "instrument_type": "Stocks", "yesterday_alloc": 2.41, "today_alloc": 2.41, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "SKHYNIX", "name": "SK hynix Inc ADR", "instrument_type": "Stocks", "yesterday_alloc": 2.4, "today_alloc": 2.4, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "NVDA", "name": "NVIDIA Corporation", "instrument_type": "Stocks", "yesterday_alloc": 2.39, "today_alloc": 2.39, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "ROK", "name": "Rockwell Automation Inc", "instrument_type": "Stocks", "yesterday_alloc": 2.37, "today_alloc": 2.37, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "VRT", "name": "Vertiv Holdings Co", "instrument_type": "Stocks", "yesterday_alloc": 2.35, "today_alloc": 2.35, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "MP", "name": "MP Materials Corp.", "instrument_type": "Stocks", "yesterday_alloc": 2.13, "today_alloc": 2.13, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "AVGO", "name": "Broadcom Inc", "instrument_type": "Stocks", "yesterday_alloc": 2.06, "today_alloc": 2.06, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "GEV", "name": "GE Vernova LLC", "instrument_type": "Stocks", "yesterday_alloc": 1.91, "today_alloc": 1.91, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "RDW", "name": "Redwire Corp", "instrument_type": "Stocks", "yesterday_alloc": 1.78, "today_alloc": 1.78, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "ANET", "name": "Arista Networks Inc", "instrument_type": "Stocks", "yesterday_alloc": 1.77, "today_alloc": 1.77, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "ETN", "name": "Eaton Corp PLC", "instrument_type": "Stocks", "yesterday_alloc": 1.63, "today_alloc": 1.63, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "BTC", "name": "Bitcoin", "instrument_type": "Stocks", "yesterday_alloc": 1.39, "today_alloc": 1.39, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "CRWD", "name": "Crowdstrike Holdings", "instrument_type": "Stocks", "yesterday_alloc": 1.33, "today_alloc": 1.33, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "SLV", "name": "iShares Silver Trust", "instrument_type": "Stocks", "yesterday_alloc": 1.2, "today_alloc": 1.2, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "STX", "name": "Seagate Technology PLC", "instrument_type": "Stocks", "yesterday_alloc": 1.18, "today_alloc": 1.18, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "ACHR", "name": "Archer Aviation Inc", "instrument_type": "Stocks", "yesterday_alloc": 1.1, "today_alloc": 1.1, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "COHR", "name": "Coherent Corp", "instrument_type": "Stocks", "yesterday_alloc": 1.06, "today_alloc": 1.06, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "LITE", "name": "Lumentum Holdings Inc", "instrument_type": "Stocks", "yesterday_alloc": 1.01, "today_alloc": 1.01, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "SE", "name": "Sea Ltd-ADR", "instrument_type": "Stocks", "yesterday_alloc": 0.96, "today_alloc": 0.96, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "CRDO", "name": "Credo Technology Group Holding Ltd", "instrument_type": "Stocks", "yesterday_alloc": 0.78, "today_alloc": 0.78, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "TER", "name": "Teradyne Inc", "instrument_type": "Stocks", "yesterday_alloc": 0.61, "today_alloc": 0.61, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}, {"symbol": "NET", "name": "Cloudflare", "instrument_type": "Stocks", "yesterday_alloc": 0.41, "today_alloc": 0.41, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "is_active": true}];
+        const isFirstDay = true;
+
+        // 1. Render Donut Chart (Allocation)
+        const donutCtx = document.getElementById('allocationDonutChart').getContext('2d');
+        const donutLabels = portfolioData.slice(0, 15).map(d => d.symbol);
+        const donutValues = portfolioData.slice(0, 15).map(d => d.allocation);
+        
+        const colorPalette = [
+            '#10b981', '#06b6d4', '#3b82f6', '#6366f1', '#8b5cf6', 
+            '#ec4899', '#f43f5e', '#f97316', '#eab308', '#14b8a6',
+            '#a855f7', '#0284c7', '#22c55e', '#64748b', '#94a3b8'
+        ];
+
+        new Chart(donutCtx, {
+            type: 'doughnut',
+            data: {
+                labels: donutLabels,
+                datasets: [{
+                    data: donutValues,
+                    backgroundColor: colorPalette.slice(0, donutLabels.length),
+                    borderColor: '#111827',
+                    borderWidth: 2,
+                    hoverOffset: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            color: '#94a3b8',
+                            font: { family: 'Inter', size: 11 },
+                            padding: 10,
+                            boxWidth: 12
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#1f2937',
+                        titleColor: '#f8fafc',
+                        bodyColor: '#cbd5e1',
+                        callbacks: {
+                            label: function(context) {
+                                const symbol = context.label || '';
+                                const val = context.parsed || 0;
+                                const item = portfolioData.find(p => p.symbol === symbol);
+                                return ` ${symbol} (${item ? item.name : ''}): ${val}%`;
+                            }
+                        }
+                    }
+                },
+                cutout: '68%'
+            }
+        });
+
+        // 2. Render Bar Chart (Top Holdings on First Day / Changes afterwards)
+        const barCtx = document.getElementById('changesBarChart').getContext('2d');
+        let barLabels = [];
+        let barValues = [];
+        let barColors = [];
+
+        if (isFirstDay) {
+            // First Day: Show Top 10 Holdings
+            const top10 = portfolioData.slice(0, 10);
+            barLabels = top10.map(d => d.symbol);
+            barValues = top10.map(d => d.allocation);
+            barColors = barValues.map(() => '#10b981');
+        } else {
+            const activeChanges = changesData
+                .filter(d => Math.abs(d.diff) > 0.01)
+                .sort((a, b) => b.diff - a.diff)
+                .slice(0, 8);
+
+            barLabels = activeChanges.map(d => d.symbol);
+            barValues = activeChanges.map(d => d.diff);
+            barColors = barValues.map(v => v >= 0 ? '#10b981' : '#f43f5e');
+        }
+
+        new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: barLabels.length > 0 ? barLabels : ['無顯著變動'],
+                datasets: [{
+                    label: isFirstDay ? '投資佔比 (%)' : '佔比變動 (Δ%)',
+                    data: barValues.length > 0 ? barValues : [0],
+                    backgroundColor: barColors.length > 0 ? barColors : ['#64748b'],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        grid: { color: '#1f2937' },
+                        ticks: { color: '#94a3b8', callback: v => `${v}%` }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { color: '#f8fafc', font: { weight: 'bold' } }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1f2937',
+                        callbacks: {
+                            label: context => ` ${isFirstDay ? '佔比' : '變動'}: ${context.parsed.x}%`
+                        }
+                    }
+                }
+            }
+        });
+
+        // 3. Table Filtering and Search Functions
+        let currentFilter = 'ALL';
+
+        function filterTable(status) {
+            currentFilter = status;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.dataset.filter === status) {
+                    btn.classList.add('bg-gray-800', 'text-white');
+                    btn.classList.remove('text-gray-400');
+                } else {
+                    btn.classList.remove('bg-gray-800', 'text-white');
+                    btn.classList.add('text-gray-400');
+                }
+            });
+            applyFilters();
+        }
+
+        function searchTable() {
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const query = document.getElementById('tableSearchInput').value.toLowerCase().trim();
+            const rows = document.querySelectorAll('#holdingsTable tbody tr');
+
+            rows.forEach(row => {
+                const status = row.dataset.status;
+                const symbol = (row.dataset.symbol || '').toLowerCase();
+                const name = (row.dataset.name || '').toLowerCase();
+
+                const matchesFilter = (currentFilter === 'ALL' || status === currentFilter);
+                const matchesSearch = (!query || symbol.includes(query) || name.includes(query));
+
+                if (matchesFilter && matchesSearch) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

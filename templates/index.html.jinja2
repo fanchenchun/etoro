@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eToro 投資組合追蹤儀表板 - {{ username }}</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            500: '#10b981',
+                            600: '#059669',
+                            dark: '#0a0f1d',
+                            card: '#111827',
+                            border: '#1f2937'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #090d16;
+            color: #e2e8f0;
+        }
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .glow-border {
+            box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.15), 0 0 10px -5px rgba(56, 189, 248, 0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #111827;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #4b5563;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500/30 selection:text-emerald-300">
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-50 backdrop-blur-xl bg-[#090d16]/80 border-b border-gray-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                    <i data-lucide="trending-up" class="w-5 h-5 text-gray-950 font-bold"></i>
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="font-bold text-lg text-white tracking-tight">eToro Tracker</span>
+                        <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Live</span>
+                    </div>
+                    <p class="text-xs text-gray-400">追蹤對象：<span class="text-gray-200 font-medium">@{{ username }}</span> (eToro 明星投資者)</p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <div class="hidden sm:flex items-center text-xs text-gray-400 bg-gray-900/90 px-3 py-1.5 rounded-lg border border-gray-800">
+                    <i data-lucide="clock" class="w-3.5 h-3.5 mr-1.5 text-cyan-400"></i>
+                    最後更新：<span class="text-gray-200 font-mono ml-1">{{ update_time }}</span>
+                </div>
+                <a href="https://www.etoro.com/zh-tw/people/{{ username }}/portfolio" target="_blank" rel="noopener noreferrer" 
+                   class="inline-flex items-center px-3.5 py-1.5 text-xs font-medium rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 hover:border-gray-600 transition duration-150">
+                    <span>eToro 個人頁</span>
+                    <i data-lucide="external-link" class="w-3.5 h-3.5 ml-1.5 text-gray-400"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- AI Summary Card -->
+        <section class="relative rounded-2xl bg-gradient-to-b from-gray-900/90 to-gray-950/90 border border-gray-800 p-6 sm:p-8 glow-border overflow-hidden">
+            <div class="absolute -top-24 -right-24 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative flex flex-col md:flex-row md:items-start justify-between gap-6">
+                <div class="space-y-4 flex-1">
+                    <div class="flex items-center space-x-3">
+                        <div class="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+                            <i data-lucide="sparkles" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                                AI 每日調倉洞察總結
+                                <span class="text-xs font-normal px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">Gemini 1.5 Flash</span>
+                            </h2>
+                            <p class="text-xs text-gray-400">自動比對今日與前一交易日持股權重變動</p>
+                        </div>
+                    </div>
+
+                    <!-- AI Summary Text -->
+                    <div class="text-gray-200 text-sm sm:text-base leading-relaxed bg-gray-900/50 p-4 rounded-xl border border-gray-800/80">
+                        {{ ai_summary }}
+                    </div>
+
+                    <!-- Change Highlights Tags -->
+                    <div class="flex flex-wrap gap-2 pt-1">
+                        {% if stats.is_first_day %}
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-emerald-950/70 text-emerald-300 border border-emerald-500/30">
+                                📌 基準建立：共 {{ stats.total_today }} 檔標的
+                            </span>
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-cyan-950/70 text-cyan-300 border border-cyan-500/30">
+                                👑 最大持倉：{{ changes[0].symbol }} ({{ changes[0].today_alloc }}%)
+                            </span>
+                        {% else %}
+                            {% if stats.new_symbols %}
+                                {% for sym in stats.new_symbols %}
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-emerald-950/70 text-emerald-300 border border-emerald-500/30">
+                                    🆕 新開倉 {{ sym }}
+                                </span>
+                                {% endfor %}
+                            {% endif %}
+
+                            {% if stats.closed_symbols %}
+                                {% for sym in stats.closed_symbols %}
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-rose-950/70 text-rose-300 border border-rose-500/30">
+                                    ❌ 已清倉 {{ sym }}
+                                </span>
+                                {% endfor %}
+                            {% endif %}
+
+                            {% if stats.increased_symbols %}
+                                {% for sym in stats.increased_symbols %}
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-green-950/70 text-green-300 border border-green-500/30">
+                                    🟢 加碼 {{ sym }}
+                                </span>
+                                {% endfor %}
+                            {% endif %}
+
+                            {% if stats.decreased_symbols %}
+                                {% for sym in stats.decreased_symbols %}
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-amber-950/70 text-amber-300 border border-amber-500/30">
+                                    🔴 減碼 {{ sym }}
+                                </span>
+                                {% endfor %}
+                            {% endif %}
+
+                            {% if not stats.has_significant_changes %}
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-gray-800/80 text-gray-400 border border-gray-700">
+                                    ⚪ 持倉無重大調整
+                                </span>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KPI Summary Cards -->
+        <section class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <!-- Total Holdings -->
+            <div class="rounded-xl bg-gray-900/70 border border-gray-800 p-5 flex flex-col justify-between hover:border-gray-700 transition">
+                <div class="flex items-center justify-between text-gray-400 text-xs">
+                    <span>當前持股檔數</span>
+                    <i data-lucide="layers" class="w-4 h-4 text-emerald-400"></i>
+                </div>
+                <div class="mt-3 flex items-baseline justify-between">
+                    <span class="text-3xl font-bold text-white mono">{{ stats.total_today }}</span>
+                    <span class="text-xs text-gray-400">{% if stats.is_first_day %}基準日{% else %}昨日 {{ stats.total_yesterday }} 檔{% endif %}</span>
+                </div>
+            </div>
+
+            <!-- New Positions -->
+            <div class="rounded-xl bg-gray-900/70 border border-gray-800 p-5 flex flex-col justify-between hover:border-emerald-500/30 transition">
+                <div class="flex items-center justify-between text-emerald-400 text-xs">
+                    <span>🆕 今日新開倉</span>
+                    <i data-lucide="plus-circle" class="w-4 h-4 text-emerald-400"></i>
+                </div>
+                <div class="mt-3 flex items-baseline justify-between">
+                    <span class="text-3xl font-bold text-emerald-400 mono">{% if stats.is_first_day %}0{% else %}{{ stats.new_count }}{% endif %}</span>
+                    <span class="text-xs text-gray-400">{% if stats.is_first_day %}首日基準{% elif stats.new_symbols %}{{ stats.new_symbols|join(', ') }}{% else %}無{% endif %}</span>
+                </div>
+            </div>
+
+            <!-- Closed Positions -->
+            <div class="rounded-xl bg-gray-900/70 border border-gray-800 p-5 flex flex-col justify-between hover:border-rose-500/30 transition">
+                <div class="flex items-center justify-between text-rose-400 text-xs">
+                    <span>❌ 今日已清倉</span>
+                    <i data-lucide="minus-circle" class="w-4 h-4 text-rose-400"></i>
+                </div>
+                <div class="mt-3 flex items-baseline justify-between">
+                    <span class="text-3xl font-bold text-rose-400 mono">{% if stats.is_first_day %}0{% else %}{{ stats.closed_count }}{% endif %}</span>
+                    <span class="text-xs text-gray-400">{% if stats.is_first_day %}首日基準{% elif stats.closed_symbols %}{{ stats.closed_symbols|join(', ') }}{% else %}無{% endif %}</span>
+                </div>
+            </div>
+
+            <!-- Reallocated -->
+            <div class="rounded-xl bg-gray-900/70 border border-gray-800 p-5 flex flex-col justify-between hover:border-cyan-500/30 transition">
+                <div class="flex items-center justify-between text-cyan-400 text-xs">
+                    <span>⚡ 權重增減標的</span>
+                    <i data-lucide="refresh-cw" class="w-4 h-4 text-cyan-400"></i>
+                </div>
+                <div class="mt-3 flex items-baseline justify-between">
+                    <span class="text-3xl font-bold text-cyan-400 mono">{% if stats.is_first_day %}0{% else %}{{ stats.increased_count + stats.decreased_count }}{% endif %}</span>
+                    <span class="text-xs text-gray-400">{% if stats.is_first_day %}首日基準{% else %}🟢 {{ stats.increased_count }} / 🔴 {{ stats.decreased_count }}{% endif %}</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Donut Chart: Portfolio Allocation -->
+            <div class="lg:col-span-6 rounded-2xl bg-gray-900/70 border border-gray-800 p-6 flex flex-col">
+                <div class="flex items-center justify-between pb-4 border-b border-gray-800">
+                    <div>
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            <i data-lucide="pie-chart" class="w-4 h-4 text-emerald-400"></i>
+                            資產配置佔比 (Portfolio Allocation)
+                        </h3>
+                        <p class="text-xs text-gray-400">當前持股佔比分佈 (Top Holdings)</p>
+                    </div>
+                </div>
+                <div class="relative flex-1 flex items-center justify-center p-4 min-h-[300px]">
+                    <canvas id="allocationDonutChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Bar Chart: Top Holdings / Changes -->
+            <div class="lg:col-span-6 rounded-2xl bg-gray-900/70 border border-gray-800 p-6 flex flex-col">
+                <div class="flex items-center justify-between pb-4 border-b border-gray-800">
+                    <div>
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            <i data-lucide="bar-chart-2" class="w-4 h-4 text-cyan-400"></i>
+                            {% if stats.is_first_day %}前十大持股佔比排行{% else %}持股變動幅度 (Allocation Δ%){% endif %}
+                        </h3>
+                        <p class="text-xs text-gray-400">{% if stats.is_first_day %}依投資佔比由高到低排序{% else %}今日 vs 昨日 百分比增減排行{% endif %}</p>
+                    </div>
+                </div>
+                <div class="relative flex-1 flex items-center justify-center p-4 min-h-[300px]">
+                    <canvas id="changesBarChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Positions & Changes Table Section -->
+        <section class="rounded-2xl bg-gray-900/70 border border-gray-800 overflow-hidden">
+            <div class="p-6 border-b border-gray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-base font-bold text-white flex items-center gap-2">
+                        <i data-lucide="list-filter" class="w-4 h-4 text-emerald-400"></i>
+                        持股部位明細對照表
+                    </h3>
+                    <p class="text-xs text-gray-400">完整依投資佔比由高到低排序，包含標的名稱、佔比與變動狀態</p>
+                </div>
+
+                <!-- Table Filter & Search Controls -->
+                <div class="flex flex-wrap items-center gap-3">
+                    <!-- Status Filter Tabs -->
+                    <div class="flex rounded-lg bg-gray-950 p-1 border border-gray-800 text-xs">
+                        <button onclick="filterTable('ALL')" class="filter-btn active px-3 py-1 rounded-md text-white bg-gray-800 font-medium transition" data-filter="ALL">全部 ({{ changes|length }})</button>
+                        {% if not stats.is_first_day %}
+                        <button onclick="filterTable('NEW')" class="filter-btn px-3 py-1 rounded-md text-gray-400 hover:text-white transition" data-filter="NEW">🆕 新開倉</button>
+                        <button onclick="filterTable('INCREASED')" class="filter-btn px-3 py-1 rounded-md text-gray-400 hover:text-white transition" data-filter="INCREASED">🟢 加碼</button>
+                        <button onclick="filterTable('DECREASED')" class="filter-btn px-3 py-1 rounded-md text-gray-400 hover:text-white transition" data-filter="DECREASED">🔴 減碼</button>
+                        <button onclick="filterTable('CLOSED')" class="filter-btn px-3 py-1 rounded-md text-gray-400 hover:text-white transition" data-filter="CLOSED">❌ 平倉</button>
+                        {% endif %}
+                    </div>
+
+                    <!-- Search Input -->
+                    <div class="relative">
+                        <i data-lucide="search" class="w-3.5 h-3.5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+                        <input type="text" id="tableSearchInput" onkeyup="searchTable()" placeholder="搜尋代號或名稱..." 
+                               class="pl-9 pr-3 py-1.5 rounded-lg bg-gray-950 border border-gray-800 text-xs text-gray-200 placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Responsive Container -->
+            <div class="overflow-x-auto custom-scrollbar">
+                <table class="w-full text-left text-xs sm:text-sm" id="holdingsTable">
+                    <thead class="bg-gray-950/80 text-gray-400 uppercase tracking-wider text-xs border-b border-gray-800">
+                        <tr>
+                            <th scope="col" class="py-3.5 px-6 font-semibold">代號 (Symbol)</th>
+                            <th scope="col" class="py-3.5 px-6 font-semibold">資產名稱 (Name)</th>
+                            <th scope="col" class="py-3.5 px-6 font-semibold text-right">昨日佔比</th>
+                            <th scope="col" class="py-3.5 px-6 font-semibold text-right">今日佔比</th>
+                            <th scope="col" class="py-3.5 px-6 font-semibold text-right">變動量 (Δ%)</th>
+                            <th scope="col" class="py-3.5 px-6 font-semibold text-center">狀態標籤</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-800/60 font-mono">
+                        {% for item in changes %}
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="{{ item.status }}" data-symbol="{{ item.symbol }}" data-name="{{ item.name }}">
+                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full {% if item.status == 'NEW' %}bg-emerald-400{% elif item.status == 'CLOSED' %}bg-rose-500{% elif item.status == 'INCREASED' %}bg-green-400{% elif item.status == 'DECREASED' %}bg-amber-400{% else %}bg-gray-600{% endif %}"></span>
+                                <span class="text-sm font-bold text-gray-100">{{ item.symbol }}</span>
+                            </td>
+                            <td class="py-4 px-6 font-sans text-gray-300">{{ item.name }}</td>
+                            <td class="py-4 px-6 text-right text-gray-400">{% if stats.is_first_day %}-{% else %}{{ item.yesterday_alloc }}%{% endif %}</td>
+                            <td class="py-4 px-6 text-right font-bold {% if item.is_active %}text-white{% else %}text-gray-500{% endif %}">{{ item.today_alloc }}%</td>
+                            <td class="py-4 px-6 text-right font-bold {% if stats.is_first_day %}text-gray-500{% elif item.diff > 0 %}text-emerald-400{% elif item.diff < 0 %}text-rose-400{% else %}text-gray-500{% endif %}">
+                                {% if stats.is_first_day %}-{% elif item.diff > 0 %}+{{ item.diff }}%{% elif item.diff < 0 %}{{ item.diff }}%{% else %}0.0%{% endif %}
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border {% if stats.is_first_day %}text-slate-300 bg-slate-800/60 border-slate-600/30{% else %}{{ item.status_color }}{% endif %}">
+                                    {% if stats.is_first_day %}📌 基準持倉{% else %}{{ item.status_badge }}{% endif %}
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800/80 bg-[#090d16] py-6 mt-12 text-center text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <p>本專案由 GitHub Actions 每日美股收盤後自動排程更新 | 數據源自 eToro 公開個人投資組合</p>
+            <p class="text-gray-600">免責聲明：本網站所有數據與 AI 分析僅供量化研究與個人追蹤記錄使用，不構成任何形式之投資建議。</p>
+        </div>
+    </footer>
+
+    <!-- Initialize Charts & Client-side Filter Script -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Data from Server Template
+        const portfolioData = {{ portfolio_json | safe }};
+        const changesData = {{ changes_json | safe }};
+        const isFirstDay = {{ 'true' if stats.is_first_day else 'false' }};
+
+        // 1. Render Donut Chart (Allocation)
+        const donutCtx = document.getElementById('allocationDonutChart').getContext('2d');
+        const donutLabels = portfolioData.slice(0, 15).map(d => d.symbol);
+        const donutValues = portfolioData.slice(0, 15).map(d => d.allocation);
+        
+        const colorPalette = [
+            '#10b981', '#06b6d4', '#3b82f6', '#6366f1', '#8b5cf6', 
+            '#ec4899', '#f43f5e', '#f97316', '#eab308', '#14b8a6',
+            '#a855f7', '#0284c7', '#22c55e', '#64748b', '#94a3b8'
+        ];
+
+        new Chart(donutCtx, {
+            type: 'doughnut',
+            data: {
+                labels: donutLabels,
+                datasets: [{
+                    data: donutValues,
+                    backgroundColor: colorPalette.slice(0, donutLabels.length),
+                    borderColor: '#111827',
+                    borderWidth: 2,
+                    hoverOffset: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            color: '#94a3b8',
+                            font: { family: 'Inter', size: 11 },
+                            padding: 10,
+                            boxWidth: 12
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#1f2937',
+                        titleColor: '#f8fafc',
+                        bodyColor: '#cbd5e1',
+                        callbacks: {
+                            label: function(context) {
+                                const symbol = context.label || '';
+                                const val = context.parsed || 0;
+                                const item = portfolioData.find(p => p.symbol === symbol);
+                                return ` ${symbol} (${item ? item.name : ''}): ${val}%`;
+                            }
+                        }
+                    }
+                },
+                cutout: '68%'
+            }
+        });
+
+        // 2. Render Bar Chart (Top Holdings on First Day / Changes afterwards)
+        const barCtx = document.getElementById('changesBarChart').getContext('2d');
+        let barLabels = [];
+        let barValues = [];
+        let barColors = [];
+
+        if (isFirstDay) {
+            // First Day: Show Top 10 Holdings
+            const top10 = portfolioData.slice(0, 10);
+            barLabels = top10.map(d => d.symbol);
+            barValues = top10.map(d => d.allocation);
+            barColors = barValues.map(() => '#10b981');
+        } else {
+            const activeChanges = changesData
+                .filter(d => Math.abs(d.diff) > 0.01)
+                .sort((a, b) => b.diff - a.diff)
+                .slice(0, 8);
+
+            barLabels = activeChanges.map(d => d.symbol);
+            barValues = activeChanges.map(d => d.diff);
+            barColors = barValues.map(v => v >= 0 ? '#10b981' : '#f43f5e');
+        }
+
+        new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: barLabels.length > 0 ? barLabels : ['無顯著變動'],
+                datasets: [{
+                    label: isFirstDay ? '投資佔比 (%)' : '佔比變動 (Δ%)',
+                    data: barValues.length > 0 ? barValues : [0],
+                    backgroundColor: barColors.length > 0 ? barColors : ['#64748b'],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        grid: { color: '#1f2937' },
+                        ticks: { color: '#94a3b8', callback: v => `${v}%` }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { color: '#f8fafc', font: { weight: 'bold' } }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1f2937',
+                        callbacks: {
+                            label: context => ` ${isFirstDay ? '佔比' : '變動'}: ${context.parsed.x}%`
+                        }
+                    }
+                }
+            }
+        });
+
+        // 3. Table Filtering and Search Functions
+        let currentFilter = 'ALL';
+
+        function filterTable(status) {
+            currentFilter = status;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.dataset.filter === status) {
+                    btn.classList.add('bg-gray-800', 'text-white');
+                    btn.classList.remove('text-gray-400');
+                } else {
+                    btn.classList.remove('bg-gray-800', 'text-white');
+                    btn.classList.add('text-gray-400');
+                }
+            });
+            applyFilters();
+        }
+
+        function searchTable() {
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const query = document.getElementById('tableSearchInput').value.toLowerCase().trim();
+            const rows = document.querySelectorAll('#holdingsTable tbody tr');
+
+            rows.forEach(row => {
+                const status = row.dataset.status;
+                const symbol = (row.dataset.symbol || '').toLowerCase();
+                const name = (row.dataset.name || '').toLowerCase();
+
+                const matchesFilter = (currentFilter === 'ALL' || status === currentFilter);
+                const matchesSearch = (!query || symbol.includes(query) || name.includes(query));
+
+                if (matchesFilter && matchesSearch) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
