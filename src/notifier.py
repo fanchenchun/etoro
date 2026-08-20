@@ -1,10 +1,11 @@
 """
 多管道通知推播模組 (Notifier)
 支援:
-1. LINE Notify (LINE_NOTIFY_TOKEN)
-2. Telegram Bot (TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID)
+1. LINE Messaging API Bot (LINE_CHANNEL_ACCESS_TOKEN, LINE_USER_ID) [推薦替代 LINE Notify]
+2. Telegram Bot (TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID) [推薦]
 3. Email SMTP (SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, NOTIFICATION_EMAIL)
 4. Discord Webhook (DISCORD_WEBHOOK_URL)
+5. LINE Notify (舊版相容)
 """
 
 import os
@@ -34,7 +35,7 @@ class NotificationDispatcher:
 
     def build_message_text(self, analysis_result: Dict[str, Any], ai_summary: str, cash_balance: Optional[Dict[str, Any]] = None) -> str:
         """
-        組合純文字通知內容 (針對 LINE / Telegram 等管道)
+        組合純文字通知內容 (針對 LINE Bot / Telegram 等管道)
         """
         stats = analysis_result.get("stats", {})
         changes = analysis_result.get("changes", [])
@@ -153,7 +154,42 @@ class NotificationDispatcher:
         """
         return html
 
+    def send_line_bot_message(self, message: str) -> bool:
+        """
+        透過 LINE Messaging API (官方 Bot) 主動推播訊息給指定 User
+        """
+        channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN")
+        user_id = os.getenv("LINE_USER_ID")
+        
+        if not channel_access_token or not user_id:
+            return False
+
+        try:
+            url = "https://api.line.me/v2/bot/message/push"
+            headers = {
+                "Authorization": f"Bearer {channel_access_token}",
+                "Content-Type": "application/json"
+            }
+            payload = {
+                "to": user_id,
+                "messages": [
+                    {
+                        "type": "text",
+                        "text": message
+                    }
+                ]
+            }
+            res = requests.post(url, headers=headers, json=payload, timeout=12)
+            if res.status_code == 200:
+                logger.info("LINE Messaging API 官方 Bot 訊息推送成功！")
+                return True
+            logger.warning(f"LINE Messaging API 推送失敗: {res.status_code} - {res.text}")
+        except Exception as e:
+            logger.error(f"LINE Messaging API 例外: {e}")
+        return False
+
     def send_line_notify(self, message: str) -> bool:
+        """舊版 LINE Notify (相容舊用戶)"""
         token = os.getenv("LINE_NOTIFY_TOKEN")
         if not token:
             return False
@@ -248,8 +284,9 @@ class NotificationDispatcher:
         subject = f"📊 【eToro 調倉日報】@{self.username} - {date_str}"
 
         results = {
+            "line_bot": self.send_line_bot_message(text_msg),
+            "line_notify": self.send_line_notify(text_msg),
             "telegram": self.send_telegram(text_msg),
-            "line": self.send_line_notify(text_msg),
             "email": self.send_email(subject, text_msg, html_msg),
             "discord": self.send_discord(text_msg)
         }
