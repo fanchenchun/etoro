@@ -168,9 +168,9 @@ def run_tracker(
     else:
         logger.info("正在執行推播分發...")
         dispatcher = NotificationDispatcher(username=username, pages_url=pages_url)
-        dispatcher.dispatch(analysis_result, ai_summary_text)
+        dispatcher.dispatch(analysis_result, ai_summary_text, cash_balance=cash_balance)
 
-    logger.info("========== eToro 追蹤任務圓滿完成 ========== ")
+    logger.info("========== eToro 追蹤任務圓滿完成 ==========")
     return True
 
 

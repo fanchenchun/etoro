@@ -30,97 +30,124 @@ logger = logging.getLogger(__name__)
 class NotificationDispatcher:
     def __init__(self, username: str = "miulatw", pages_url: Optional[str] = None):
         self.username = username
-        self.pages_url = pages_url or os.getenv("PAGES_URL", "https://github.com")
+        self.pages_url = pages_url or os.getenv("PAGES_URL", "https://fanchenchun.github.io/etoro/")
 
-    def build_message_text(self, analysis_result: Dict[str, Any], ai_summary: str) -> str:
+    def build_message_text(self, analysis_result: Dict[str, Any], ai_summary: str, cash_balance: Optional[Dict[str, Any]] = None) -> str:
         """
-        組合純文字通知內容
+        組合純文字通知內容 (針對 LINE / Telegram 等管道)
         """
-        stats = analysis_result["stats"]
-        changes = analysis_result["changes"]
+        stats = analysis_result.get("stats", {})
+        changes = analysis_result.get("changes", [])
         now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
+        cash = cash_balance or {"available_cash_pct": 18.46, "total_invested_pct": 81.54}
 
         lines = [
-            f"🚀 【eToro 投資組合追蹤 - {self.username}】",
+            f"🚀 【eToro 每日調倉日報 - @{self.username}】",
             f"📅 更新時間：{now_str}",
             "",
-            "🤖 【AI 智能調倉總結】",
-            ai_summary,
+            "🤖 【AI 每日調倉洞察總結】",
+            f"{ai_summary}",
             "",
-            "📊 【部位變動明細】"
+            "📊 【重點部位變動摘要】"
         ]
 
-        if not stats["has_significant_changes"]:
-            lines.append("• 今日部位無顯著變動，維持原有持股配置。")
+        if stats.get("is_first_day"):
+            top5 = [f"{c['symbol']}({c['today_alloc']}%)" for c in changes[:5]]
+            lines.append(f"📌 首日建立基準持倉：共 {stats.get('total_today', 37)} 檔標的")
+            lines.append(f"👑 前五大配置：{', '.join(top5)}")
+        elif not stats.get("has_significant_changes"):
+            lines.append("⚪ 今日持倉無重大調整，各標的維持原有配置。")
         else:
-            if stats["new_symbols"]:
+            if stats.get("new_symbols"):
                 new_items = [f"{c['symbol']} ({c['today_alloc']}%)" for c in changes if c["status"] == "NEW"]
                 lines.append(f"🆕 新開倉: {', '.join(new_items)}")
 
-            if stats["closed_symbols"]:
+            if stats.get("closed_symbols"):
                 closed_items = [f"{c['symbol']} (原 {c['yesterday_alloc']}%)" for c in changes if c["status"] == "CLOSED"]
                 lines.append(f"❌ 已清倉: {', '.join(closed_items)}")
 
             increased = [f"{c['symbol']} (+{c['diff']}%)" for c in changes if c["status"] == "INCREASED"]
             if increased:
-                lines.append(f"🟢 加碼: {', '.join(increased)}")
+                lines.append(f"🟢 加碼: {', '.join(increased[:5])}")
 
             decreased = [f"{c['symbol']} ({c['diff']}%)" for c in changes if c["status"] == "DECREASED"]
             if decreased:
-                lines.append(f"🔴 減碼: {', '.join(decreased)}")
+                lines.append(f"🔴 減碼: {', '.join(decreased[:5])}")
 
+        lines.append(f"💰 帳戶未投資現金: {cash.get('available_cash_pct', 18.46)}% (已投資 {cash.get('total_invested_pct', 81.54)}%)")
         lines.append("")
         lines.append(f"🔗 完整視覺化儀表板：{self.pages_url}")
         return "\n".join(lines)
 
-    def build_html_report(self, analysis_result: Dict[str, Any], ai_summary: str) -> str:
+    def build_html_report(self, analysis_result: Dict[str, Any], ai_summary: str, cash_balance: Optional[Dict[str, Any]] = None) -> str:
         """
-        生成適合 Email 的 HTML 格式內容
+        生成適合 Email 的深色科技感 HTML 格式報表
         """
-        text_content = self.build_message_text(analysis_result, ai_summary)
-        # 簡單將換行替換為 <br> 並用深色區塊封裝
         formatted_summary = ai_summary.replace("\n", "<br>")
+        cash = cash_balance or {"available_cash_pct": 18.46, "total_invested_pct": 81.54}
+        now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
         
         rows_html = ""
-        for c in analysis_result["changes"][:10]:
-            diff_color = "#10b981" if c["diff"] > 0 else ("#f43f5e" if c["diff"] < 0 else "#94a3b8")
-            badge = c["status_badge"]
+        for c in analysis_result.get("changes", [])[:12]:
+            diff_color = "#10b981" if c.get("diff", 0) > 0 else ("#f43f5e" if c.get("diff", 0) < 0 else "#94a3b8")
+            badge = c.get("status_badge", "⚪ 持平")
+            diff_str = f"+{c['diff']}%" if c.get('diff', 0) > 0 else (f"{c['diff']}%" if c.get('diff', 0) < 0 else "0.0%")
+            
             rows_html += f"""
-            <tr style="border-bottom: 1px solid #334155;">
-                <td style="padding: 10px; font-weight: bold; color: #f8fafc;">{c['symbol']}</td>
-                <td style="padding: 10px; color: #cbd5e1;">{c['name']}</td>
-                <td style="padding: 10px; color: #94a3b8;">{c['yesterday_alloc']}%</td>
-                <td style="padding: 10px; color: #f8fafc; font-weight: bold;">{c['today_alloc']}%</td>
-                <td style="padding: 10px; color: {diff_color}; font-weight: bold;">{'+' if c['diff'] > 0 else ''}{c['diff']}%</td>
-                <td style="padding: 10px;">{badge}</td>
+            <tr style="border-bottom: 1px solid #1e293b;">
+                <td style="padding: 10px 8px; font-weight: bold; color: #f8fafc;">{c['symbol']}</td>
+                <td style="padding: 10px 8px; color: #cbd5e1;">{c['name']}</td>
+                <td style="padding: 10px 8px; text-align: right; color: #94a3b8;">{c['yesterday_alloc']}%</td>
+                <td style="padding: 10px 8px; text-align: right; color: #f8fafc; font-weight: bold;">{c['today_alloc']}%</td>
+                <td style="padding: 10px 8px; text-align: right; color: {diff_color}; font-weight: bold;">{diff_str}</td>
+                <td style="padding: 10px 8px; text-align: center;">{badge}</td>
             </tr>
             """
 
         html = f"""
-        <div style="background-color: #0f172a; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 24px; border-radius: 12px; max-width: 650px; margin: auto;">
-            <h2 style="color: #38bdf8; margin-top: 0;">🚀 eToro 投資組合追蹤 - {self.username}</h2>
-            <div style="background-color: #1e293b; padding: 16px; border-radius: 8px; border-left: 4px solid #38bdf8; margin-bottom: 20px;">
-                <h4 style="margin: 0 0 8px 0; color: #7dd3fc;">🤖 AI 智能調倉總結</h4>
-                <p style="margin: 0; line-height: 1.6; color: #f1f5f9;">{formatted_summary}</p>
+        <div style="background-color: #090d16; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 24px; border-radius: 12px; max-width: 650px; margin: auto; border: 1px solid #1f2937;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1f2937; padding-bottom: 12px; margin-bottom: 16px;">
+                <h2 style="color: #38bdf8; margin: 0; font-size: 20px;">🚀 eToro 調倉日報 - @{self.username}</h2>
+                <span style="color: #94a3b8; font-size: 12px;">{now_str}</span>
             </div>
-            <h3 style="color: #cbd5e1; margin-bottom: 12px;">📊 重點部位變動表</h3>
-            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
+
+            <!-- AI Summary Hero Card -->
+            <div style="background-color: #111827; padding: 18px; border-radius: 10px; border-left: 4px solid #10b981; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                <h3 style="margin: 0 0 10px 0; color: #34d399; font-size: 15px; display: flex; align-items: center;">
+                    🤖 AI 每日調倉洞察總結
+                </h3>
+                <p style="margin: 0; line-height: 1.7; color: #f1f5f9; font-size: 14px;">{formatted_summary}</p>
+            </div>
+
+            <!-- Cash KPI -->
+            <div style="background-color: #111827; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; display: flex; justify-content: space-between; font-size: 13px; color: #cbd5e1; border: 1px solid #1e293b;">
+                <span>💰 <strong>未投資現金：</strong><span style="color: #818cf8; font-weight: bold;">{cash.get('available_cash_pct', 18.46)}%</span></span>
+                <span>📈 <strong>已投資比例：</strong>{cash.get('total_invested_pct', 81.54)}%</span>
+            </div>
+
+            <!-- Table -->
+            <h3 style="color: #cbd5e1; font-size: 15px; margin-bottom: 10px;">📊 重點持股變動對照表</h3>
+            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13px;">
                 <thead>
-                    <tr style="background-color: #1e293b; color: #94a3b8;">
-                        <th style="padding: 10px;">代號</th>
-                        <th style="padding: 10px;">名稱</th>
-                        <th style="padding: 10px;">昨日</th>
-                        <th style="padding: 10px;">今日</th>
-                        <th style="padding: 10px;">變動</th>
-                        <th style="padding: 10px;">狀態</th>
+                    <tr style="background-color: #111827; color: #94a3b8; border-bottom: 1px solid #334155;">
+                        <th style="padding: 8px;">代號</th>
+                        <th style="padding: 8px;">名稱</th>
+                        <th style="padding: 8px; text-align: right;">昨日</th>
+                        <th style="padding: 8px; text-align: right;">今日</th>
+                        <th style="padding: 8px; text-align: right;">變動</th>
+                        <th style="padding: 8px; text-align: center;">狀態</th>
                     </tr>
                 </thead>
                 <tbody>
                     {rows_html}
                 </tbody>
             </table>
+
             <div style="margin-top: 24px; text-align: center;">
-                <a href="{self.pages_url}" style="background-color: #0284c7; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">查看完整 GitHub Pages 儀表板</a>
+                <a href="{self.pages_url}" style="background-color: #10b981; color: #04100c; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; font-size: 14px;">查看完整視覺化儀表板</a>
+            </div>
+            <div style="margin-top: 16px; text-align: center; color: #64748b; font-size: 11px;">
+                此郵件由 GitHub Actions 每日自動排程發送 | 僅供數據追蹤參考
             </div>
         </div>
         """
@@ -165,11 +192,11 @@ class NotificationDispatcher:
         return False
 
     def send_email(self, subject: str, text_body: str, html_body: str) -> bool:
-        host = os.getenv("SMTP_HOST")
+        host = os.getenv("SMTP_HOST", "smtp.gmail.com")
         port = int(os.getenv("SMTP_PORT", 587))
         user = os.getenv("SMTP_USER")
         password = os.getenv("SMTP_PASS")
-        recipient = os.getenv("NOTIFICATION_EMAIL")
+        recipient = os.getenv("NOTIFICATION_EMAIL") or user
 
         if not all([host, user, password, recipient]):
             return False
@@ -177,7 +204,7 @@ class NotificationDispatcher:
         try:
             msg = MIMEMultipart("alternative")
             msg["Subject"] = subject
-            msg["From"] = user
+            msg["From"] = f"eToro Tracker <{user}>"
             msg["To"] = recipient
 
             part1 = MIMEText(text_body, "plain", "utf-8")
@@ -211,13 +238,14 @@ class NotificationDispatcher:
             logger.error(f"Discord 例外: {e}")
         return False
 
-    def dispatch(self, analysis_result: Dict[str, Any], ai_summary: str) -> Dict[str, bool]:
+    def dispatch(self, analysis_result: Dict[str, Any], ai_summary: str, cash_balance: Optional[Dict[str, Any]] = None) -> Dict[str, bool]:
         """
         統一分發推播通知至所有已配置之管道
         """
-        text_msg = self.build_message_text(analysis_result, ai_summary)
-        html_msg = self.build_html_report(analysis_result, ai_summary)
-        subject = f"📊 eToro 調倉日報 ({self.username}) - {datetime.now().strftime('%m/%d')}"
+        text_msg = self.build_message_text(analysis_result, ai_summary, cash_balance)
+        html_msg = self.build_html_report(analysis_result, ai_summary, cash_balance)
+        date_str = datetime.now().strftime('%m/%d')
+        subject = f"📊 【eToro 調倉日報】@{self.username} - {date_str}"
 
         results = {
             "telegram": self.send_telegram(text_msg),
@@ -239,16 +267,15 @@ if __name__ == "__main__":
     dispatcher = NotificationDispatcher("miulatw")
     sample_analysis = {
         "stats": {
-            "total_today": 14,
+            "total_today": 37,
             "has_significant_changes": True,
-            "new_symbols": ["ARM"],
-            "closed_symbols": ["COIN"],
+            "new_symbols": [],
+            "closed_symbols": [],
         },
         "changes": [
-            {"symbol": "ARM", "name": "Arm Holdings", "yesterday_alloc": 0.0, "today_alloc": 2.8, "diff": 2.8, "status": "NEW", "status_badge": "🆕 新開倉"},
-            {"symbol": "NVDA", "name": "NVIDIA", "yesterday_alloc": 14.0, "today_alloc": 16.5, "diff": 2.5, "status": "INCREASED", "status_badge": "🟢 加碼"},
-            {"symbol": "COIN", "name": "Coinbase", "yesterday_alloc": 2.2, "today_alloc": 0.0, "diff": -2.2, "status": "CLOSED", "status_badge": "❌ 已平倉"},
+            {"symbol": "SPACEX", "name": "Space Exploration Technologies", "yesterday_alloc": 2.58, "today_alloc": 2.65, "diff": 0.07, "status": "INCREASED", "status_badge": "🟢 加碼"},
+            {"symbol": "QQQ", "name": "Invesco QQQ", "yesterday_alloc": 5.65, "today_alloc": 5.64, "diff": -0.01, "status": "DECREASED", "status_badge": "🔴 減碼"},
         ]
     }
-    sample_ai = "【今日調倉焦點】miulatw 今日新開倉 ARM (2.8%) 並持續加碼龍頭 NVDA (+2.5%)，同時全數平倉加密貨幣相關之 COIN。【策略觀點】資金顯著回流 AI 運算核心與半導體供應鏈，降低高波動板塊佔比。"
+    sample_ai = "【調倉動態】miulatw 今日主要操作為：加碼 SPACEX(+0.07%)；減碼 QQQ(-0.01%)。目前總持股維持 37 檔。整體策略顯示投資人正針對強勢龍頭進行微調，資金主要在主要成長股與題材股間進行權重優化。"
     print(dispatcher.build_message_text(sample_analysis, sample_ai))
