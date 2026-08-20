@@ -1,11 +1,11 @@
 """
 eToro 投資組合追蹤自動化系統 - 主程式入口 (Main Orchestrator)
 調度流程:
-1. Playwright 爬蟲 (抓取或攔截內部 API)
-2. 數據比對 (今日 vs 昨日，計算佔比變動、新開倉、平倉)
+1. Playwright / SAPI 爬蟲 (抓取持倉與可用餘額)
+2. 數據比對 (今日 vs 昨日，只要 diff > 0 為加碼，diff < 0 為減碼)
 3. Gemini 1.5 Flash AI 摘要生成
 4. 儲存最新狀態至 data/latest.json 與 data/history.json
-5. 生成/更新現代深色科技感 index.html 靜態網頁
+5. 生成/更新現代深色科技感 index.html 靜態網頁 (包含 5 大 KPI 卡片與餘額資訊)
 6. 發送多管道推播通知 (LINE Notify / Telegram / Email / Discord)
 """
 
@@ -83,13 +83,15 @@ def run_tracker(
     history_file = os.path.join(data_dir, "history.json")
     latest_file = os.path.join(data_dir, "latest.json")
 
-    # 1. 抓取當前持股資料
+    # 1. 抓取當前持股資料與餘額
     if use_mock:
         logger.info("採用 Mock 模擬模式...")
         today_portfolio = get_mock_portfolio_data()
+        cash_balance = {"available_cash_pct": 18.46, "total_invested_pct": 81.54}
     else:
         scraper = EToroScraper(username=username, headless=headless)
         today_portfolio = scraper.scrape(mock_on_fail=True)
+        cash_balance = scraper.cash_balance
 
     if not today_portfolio:
         logger.error("無法取得任何持股資料，程序終止！")
@@ -101,7 +103,6 @@ def run_tracker(
     history = load_history_data(history_file)
     yesterday_portfolio = get_latest_yesterday_portfolio(history, today_date)
 
-    # 如果歷史上今日已有記錄但想測試比對，也支援從 latest.json 的前值取得
     if not yesterday_portfolio and os.path.exists(latest_file):
         try:
             with open(latest_file, "r", encoding="utf-8") as f:
@@ -111,8 +112,8 @@ def run_tracker(
         except Exception:
             pass
 
-    # 3. 執行調倉變動比對
-    analysis_result = PortfolioAnalyzer.analyze(today_portfolio, yesterday_portfolio)
+    # 3. 執行調倉變動比對 (零門檻精確比對)
+    analysis_result = PortfolioAnalyzer.analyze(today_portfolio, yesterday_portfolio, threshold=0.0)
     logger.info(f"比對完成: 新開倉 {analysis_result['stats']['new_count']} 檔, 平倉 {analysis_result['stats']['closed_count']} 檔, 加碼 {analysis_result['stats']['increased_count']} 檔, 減碼 {analysis_result['stats']['decreased_count']} 檔")
 
     # 4. AI 智能摘要生成
@@ -125,6 +126,7 @@ def run_tracker(
         "username": username,
         "date": today_date,
         "update_time": now_time_str,
+        "cash_balance": cash_balance,
         "portfolio": today_portfolio,
         "ai_summary": ai_summary_text,
         "analysis": analysis_result
@@ -138,6 +140,7 @@ def run_tracker(
         # 更新歷史
         history[today_date] = {
             "update_time": now_time_str,
+            "cash_balance": cash_balance,
             "portfolio": today_portfolio,
             "stats": analysis_result["stats"],
             "ai_summary": ai_summary_text
@@ -155,7 +158,8 @@ def run_tracker(
         analysis_result=analysis_result,
         ai_summary=ai_summary_text,
         username=username,
-        update_time=now_time_str
+        update_time=now_time_str,
+        cash_balance=cash_balance
     )
 
     # 7. 發送推播通知
@@ -166,7 +170,7 @@ def run_tracker(
         dispatcher = NotificationDispatcher(username=username, pages_url=pages_url)
         dispatcher.dispatch(analysis_result, ai_summary_text)
 
-    logger.info("========== eToro 追蹤任務圓滿完成 ==========")
+    logger.info("========== eToro 追蹤任務圓滿完成 ========== ")
     return True
 
 

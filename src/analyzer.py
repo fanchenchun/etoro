@@ -2,6 +2,7 @@
 投資組合變動比對分析模組 (Analyzer)
 負責比對今日與昨日持股，計算各標的佔比變動 (Δ%)，
 精確標註：🆕新開倉 (NEW)、❌全數平倉 (CLOSED)、🟢加碼 (INCREASED)、🔴減碼 (DECREASED)、⚪持平 (UNCHANGED)。
+規則：只要 diff > 0 即為加碼，diff < 0 即為減碼，diff == 0 為持平。
 """
 
 import sys
@@ -29,9 +30,10 @@ STATUS_CONFIG = {
 
 class PortfolioAnalyzer:
     @staticmethod
-    def analyze(today_portfolio: List[Dict[str, Any]], yesterday_portfolio: Optional[List[Dict[str, Any]]] = None, threshold: float = 0.05) -> Dict[str, Any]:
+    def analyze(today_portfolio: List[Dict[str, Any]], yesterday_portfolio: Optional[List[Dict[str, Any]]] = None, threshold: float = 0.0) -> Dict[str, Any]:
         """
         比對今日與昨日持股
+        只要 diff > 0 判定為加碼，diff < 0 判定為減碼
         """
         is_first_day = not yesterday_portfolio or len(yesterday_portfolio) == 0
 
@@ -53,7 +55,6 @@ class PortfolioAnalyzer:
 
             today_alloc = float(today_map[sym]["allocation"]) if in_today else 0.0
             
-            # 若為第一天/無昨日歷史資料，則昨日佔比視為等於今日佔比或 0
             if is_first_day:
                 yesterday_alloc = today_alloc
                 diff = 0.0
@@ -69,10 +70,10 @@ class PortfolioAnalyzer:
                 elif not in_today and in_yesterday:
                     status = "CLOSED"
                     closed_items.append(sym)
-                elif diff > threshold:
+                elif diff > 0.0:
                     status = "INCREASED"
                     increased_items.append(sym)
-                elif diff < -threshold:
+                elif diff < 0.0:
                     status = "DECREASED"
                     decreased_items.append(sym)
                 else:
@@ -168,11 +169,11 @@ class PortfolioAnalyzer:
         increased = [c for c in changes if c["status"] == "INCREASED"]
         if increased:
             inc_strs = [f"{c['symbol']} (+{c['diff']}%)" for c in increased[:5]]
-            lines.append(f"🟢 主要加碼: {', '.join(inc_strs)}")
+            lines.append(f"🟢 加碼: {', '.join(inc_strs)}")
 
         decreased = [c for c in changes if c["status"] == "DECREASED"]
         if decreased:
             dec_strs = [f"{c['symbol']} ({c['diff']}%)" for c in decreased[:5]]
-            lines.append(f"🔴 主要減碼: {', '.join(dec_strs)}")
+            lines.append(f"🔴 減碼: {', '.join(dec_strs)}")
 
         return "\n".join(lines)

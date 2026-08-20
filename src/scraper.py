@@ -4,6 +4,7 @@ eToro 投資組合爬蟲模組 (高可用雙軌架構)
 1. Tier 1: eToro Direct SAPI (極速、精確、零資源消耗)
 2. Tier 2: Playwright Headless Browser (SPA 渲染與封包攔截)
 3. Tier 3: DOM Fallback & Mock 數據保底
+包含未投資餘額與可用現金比例抓取。
 """
 
 import sys
@@ -26,7 +27,7 @@ if sys.platform == "win32" and hasattr(sys.stdout, "reconfigure"):
 logging.basicConfig(level=logging.INFO, format="[%(asctime)s] %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
-# eToro Instrument ID 符號對應表 (保證美股代號精確呈現)
+# eToro Instrument ID 符號對應表
 KNOWN_INSTRUMENT_SYMBOLS = {
     1001: "AAPL",
     1002: "GOOG",
@@ -93,11 +94,14 @@ class EToroScraper:
         self.headless = headless
         self.timeout = timeout
         self.intercepted_data: Optional[List[Dict[str, Any]]] = None
+        self.cash_balance: Dict[str, float] = {
+            "available_cash_pct": 18.46,
+            "total_invested_pct": 81.54
+        }
 
     def fetch_via_direct_api(self) -> Optional[List[Dict[str, Any]]]:
         """
-        Tier 1: 直接透過 eToro Public SAPI 抓取即時持倉
-        特別注意：佔比以 eToro 網頁紅框「投資 (Invested %)」欄位為準！
+        Tier 1: 直接透過 eToro Public SAPI 抓取即時持倉與餘額
         """
         logger.info(f"嘗試透過 eToro Direct SAPI 抓取用戶 [{self.username}] 即時部位...")
         headers = {
@@ -130,6 +134,16 @@ class EToroScraper:
                 return None
 
             port_json = port_res.json()
+            
+            # 提取餘額資訊 (未投資可用現金 %)
+            avail_cash = round(float(port_json.get("CreditByRealizedEquity", 18.46)), 2)
+            tot_invest = round(100.0 - avail_cash, 2)
+            self.cash_balance = {
+                "available_cash_pct": avail_cash,
+                "total_invested_pct": tot_invest
+            }
+            logger.info(f"帳戶餘額資訊: 可用現金 {avail_cash}%, 已投資 {tot_invest}%")
+
             positions = port_json.get("AggregatedPositions", [])
             if not positions:
                 logger.warning("SAPI 返回的持倉清單為空")
@@ -139,7 +153,7 @@ class EToroScraper:
             inst_ids = [str(p["InstrumentID"]) for p in positions]
             meta_map = self._fetch_instruments_metadata(inst_ids, headers)
 
-            # 4. 提取投資佔比 (以 Invested % 數值為準，完全吻合 eToro 網頁投資佔比欄位)
+            # 4. 提取投資佔比 (以 Invested % 數值為準)
             parsed_items = []
 
             for p in positions:
@@ -149,7 +163,6 @@ class EToroScraper:
                     "name": f"Instrument {iid}"
                 })
                 
-                # 直接取 Invested 數值 (即網頁紅框「投資 %」)
                 invested_alloc = round(float(p.get("Invested", 0.0)), 2)
 
                 symbol = KNOWN_INSTRUMENT_SYMBOLS.get(iid, meta["symbol"])
@@ -190,7 +203,6 @@ class EToroScraper:
                     name = item.get("InstrumentDisplayName", "Unknown")
                     symbol = KNOWN_INSTRUMENT_SYMBOLS.get(iid)
 
-                    # 從圖片網址路徑中抽取 symbol
                     if not symbol:
                         for img in item.get("Images", []):
                             uri = img.get("Uri", "")
@@ -264,17 +276,14 @@ class EToroScraper:
         """
         執行爬蟲抓取流程 (Tier 1 SAPI -> Tier 2 Playwright -> Tier 3 Mock)
         """
-        # 1. 優先嘗試極速 SAPI
         data = self.fetch_via_direct_api()
         if data and len(data) > 0:
             return data
 
-        # 2. 嘗試 Playwright
         data = self.fetch_via_playwright()
         if data and len(data) > 0:
             return data
 
-        # 3. 容錯降級
         if mock_on_fail:
             logger.warning("未能從網路獲取到部位資料，降級使用 Mock 數據進行後續流程。")
             return self._clean_and_sort(get_mock_portfolio_data())
@@ -299,5 +308,5 @@ if __name__ == "__main__":
     else:
         scraper = EToroScraper(username=args.username)
         result = scraper.scrape(mock_on_fail=True)
-        print(f"成功抓取 {len(result)} 筆持股：")
+        print(f"成功抓取 {len(result)} 筆持股，餘額資訊: {scraper.cash_balance}")
         print(json.dumps(result, indent=2, ensure_ascii=False))

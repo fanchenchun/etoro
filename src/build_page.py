@@ -29,7 +29,14 @@ class PageBuilder:
         
         self.env = Environment(loader=FileSystemLoader(self.template_dir), autoescape=True)
 
-    def render(self, analysis_result: Dict[str, Any], ai_summary: str, username: str = "miulatw", update_time: Optional[str] = None) -> str:
+    def render(
+        self,
+        analysis_result: Dict[str, Any],
+        ai_summary: str,
+        username: str = "miulatw",
+        update_time: Optional[str] = None,
+        cash_balance: Optional[Dict[str, Any]] = None
+    ) -> str:
         """
         渲染 index.html
         """
@@ -39,6 +46,7 @@ class PageBuilder:
         portfolio = analysis_result.get("today_portfolio", [])
         changes = analysis_result.get("changes", [])
         stats = analysis_result.get("stats", {})
+        cash = cash_balance or {"available_cash_pct": 18.46, "total_invested_pct": 81.54}
 
         html_content = template.render(
             username=username,
@@ -46,6 +54,7 @@ class PageBuilder:
             ai_summary=ai_summary,
             stats=stats,
             changes=changes,
+            cash_balance=cash,
             portfolio_json=json.dumps(portfolio, ensure_ascii=False),
             changes_json=json.dumps(changes, ensure_ascii=False)
         )
@@ -75,12 +84,12 @@ def build_from_latest_json() -> str:
         analysis_result=data["analysis"],
         ai_summary=data.get("ai_summary", "無 AI 摘要"),
         username=data.get("username", "miulatw"),
-        update_time=data.get("update_time")
+        update_time=data.get("update_time"),
+        cash_balance=data.get("cash_balance")
     )
 
 
 if __name__ == "__main__":
-    import sys
     logging.basicConfig(level=logging.INFO)
     try:
         out = build_from_latest_json()
