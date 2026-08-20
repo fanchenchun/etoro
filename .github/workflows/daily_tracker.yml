@@ -20,6 +20,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 設定 Python 環境 (Setup Python 3.11)
         uses: actions/setup-python@v5
@@ -32,10 +33,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: 安裝 Playwright 瀏覽器核心 (Install Playwright Chromium)
-        run: |
-          playwright install chromium --with-deps
-
       - name: 執行 eToro 爬蟲與調倉分析 (Run Tracker)
         env:
           TARGET_USERNAME: ${{ vars.TARGET_USERNAME || 'miulatw' }}
@@ -46,8 +43,8 @@ jobs:
           LINE_NOTIFY_TOKEN: ${{ secrets.LINE_NOTIFY_TOKEN }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          SMTP_HOST: ${{ secrets.SMTP_HOST }}
-          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST || 'smtp.gmail.com' }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT || '587' }}
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
           NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
@@ -57,14 +54,14 @@ jobs:
 
       - name: 提交並推送更新至儲存庫 (Commit & Push Changes)
         run: |
-          git config --local user.name "github-actions[bot]"
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # 檢查是否有檔案變動
+          git status
           if [ -n "$(git status --porcelain data/ index.html)" ]; then
             git add data/latest.json data/history.json index.html
             git commit -m "chore(data): auto-update etoro portfolio & dashboard [$(date +'%Y-%m-%d')]"
-            git push
+            git push origin main
             echo "✅ 成功更新資料與 index.html 並推送到儲存庫！"
           else
             echo "⚡ 今日無資料變動，無需提交。"

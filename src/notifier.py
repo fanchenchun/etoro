@@ -1,8 +1,8 @@
 """
 多管道通知推播模組 (Notifier)
 支援:
-1. LINE Messaging API Bot (LINE_CHANNEL_ACCESS_TOKEN, LINE_USER_ID) [推薦替代 LINE Notify]
-2. Telegram Bot (TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID) [推薦]
+1. LINE Messaging API Bot (LINE_CHANNEL_ACCESS_TOKEN, LINE_USER_ID)
+2. Telegram Bot (TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID)
 3. Email SMTP (SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, NOTIFICATION_EMAIL)
 4. Discord Webhook (DISCORD_WEBHOOK_URL)
 5. LINE Notify (舊版相容)
@@ -155,11 +155,8 @@ class NotificationDispatcher:
         return html
 
     def send_line_bot_message(self, message: str) -> bool:
-        """
-        透過 LINE Messaging API (官方 Bot) 主動推播訊息給指定 User
-        """
-        channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN")
-        user_id = os.getenv("LINE_USER_ID")
+        channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", "").strip()
+        user_id = os.getenv("LINE_USER_ID", "").strip()
         
         if not channel_access_token or not user_id:
             return False
@@ -189,8 +186,7 @@ class NotificationDispatcher:
         return False
 
     def send_line_notify(self, message: str) -> bool:
-        """舊版 LINE Notify (相容舊用戶)"""
-        token = os.getenv("LINE_NOTIFY_TOKEN")
+        token = os.getenv("LINE_NOTIFY_TOKEN", "").strip()
         if not token:
             return False
         try:
@@ -207,8 +203,8 @@ class NotificationDispatcher:
         return False
 
     def send_telegram(self, message: str) -> bool:
-        token = os.getenv("TELEGRAM_BOT_TOKEN")
-        chat_id = os.getenv("TELEGRAM_CHAT_ID")
+        token = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
+        chat_id = os.getenv("TELEGRAM_CHAT_ID", "").strip()
         if not token or not chat_id:
             return False
         try:
@@ -228,13 +224,14 @@ class NotificationDispatcher:
         return False
 
     def send_email(self, subject: str, text_body: str, html_body: str) -> bool:
-        host = os.getenv("SMTP_HOST", "smtp.gmail.com")
+        host = os.getenv("SMTP_HOST", "smtp.gmail.com").strip()
         port = int(os.getenv("SMTP_PORT", 587))
-        user = os.getenv("SMTP_USER")
-        password = os.getenv("SMTP_PASS")
-        recipient = os.getenv("NOTIFICATION_EMAIL") or user
+        user = os.getenv("SMTP_USER", "").strip()
+        # 自動清理密碼中的空格 (避免從 Google 複製出來時帶有空格)
+        password = os.getenv("SMTP_PASS", "").strip().replace(" ", "")
+        recipient = (os.getenv("NOTIFICATION_EMAIL") or user).strip()
 
-        if not all([host, user, password, recipient]):
+        if not user or not password or not recipient:
             return False
 
         try:
@@ -260,7 +257,7 @@ class NotificationDispatcher:
             return False
 
     def send_discord(self, message: str) -> bool:
-        webhook_url = os.getenv("DISCORD_WEBHOOK_URL")
+        webhook_url = os.getenv("DISCORD_WEBHOOK_URL", "").strip()
         if not webhook_url:
             return False
         try:
@@ -298,21 +295,3 @@ class NotificationDispatcher:
             logger.info("未偵測到有效通知 Token/密碼或所有推播管道未開啟。")
 
         return results
-
-
-if __name__ == "__main__":
-    dispatcher = NotificationDispatcher("miulatw")
-    sample_analysis = {
-        "stats": {
-            "total_today": 37,
-            "has_significant_changes": True,
-            "new_symbols": [],
-            "closed_symbols": [],
-        },
-        "changes": [
-            {"symbol": "SPACEX", "name": "Space Exploration Technologies", "yesterday_alloc": 2.58, "today_alloc": 2.65, "diff": 0.07, "status": "INCREASED", "status_badge": "🟢 加碼"},
-            {"symbol": "QQQ", "name": "Invesco QQQ", "yesterday_alloc": 5.65, "today_alloc": 5.64, "diff": -0.01, "status": "DECREASED", "status_badge": "🔴 減碼"},
-        ]
-    }
-    sample_ai = "【調倉動態】miulatw 今日主要操作為：加碼 SPACEX(+0.07%)；減碼 QQQ(-0.01%)。目前總持股維持 37 檔。整體策略顯示投資人正針對強勢龍頭進行微調，資金主要在主要成長股與題材股間進行權重優化。"
-    print(dispatcher.build_message_text(sample_analysis, sample_ai))
