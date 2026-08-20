@@ -2,8 +2,8 @@ name: eToro Portfolio Daily Tracker
 
 on:
   schedule:
-    # 每日美股收盤後定時執行 (UTC 21:30 = 台灣時間 UTC+8 05:30，週二至週六晨間)
-    - cron: '30 21 * * 1-5'
+    # 每日定時執行 (UTC 22:00 = 台灣時間 UTC+8 每日清晨 06:00)
+    - cron: '0 22 * * *'
   workflow_dispatch: # 支援在 GitHub 網頁上手動觸發執行
 
 permissions:
