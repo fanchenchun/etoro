@@ -47,10 +47,14 @@ class PageBuilder:
         changes = analysis_result.get("changes", [])
         stats = analysis_result.get("stats", {})
         cash = cash_balance or {"available_cash_pct": 18.46, "total_invested_pct": 81.54}
+        today_date = analysis_result.get("today_date") or datetime.now().strftime("%Y/%m/%d")
+        yesterday_date = analysis_result.get("yesterday_date")
 
         html_content = template.render(
             username=username,
             update_time=formatted_time,
+            today_date=today_date,
+            yesterday_date=yesterday_date,
             ai_summary=ai_summary,
             stats=stats,
             changes=changes,

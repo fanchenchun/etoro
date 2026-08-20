@@ -309,8 +309,12 @@
                         <tr>
                             <th scope="col" class="py-3.5 px-6 font-semibold">代號 (Symbol)</th>
                             <th scope="col" class="py-3.5 px-6 font-semibold">資產名稱 (Name)</th>
-                            <th scope="col" class="py-3.5 px-6 font-semibold text-right">昨日佔比</th>
-                            <th scope="col" class="py-3.5 px-6 font-semibold text-right">今日佔比</th>
+                            <th scope="col" class="py-3.5 px-6 font-semibold text-right">
+                                昨日佔比 {% if yesterday_date %}<span class="text-[11px] font-normal text-gray-500 font-mono lowercase">({{ yesterday_date }})</span>{% endif %}
+                            </th>
+                            <th scope="col" class="py-3.5 px-6 font-semibold text-right">
+                                今日佔比 {% if today_date %}<span class="text-[11px] font-normal text-emerald-400 font-mono lowercase">({{ today_date }})</span>{% endif %}
+                            </th>
                             <th scope="col" class="py-3.5 px-6 font-semibold text-right">變動量 (Δ%)</th>
                             <th scope="col" class="py-3.5 px-6 font-semibold text-center">狀態標籤</th>
                         </tr>

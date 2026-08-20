@@ -133,8 +133,8 @@ class NotificationDispatcher:
                     <tr style="background-color: #111827; color: #94a3b8; border-bottom: 1px solid #334155;">
                         <th style="padding: 8px;">代號</th>
                         <th style="padding: 8px;">名稱</th>
-                        <th style="padding: 8px; text-align: right;">昨日</th>
-                        <th style="padding: 8px; text-align: right;">今日</th>
+                        <th style="padding: 8px; text-align: right;">昨日 ({analysis_result.get('yesterday_date', '基準')})</th>
+                        <th style="padding: 8px; text-align: right;">今日 ({analysis_result.get('today_date', '今日')})</th>
                         <th style="padding: 8px; text-align: right;">變動</th>
                         <th style="padding: 8px; text-align: center;">狀態</th>
                     </tr>

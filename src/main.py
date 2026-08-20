@@ -101,7 +101,9 @@ def run_tracker(
 
     # 2. 載入歷史資料並找出昨日部位進行比對
     history = load_history_data(history_file)
-    yesterday_portfolio = get_latest_yesterday_portfolio(history, today_date)
+    sorted_prev_dates = sorted([d for d in history.keys() if d < today_date], reverse=True)
+    yesterday_date_raw = sorted_prev_dates[0] if sorted_prev_dates else None
+    yesterday_portfolio = history[yesterday_date_raw].get("portfolio", []) if yesterday_date_raw else []
 
     if not yesterday_portfolio and os.path.exists(latest_file):
         try:
@@ -109,12 +111,19 @@ def run_tracker(
                 prev_latest = json.load(f)
                 if prev_latest.get("date") != today_date:
                     yesterday_portfolio = prev_latest.get("portfolio", [])
+                    yesterday_date_raw = prev_latest.get("date")
         except Exception:
             pass
 
+    # 格式化日期為 YYYY/M/D 或 YYYY/MM/DD
+    today_date_fmt = datetime.now().strftime("%Y/%m/%d")
+    yesterday_date_fmt = datetime.strptime(yesterday_date_raw, "%Y-%m-%d").strftime("%Y/%m/%d") if yesterday_date_raw else None
+
     # 3. 執行調倉變動比對 (零門檻精確比對)
     analysis_result = PortfolioAnalyzer.analyze(today_portfolio, yesterday_portfolio, threshold=0.0)
-    logger.info(f"比對完成: 新開倉 {analysis_result['stats']['new_count']} 檔, 平倉 {analysis_result['stats']['closed_count']} 檔, 加碼 {analysis_result['stats']['increased_count']} 檔, 減碼 {analysis_result['stats']['decreased_count']} 檔")
+    analysis_result["today_date"] = today_date_fmt
+    analysis_result["yesterday_date"] = yesterday_date_fmt
+    logger.info(f"比對完成: (基準日 {yesterday_date_fmt} vs 今日 {today_date_fmt}) 新開倉 {analysis_result['stats']['new_count']} 檔, 平倉 {analysis_result['stats']['closed_count']} 檔, 加碼 {analysis_result['stats']['increased_count']} 檔, 減碼 {analysis_result['stats']['decreased_count']} 檔")
 
     # 4. AI 智能摘要生成
     logger.info("生成 Gemini 1.5 Flash 繁體中文調倉總結...")
