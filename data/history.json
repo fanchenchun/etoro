@@ -278,5 +278,287 @@
       "has_significant_changes": false
     },
     "ai_summary": "【建立持倉基準】miulatw 目前投資組合共持有 37 檔美股與 ETF 標的。前五大核心重倉依序為：QQQ(5.65%)、META(3.7%)、GOOG(3.55%)、COPX(3.52%)、AMZN(3.47%)。系統已建立今日歷史基準快照，自下一個交易日起將每日自動追蹤比對調倉增減與新開平倉動作。"
+  },
+  "2026-08-20": {
+    "update_time": "2026-08-20 08:47:01",
+    "portfolio": [
+      {
+        "symbol": "QQQ",
+        "name": "Invesco QQQ",
+        "allocation": 5.64,
+        "instrument_type": "Stocks",
+        "net_profit": 11.66
+      },
+      {
+        "symbol": "META",
+        "name": "Meta Platforms Inc",
+        "allocation": 3.7,
+        "instrument_type": "Stocks",
+        "net_profit": 91.21
+      },
+      {
+        "symbol": "GOOG",
+        "name": "Alphabet",
+        "allocation": 3.55,
+        "instrument_type": "Stocks",
+        "net_profit": 106.18
+      },
+      {
+        "symbol": "COPX",
+        "name": "Global X Copper Miners Etf",
+        "allocation": 3.51,
+        "instrument_type": "Stocks",
+        "net_profit": 26.51
+      },
+      {
+        "symbol": "AMZN",
+        "name": "Amazon.com Inc",
+        "allocation": 3.47,
+        "instrument_type": "Stocks",
+        "net_profit": 115.08
+      },
+      {
+        "symbol": "MSFT",
+        "name": "Microsoft",
+        "allocation": 3.29,
+        "instrument_type": "Stocks",
+        "net_profit": 126.54
+      },
+      {
+        "symbol": "AAPL",
+        "name": "Apple",
+        "allocation": 3.05,
+        "instrument_type": "Stocks",
+        "net_profit": 90.24
+      },
+      {
+        "symbol": "XLV",
+        "name": "State Street Health Care Select Sector SPDR ETF",
+        "allocation": 2.82,
+        "instrument_type": "Stocks",
+        "net_profit": 10.62
+      },
+      {
+        "symbol": "ETOR",
+        "name": "eToro Group LTD",
+        "allocation": 2.81,
+        "instrument_type": "Stocks",
+        "net_profit": 3.35
+      },
+      {
+        "symbol": "TSLA",
+        "name": "Tesla Motors, Inc.",
+        "allocation": 2.73,
+        "instrument_type": "Stocks",
+        "net_profit": 124.03
+      },
+      {
+        "symbol": "SPACEX",
+        "name": "Space Exploration Technologies Corp",
+        "allocation": 2.65,
+        "instrument_type": "Stocks",
+        "net_profit": 22.37
+      },
+      {
+        "symbol": "TSM",
+        "name": "Taiwan Semiconductor Manufacturing Co Ltd - ADR",
+        "allocation": 2.63,
+        "instrument_type": "Stocks",
+        "net_profit": 170.87
+      },
+      {
+        "symbol": "NFLX",
+        "name": "Netflix, Inc.",
+        "allocation": 2.54,
+        "instrument_type": "Stocks",
+        "net_profit": 20.01
+      },
+      {
+        "symbol": "PANW",
+        "name": "Palo Alto Networks",
+        "allocation": 2.53,
+        "instrument_type": "Stocks",
+        "net_profit": 15.59
+      },
+      {
+        "symbol": "MU",
+        "name": "Micron Technology, Inc.",
+        "allocation": 2.44,
+        "instrument_type": "Stocks",
+        "net_profit": 77.58
+      },
+      {
+        "symbol": "SKHYNIX",
+        "name": "SK hynix Inc ADR",
+        "allocation": 2.4,
+        "instrument_type": "Stocks",
+        "net_profit": 22.69
+      },
+      {
+        "symbol": "PLTR",
+        "name": "Palantir Technologies Inc.",
+        "allocation": 2.38,
+        "instrument_type": "Stocks",
+        "net_profit": 224.42
+      },
+      {
+        "symbol": "NVDA",
+        "name": "NVIDIA Corporation",
+        "allocation": 2.38,
+        "instrument_type": "Stocks",
+        "net_profit": 207.58
+      },
+      {
+        "symbol": "ROK",
+        "name": "Rockwell Automation Inc",
+        "allocation": 2.37,
+        "instrument_type": "Stocks",
+        "net_profit": 20.98
+      },
+      {
+        "symbol": "VRT",
+        "name": "Vertiv Holdings Co",
+        "allocation": 2.35,
+        "instrument_type": "Stocks",
+        "net_profit": 16.09
+      },
+      {
+        "symbol": "MP",
+        "name": "MP Materials Corp.",
+        "allocation": 2.13,
+        "instrument_type": "Stocks",
+        "net_profit": 42.75
+      },
+      {
+        "symbol": "AVGO",
+        "name": "Broadcom Inc",
+        "allocation": 2.05,
+        "instrument_type": "Stocks",
+        "net_profit": 34.8
+      },
+      {
+        "symbol": "GEV",
+        "name": "GE Vernova LLC",
+        "allocation": 1.91,
+        "instrument_type": "Stocks",
+        "net_profit": 14.31
+      },
+      {
+        "symbol": "RDW",
+        "name": "Redwire Corp",
+        "allocation": 1.78,
+        "instrument_type": "Stocks",
+        "net_profit": 57.18
+      },
+      {
+        "symbol": "ANET",
+        "name": "Arista Networks Inc",
+        "allocation": 1.77,
+        "instrument_type": "Stocks",
+        "net_profit": 57.68
+      },
+      {
+        "symbol": "ETN",
+        "name": "Eaton Corp PLC",
+        "allocation": 1.63,
+        "instrument_type": "Stocks",
+        "net_profit": 27.69
+      },
+      {
+        "symbol": "BTC",
+        "name": "Bitcoin",
+        "allocation": 1.39,
+        "instrument_type": "Stocks",
+        "net_profit": 17.11
+      },
+      {
+        "symbol": "CRWD",
+        "name": "Crowdstrike Holdings",
+        "allocation": 1.33,
+        "instrument_type": "Stocks",
+        "net_profit": 124.33
+      },
+      {
+        "symbol": "SLV",
+        "name": "iShares Silver Trust",
+        "allocation": 1.2,
+        "instrument_type": "Stocks",
+        "net_profit": 18.37
+      },
+      {
+        "symbol": "STX",
+        "name": "Seagate Technology PLC",
+        "allocation": 1.18,
+        "instrument_type": "Stocks",
+        "net_profit": 18.7
+      },
+      {
+        "symbol": "ACHR",
+        "name": "Archer Aviation Inc",
+        "allocation": 1.1,
+        "instrument_type": "Stocks",
+        "net_profit": 40.83
+      },
+      {
+        "symbol": "COHR",
+        "name": "Coherent Corp",
+        "allocation": 1.06,
+        "instrument_type": "Stocks",
+        "net_profit": 30.21
+      },
+      {
+        "symbol": "LITE",
+        "name": "Lumentum Holdings Inc",
+        "allocation": 1.01,
+        "instrument_type": "Stocks",
+        "net_profit": 39.43
+      },
+      {
+        "symbol": "SE",
+        "name": "Sea Ltd-ADR",
+        "allocation": 0.96,
+        "instrument_type": "Stocks",
+        "net_profit": 220.51
+      },
+      {
+        "symbol": "CRDO",
+        "name": "Credo Technology Group Holding Ltd",
+        "allocation": 0.78,
+        "instrument_type": "Stocks",
+        "net_profit": 164.38
+      },
+      {
+        "symbol": "TER",
+        "name": "Teradyne Inc",
+        "allocation": 0.61,
+        "instrument_type": "Stocks",
+        "net_profit": 246.98
+      },
+      {
+        "symbol": "NET",
+        "name": "Cloudflare",
+        "allocation": 0.41,
+        "instrument_type": "Stocks",
+        "net_profit": 587.42
+      }
+    ],
+    "stats": {
+      "is_first_day": false,
+      "total_today": 37,
+      "total_yesterday": 37,
+      "new_count": 0,
+      "closed_count": 0,
+      "increased_count": 1,
+      "decreased_count": 0,
+      "unchanged_count": 36,
+      "new_symbols": [],
+      "closed_symbols": [],
+      "increased_symbols": [
+        "SPACEX"
+      ],
+      "decreased_symbols": [],
+      "has_significant_changes": true
+    },
+    "ai_summary": "【調倉動態】miulatw 今日主要操作為：加碼 SPACEX(+0.07%)。目前總持股維持 37 檔。整體策略顯示投資人正針對強勢龍頭進行微調，資金主要在主要成長股與題材股間進行權重優化。"
   }
 }
