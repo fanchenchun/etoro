@@ -1,7 +1,7 @@
 {
   "username": "miulatw",
   "date": "2026-08-20",
-  "update_time": "2026-08-20 02:52:43",
+  "update_time": "2026-08-20 10:57:34",
   "cash_balance": {
     "available_cash_pct": 18.46,
     "total_invested_pct": 81.54
@@ -12,7 +12,7 @@
       "name": "Invesco QQQ",
       "allocation": 5.64,
       "instrument_type": "Stocks",
-      "net_profit": 11.51
+      "net_profit": 11.52
     },
     {
       "symbol": "META",
@@ -26,7 +26,7 @@
       "name": "Alphabet",
       "allocation": 3.55,
       "instrument_type": "Stocks",
-      "net_profit": 106.2
+      "net_profit": 106.15
     },
     {
       "symbol": "COPX",
@@ -40,7 +40,7 @@
       "name": "Amazon.com Inc",
       "allocation": 3.47,
       "instrument_type": "Stocks",
-      "net_profit": 114.69
+      "net_profit": 114.51
     },
     {
       "symbol": "MSFT",
@@ -75,21 +75,21 @@
       "name": "Tesla Motors, Inc.",
       "allocation": 2.73,
       "instrument_type": "Stocks",
-      "net_profit": 123.68
+      "net_profit": 123.76
     },
     {
       "symbol": "SPACEX",
       "name": "Space Exploration Technologies Corp",
       "allocation": 2.65,
       "instrument_type": "Stocks",
-      "net_profit": 22.56
+      "net_profit": 22.57
     },
     {
       "symbol": "TSM",
       "name": "Taiwan Semiconductor Manufacturing Co Ltd - ADR",
       "allocation": 2.63,
       "instrument_type": "Stocks",
-      "net_profit": 170.69
+      "net_profit": 170.23
     },
     {
       "symbol": "NFLX",
@@ -110,7 +110,7 @@
       "name": "Micron Technology, Inc.",
       "allocation": 2.44,
       "instrument_type": "Stocks",
-      "net_profit": 77.59
+      "net_profit": 77.61
     },
     {
       "symbol": "SKHYNIX",
@@ -124,14 +124,14 @@
       "name": "Palantir Technologies Inc.",
       "allocation": 2.38,
       "instrument_type": "Stocks",
-      "net_profit": 223.84
+      "net_profit": 223.9
     },
     {
       "symbol": "NVDA",
       "name": "NVIDIA Corporation",
       "allocation": 2.38,
       "instrument_type": "Stocks",
-      "net_profit": 207.21
+      "net_profit": 207.39
     },
     {
       "symbol": "ROK",
@@ -194,7 +194,7 @@
       "name": "Bitcoin",
       "allocation": 1.39,
       "instrument_type": "Stocks",
-      "net_profit": 16.57
+      "net_profit": 16.62
     },
     {
       "symbol": "CRWD",
@@ -215,7 +215,7 @@
       "name": "Seagate Technology PLC",
       "allocation": 1.18,
       "instrument_type": "Stocks",
-      "net_profit": 18.44
+      "net_profit": 18.52
     },
     {
       "symbol": "ACHR",
@@ -229,14 +229,14 @@
       "name": "Coherent Corp",
       "allocation": 1.06,
       "instrument_type": "Stocks",
-      "net_profit": 29.1
+      "net_profit": 29.31
     },
     {
       "symbol": "LITE",
       "name": "Lumentum Holdings Inc",
       "allocation": 1.01,
       "instrument_type": "Stocks",
-      "net_profit": 39.3
+      "net_profit": 39.15
     },
     {
       "symbol": "SE",
@@ -250,7 +250,7 @@
       "name": "Credo Technology Group Holding Ltd",
       "allocation": 0.78,
       "instrument_type": "Stocks",
-      "net_profit": 163.91
+      "net_profit": 163.36
     },
     {
       "symbol": "TER",
@@ -819,7 +819,7 @@
         "name": "Invesco QQQ",
         "allocation": 5.64,
         "instrument_type": "Stocks",
-        "net_profit": 11.51
+        "net_profit": 11.52
       },
       {
         "symbol": "META",
@@ -833,7 +833,7 @@
         "name": "Alphabet",
         "allocation": 3.55,
         "instrument_type": "Stocks",
-        "net_profit": 106.2
+        "net_profit": 106.15
       },
       {
         "symbol": "COPX",
@@ -847,7 +847,7 @@
         "name": "Amazon.com Inc",
         "allocation": 3.47,
         "instrument_type": "Stocks",
-        "net_profit": 114.69
+        "net_profit": 114.51
       },
       {
         "symbol": "MSFT",
@@ -882,21 +882,21 @@
         "name": "Tesla Motors, Inc.",
         "allocation": 2.73,
         "instrument_type": "Stocks",
-        "net_profit": 123.68
+        "net_profit": 123.76
       },
       {
         "symbol": "SPACEX",
         "name": "Space Exploration Technologies Corp",
         "allocation": 2.65,
         "instrument_type": "Stocks",
-        "net_profit": 22.56
+        "net_profit": 22.57
       },
       {
         "symbol": "TSM",
         "name": "Taiwan Semiconductor Manufacturing Co Ltd - ADR",
         "allocation": 2.63,
         "instrument_type": "Stocks",
-        "net_profit": 170.69
+        "net_profit": 170.23
       },
       {
         "symbol": "NFLX",
@@ -917,7 +917,7 @@
         "name": "Micron Technology, Inc.",
         "allocation": 2.44,
         "instrument_type": "Stocks",
-        "net_profit": 77.59
+        "net_profit": 77.61
       },
       {
         "symbol": "SKHYNIX",
@@ -931,14 +931,14 @@
         "name": "Palantir Technologies Inc.",
         "allocation": 2.38,
         "instrument_type": "Stocks",
-        "net_profit": 223.84
+        "net_profit": 223.9
       },
       {
         "symbol": "NVDA",
         "name": "NVIDIA Corporation",
         "allocation": 2.38,
         "instrument_type": "Stocks",
-        "net_profit": 207.21
+        "net_profit": 207.39
       },
       {
         "symbol": "ROK",
@@ -1001,7 +1001,7 @@
         "name": "Bitcoin",
         "allocation": 1.39,
         "instrument_type": "Stocks",
-        "net_profit": 16.57
+        "net_profit": 16.62
       },
       {
         "symbol": "CRWD",
@@ -1022,7 +1022,7 @@
         "name": "Seagate Technology PLC",
         "allocation": 1.18,
         "instrument_type": "Stocks",
-        "net_profit": 18.44
+        "net_profit": 18.52
       },
       {
         "symbol": "ACHR",
@@ -1036,14 +1036,14 @@
         "name": "Coherent Corp",
         "allocation": 1.06,
         "instrument_type": "Stocks",
-        "net_profit": 29.1
+        "net_profit": 29.31
       },
       {
         "symbol": "LITE",
         "name": "Lumentum Holdings Inc",
         "allocation": 1.01,
         "instrument_type": "Stocks",
-        "net_profit": 39.3
+        "net_profit": 39.15
       },
       {
         "symbol": "SE",
@@ -1057,7 +1057,7 @@
         "name": "Credo Technology Group Holding Ltd",
         "allocation": 0.78,
         "instrument_type": "Stocks",
-        "net_profit": 163.91
+        "net_profit": 163.36
       },
       {
         "symbol": "TER",
