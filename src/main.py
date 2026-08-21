@@ -108,11 +108,12 @@ def run_tracker(
 
     logger.info(f"成功取得今日持股: 共 {len(today_portfolio)} 檔標的。")
 
-    # 2. 載入歷史資料並找出昨日部位進行比對
+    # 2. 載入歷史資料並找出昨日部位與現金進行比對
     history = load_history_data(history_file)
     sorted_prev_dates = sorted([d for d in history.keys() if d < today_date], reverse=True)
     yesterday_date_raw = sorted_prev_dates[0] if sorted_prev_dates else None
     yesterday_portfolio = history[yesterday_date_raw].get("portfolio", []) if yesterday_date_raw else []
+    yesterday_cash = history[yesterday_date_raw].get("cash_balance") if yesterday_date_raw else None
 
     if not yesterday_portfolio and os.path.exists(latest_file):
         try:
@@ -121,8 +122,37 @@ def run_tracker(
                 if prev_latest.get("date") != today_date:
                     yesterday_portfolio = prev_latest.get("portfolio", [])
                     yesterday_date_raw = prev_latest.get("date")
+                    if not yesterday_cash:
+                        yesterday_cash = prev_latest.get("cash_balance")
         except Exception:
             pass
+
+    # 計算現金餘額相較昨日之變動量 (Δ%)
+    today_avail = float(cash_balance.get("available_cash_pct", 18.46))
+    today_invested = float(cash_balance.get("total_invested_pct", 81.54))
+
+    if yesterday_cash:
+        yesterday_avail = float(yesterday_cash.get("available_cash_pct", today_avail))
+        yesterday_invested = float(yesterday_cash.get("total_invested_pct", today_invested))
+        diff_avail = round(today_avail - yesterday_avail, 2)
+        diff_invested = round(today_invested - yesterday_invested, 2)
+        has_yesterday_cash = True
+    else:
+        yesterday_avail = today_avail
+        yesterday_invested = today_invested
+        diff_avail = 0.0
+        diff_invested = 0.0
+        has_yesterday_cash = False
+
+    enhanced_cash_balance = {
+        "available_cash_pct": today_avail,
+        "total_invested_pct": today_invested,
+        "yesterday_available_cash_pct": yesterday_avail,
+        "yesterday_total_invested_pct": yesterday_invested,
+        "diff": diff_avail,
+        "invested_diff": diff_invested,
+        "has_yesterday": has_yesterday_cash
+    }
 
     # 格式化日期為 YYYY/M/D 或 YYYY/MM/DD
     today_date_fmt = now_taipei.strftime("%Y/%m/%d")
@@ -132,7 +162,7 @@ def run_tracker(
     analysis_result = PortfolioAnalyzer.analyze(today_portfolio, yesterday_portfolio, threshold=0.0)
     analysis_result["today_date"] = today_date_fmt
     analysis_result["yesterday_date"] = yesterday_date_fmt
-    logger.info(f"比對完成: (基準日 {yesterday_date_fmt} vs 今日 {today_date_fmt}) 新開倉 {analysis_result['stats']['new_count']} 檔, 平倉 {analysis_result['stats']['closed_count']} 檔, 加碼 {analysis_result['stats']['increased_count']} 檔, 減碼 {analysis_result['stats']['decreased_count']} 檔")
+    logger.info(f"比對完成: (基準日 {yesterday_date_fmt} vs 今日 {today_date_fmt}) 新開倉 {analysis_result['stats']['new_count']} 檔, 平倉 {analysis_result['stats']['closed_count']} 檔, 加碼 {analysis_result['stats']['increased_count']} 檔, 減碼 {analysis_result['stats']['decreased_count']} 檔 | 可用現金變動: {diff_avail}%")
 
     # 4. AI 智能摘要生成
     logger.info("生成 Gemini 1.5 Flash 繁體中文調倉總結...")
@@ -144,7 +174,7 @@ def run_tracker(
         "username": username,
         "date": today_date,
         "update_time": now_time_str,
-        "cash_balance": cash_balance,
+        "cash_balance": enhanced_cash_balance,
         "portfolio": today_portfolio,
         "ai_summary": ai_summary_text,
         "analysis": analysis_result
@@ -158,7 +188,7 @@ def run_tracker(
         # 更新歷史
         history[today_date] = {
             "update_time": now_time_str,
-            "cash_balance": cash_balance,
+            "cash_balance": enhanced_cash_balance,
             "portfolio": today_portfolio,
             "stats": analysis_result["stats"],
             "ai_summary": ai_summary_text
@@ -177,7 +207,7 @@ def run_tracker(
         ai_summary=ai_summary_text,
         username=username,
         update_time=now_time_str,
-        cash_balance=cash_balance
+        cash_balance=enhanced_cash_balance
     )
 
     # 7. 發送推播通知
@@ -186,7 +216,7 @@ def run_tracker(
     else:
         logger.info("正在執行推播分發...")
         dispatcher = NotificationDispatcher(username=username, pages_url=pages_url)
-        dispatcher.dispatch(analysis_result, ai_summary_text, cash_balance=cash_balance)
+        dispatcher.dispatch(analysis_result, ai_summary_text, cash_balance=enhanced_cash_balance)
 
     logger.info("========== eToro 追蹤任務圓滿完成 ==========")
     return True

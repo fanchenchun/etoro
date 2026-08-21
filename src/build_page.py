@@ -54,7 +54,15 @@ class PageBuilder:
         portfolio = analysis_result.get("today_portfolio", [])
         changes = analysis_result.get("changes", [])
         stats = analysis_result.get("stats", {})
-        cash = cash_balance or {"available_cash_pct": 18.46, "total_invested_pct": 81.54}
+        cash = cash_balance or {
+            "available_cash_pct": 18.46,
+            "total_invested_pct": 81.54,
+            "yesterday_available_cash_pct": 18.46,
+            "yesterday_total_invested_pct": 81.54,
+            "diff": 0.0,
+            "invested_diff": 0.0,
+            "has_yesterday": False
+        }
         today_date = analysis_result.get("today_date") or get_taipei_now().strftime("%Y/%m/%d")
         yesterday_date = analysis_result.get("yesterday_date")
 

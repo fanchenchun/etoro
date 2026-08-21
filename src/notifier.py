@@ -83,7 +83,17 @@ class NotificationDispatcher:
             if decreased:
                 lines.append(f"🔴 減碼: {', '.join(decreased[:5])}")
 
-        lines.append(f"💰 帳戶未投資現金: {cash.get('available_cash_pct', 18.46)}% (已投資 {cash.get('total_invested_pct', 81.54)}%)")
+        cash_diff = cash.get("diff", 0.0)
+        if stats.get("is_first_day") or not cash.get("has_yesterday", True):
+            cash_diff_label = "基準日"
+        elif cash_diff > 0:
+            cash_diff_label = f"+{cash_diff}% vs昨日"
+        elif cash_diff < 0:
+            cash_diff_label = f"{cash_diff}% vs昨日"
+        else:
+            cash_diff_label = "持平 0.0% vs昨日"
+
+        lines.append(f"💰 帳戶未投資現金: {cash.get('available_cash_pct', 18.46)}% ({cash_diff_label}) | 已投資: {cash.get('total_invested_pct', 81.54)}%")
         lines.append("")
         lines.append(f"🔗 完整視覺化儀表板：{self.pages_url}")
         return "\n".join(lines)
@@ -93,9 +103,23 @@ class NotificationDispatcher:
         生成適合 Email 的深色科技感 HTML 格式報表
         """
         formatted_summary = ai_summary.replace("\n", "<br>")
-        cash = cash_balance or {"available_cash_pct": 18.46, "total_invested_pct": 81.54}
+        cash = cash_balance or {"available_cash_pct": 18.46, "total_invested_pct": 81.54, "diff": 0.0}
         now_str = get_taipei_now().strftime("%Y-%m-%d %H:%M")
         
+        cash_diff = cash.get("diff", 0.0)
+        if analysis_result.get("stats", {}).get("is_first_day") or not cash.get("has_yesterday", True):
+            cash_diff_str = "基準日"
+            cash_diff_color = "#94a3b8"
+        elif cash_diff > 0:
+            cash_diff_str = f"+{cash_diff}% vs昨日"
+            cash_diff_color = "#10b981"
+        elif cash_diff < 0:
+            cash_diff_str = f"{cash_diff}% vs昨日"
+            cash_diff_color = "#f43f5e"
+        else:
+            cash_diff_str = "持平 0.0% vs昨日"
+            cash_diff_color = "#94a3b8"
+
         rows_html = ""
         for c in analysis_result.get("changes", [])[:12]:
             diff_color = "#10b981" if c.get("diff", 0) > 0 else ("#f43f5e" if c.get("diff", 0) < 0 else "#94a3b8")
@@ -129,9 +153,14 @@ class NotificationDispatcher:
             </div>
 
             <!-- Cash KPI -->
-            <div style="background-color: #111827; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; display: flex; justify-content: space-between; font-size: 13px; color: #cbd5e1; border: 1px solid #1e293b;">
-                <span>💰 <strong>未投資現金：</strong><span style="color: #818cf8; font-weight: bold;">{cash.get('available_cash_pct', 18.46)}%</span></span>
-                <span>📈 <strong>已投資比例：</strong>{cash.get('total_invested_pct', 81.54)}%</span>
+            <div style="background-color: #111827; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #cbd5e1; border: 1px solid #1e293b;">
+                <div>
+                    💰 <strong>未投資現金：</strong><span style="color: #818cf8; font-weight: bold; font-size: 14px;">{cash.get('available_cash_pct', 18.46)}%</span>
+                    <span style="color: {cash_diff_color}; font-size: 12px; margin-left: 6px; font-weight: 500;">({cash_diff_str})</span>
+                </div>
+                <div>
+                    📈 <strong>已投資比例：</strong><span style="color: #f1f5f9; font-weight: bold;">{cash.get('total_invested_pct', 81.54)}%</span>
+                </div>
             </div>
 
             <!-- Table -->
