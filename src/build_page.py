@@ -7,9 +7,17 @@ import os
 import sys
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from typing import Dict, Any, Optional
 from jinja2 import Environment, FileSystemLoader
+
+# 台灣時區 (UTC+8)
+TAIPEI_TZ = timezone(timedelta(hours=8))
+
+
+def get_taipei_now() -> datetime:
+    """取得台灣時區 (UTC+8) 的當前時間"""
+    return datetime.now(TAIPEI_TZ)
 
 if sys.platform == "win32" and hasattr(sys.stdout, "reconfigure"):
     try:
@@ -41,13 +49,13 @@ class PageBuilder:
         渲染 index.html
         """
         template = self.env.get_template("index.html.jinja2")
-        formatted_time = update_time or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        formatted_time = update_time or get_taipei_now().strftime("%Y-%m-%d %H:%M:%S")
 
         portfolio = analysis_result.get("today_portfolio", [])
         changes = analysis_result.get("changes", [])
         stats = analysis_result.get("stats", {})
         cash = cash_balance or {"available_cash_pct": 18.46, "total_invested_pct": 81.54}
-        today_date = analysis_result.get("today_date") or datetime.now().strftime("%Y/%m/%d")
+        today_date = analysis_result.get("today_date") or get_taipei_now().strftime("%Y/%m/%d")
         yesterday_date = analysis_result.get("yesterday_date")
 
         html_content = template.render(

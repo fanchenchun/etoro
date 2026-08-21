@@ -16,7 +16,15 @@ import requests
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from typing import Dict, Any, Optional
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
+
+# 台灣時區 (UTC+8)
+TAIPEI_TZ = timezone(timedelta(hours=8))
+
+
+def get_taipei_now() -> datetime:
+    """取得台灣時區 (UTC+8) 的當前時間"""
+    return datetime.now(TAIPEI_TZ)
 
 if sys.platform == "win32" and hasattr(sys.stdout, "reconfigure"):
     try:
@@ -39,7 +47,7 @@ class NotificationDispatcher:
         """
         stats = analysis_result.get("stats", {})
         changes = analysis_result.get("changes", [])
-        now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
+        now_str = get_taipei_now().strftime("%Y-%m-%d %H:%M")
         cash = cash_balance or {"available_cash_pct": 18.46, "total_invested_pct": 81.54}
 
         lines = [
@@ -86,7 +94,7 @@ class NotificationDispatcher:
         """
         formatted_summary = ai_summary.replace("\n", "<br>")
         cash = cash_balance or {"available_cash_pct": 18.46, "total_invested_pct": 81.54}
-        now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
+        now_str = get_taipei_now().strftime("%Y-%m-%d %H:%M")
         
         rows_html = ""
         for c in analysis_result.get("changes", [])[:12]:
@@ -277,7 +285,7 @@ class NotificationDispatcher:
         """
         text_msg = self.build_message_text(analysis_result, ai_summary, cash_balance)
         html_msg = self.build_html_report(analysis_result, ai_summary, cash_balance)
-        date_str = datetime.now().strftime('%m/%d')
+        date_str = get_taipei_now().strftime('%m/%d')
         subject = f"📊 【eToro 調倉日報】@{self.username} - {date_str}"
 
         results = {

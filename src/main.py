@@ -14,8 +14,16 @@ import sys
 import json
 import logging
 import argparse
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
+
+# 台灣時區 (UTC+8)
+TAIPEI_TZ = timezone(timedelta(hours=8))
+
+
+def get_taipei_now() -> datetime:
+    """取得台灣時區 (UTC+8) 的當前時間"""
+    return datetime.now(TAIPEI_TZ)
 
 if sys.platform == "win32" and hasattr(sys.stdout, "reconfigure"):
     try:
@@ -75,8 +83,9 @@ def run_tracker(
     pages_url: str = None
 ):
     logger.info(f"========== 開始執行 eToro 追蹤任務: @{username} ==========")
-    today_date = datetime.now().strftime("%Y-%m-%d")
-    now_time_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    now_taipei = get_taipei_now()
+    today_date = now_taipei.strftime("%Y-%m-%d")
+    now_time_str = now_taipei.strftime("%Y-%m-%d %H:%M:%S")
 
     data_dir = os.path.join(BASE_DIR, "data")
     os.makedirs(data_dir, exist_ok=True)
@@ -116,7 +125,7 @@ def run_tracker(
             pass
 
     # 格式化日期為 YYYY/M/D 或 YYYY/MM/DD
-    today_date_fmt = datetime.now().strftime("%Y/%m/%d")
+    today_date_fmt = now_taipei.strftime("%Y/%m/%d")
     yesterday_date_fmt = datetime.strptime(yesterday_date_raw, "%Y-%m-%d").strftime("%Y/%m/%d") if yesterday_date_raw else None
 
     # 3. 執行調倉變動比對 (零門檻精確比對)
