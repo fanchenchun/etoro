@@ -14,6 +14,7 @@ import time
 import logging
 import re
 import requests
+import concurrent.futures
 from typing import Dict, List, Optional, Any
 from datetime import datetime
 
@@ -51,6 +52,7 @@ KNOWN_INSTRUMENT_SYMBOLS = {
     4434: "LITE",
     4481: "TSM",
     5506: "CRWD",
+    5604: "KTOS",
     5712: "NET",
     5960: "SE",
     6094: "COHR",
@@ -74,16 +76,16 @@ def get_mock_portfolio_data() -> List[Dict[str, Any]]:
     提供標準結構的模擬資料 (以 miulatw 典型持倉為基準)
     """
     return [
-        {"symbol": "QQQ", "name": "Invesco QQQ", "allocation": 5.65, "instrument_type": "ETF"},
-        {"symbol": "META", "name": "Meta Platforms Inc", "allocation": 3.70, "instrument_type": "Stocks"},
-        {"symbol": "GOOG", "name": "Alphabet", "allocation": 3.55, "instrument_type": "Stocks"},
-        {"symbol": "COPX", "name": "Global X Copper Miners Etf", "allocation": 3.52, "instrument_type": "ETF"},
-        {"symbol": "AMZN", "name": "Amazon.com Inc", "allocation": 3.47, "instrument_type": "Stocks"},
-        {"symbol": "MSFT", "name": "Microsoft", "allocation": 3.29, "instrument_type": "Stocks"},
-        {"symbol": "AAPL", "name": "Apple", "allocation": 3.05, "instrument_type": "Stocks"},
-        {"symbol": "XLV", "name": "State Street Health Care Select Sector SPDR ETF", "allocation": 2.82, "instrument_type": "ETF"},
-        {"symbol": "ETOR", "name": "eToro Group LTD", "allocation": 2.81, "instrument_type": "Stocks"},
-        {"symbol": "TSLA", "name": "Tesla Motors, Inc.", "allocation": 2.73, "instrument_type": "Stocks"},
+        {"symbol": "QQQ", "name": "Invesco QQQ", "allocation": 5.65, "instrument_type": "ETF", "avg_open_rate": 480.20, "current_rate": 505.30, "net_profit": 10.55},
+        {"symbol": "META", "name": "Meta Platforms Inc", "allocation": 3.70, "instrument_type": "Stocks", "avg_open_rate": 287.98, "current_rate": 549.78, "net_profit": 89.69},
+        {"symbol": "GOOG", "name": "Alphabet", "allocation": 3.55, "instrument_type": "Stocks", "avg_open_rate": 162.54, "current_rate": 341.52, "net_profit": 103.89},
+        {"symbol": "COPX", "name": "Global X Copper Miners Etf", "allocation": 3.52, "instrument_type": "ETF", "avg_open_rate": 42.10, "current_rate": 54.40, "net_profit": 29.25},
+        {"symbol": "AMZN", "name": "Amazon.com Inc", "allocation": 3.47, "instrument_type": "Stocks", "avg_open_rate": 122.04, "current_rate": 258.37, "net_profit": 109.75},
+        {"symbol": "MSFT", "name": "Microsoft", "allocation": 3.29, "instrument_type": "Stocks", "avg_open_rate": 209.34, "current_rate": 483.18, "net_profit": 124.75},
+        {"symbol": "AAPL", "name": "Apple", "allocation": 3.05, "instrument_type": "Stocks", "avg_open_rate": 166.44, "current_rate": 309.80, "net_profit": 87.26},
+        {"symbol": "XLV", "name": "State Street Health Care Select Sector SPDR ETF", "allocation": 2.82, "instrument_type": "ETF", "avg_open_rate": 140.50, "current_rate": 152.80, "net_profit": 8.71},
+        {"symbol": "ETOR", "name": "eToro Group LTD", "allocation": 2.81, "instrument_type": "Stocks", "avg_open_rate": 26.50, "current_rate": 28.54, "net_profit": 7.71},
+        {"symbol": "TSLA", "name": "Tesla Motors, Inc.", "allocation": 2.73, "instrument_type": "Stocks", "avg_open_rate": 150.99, "current_rate": 362.43, "net_profit": 121.45},
     ]
 
 
@@ -150,10 +152,14 @@ class EToroScraper:
                 return None
 
             # 3. 獲取標的元數據 (代號與名稱)
-            inst_ids = [str(p["InstrumentID"]) for p in positions]
-            meta_map = self._fetch_instruments_metadata(inst_ids, headers)
+            inst_ids_str = [str(p["InstrumentID"]) for p in positions]
+            meta_map = self._fetch_instruments_metadata(inst_ids_str, headers)
 
-            # 4. 提取投資佔比 (以 Invested % 數值為準)
+            # 4. 並行獲取各標的「平均開倉價」與「當前現價」
+            inst_ids_int = [int(p["InstrumentID"]) for p in positions]
+            rates_map = self._fetch_positions_rates(cid, inst_ids_int, headers)
+
+            # 5. 提取投資佔比與價格資訊
             parsed_items = []
 
             for p in positions:
@@ -169,22 +175,64 @@ class EToroScraper:
                 if str(symbol).isdigit() and int(symbol) in KNOWN_INSTRUMENT_SYMBOLS:
                     symbol = KNOWN_INSTRUMENT_SYMBOLS[int(symbol)]
 
+                rate_info = rates_map.get(iid, {})
+                avg_open_rate = rate_info.get("avg_open_rate")
+                current_rate = rate_info.get("current_rate")
+
                 parsed_items.append({
                     "symbol": symbol,
                     "name": meta["name"],
                     "allocation": invested_alloc,
                     "instrument_type": "Stocks",
-                    "net_profit": round(float(p.get("NetProfit", 0.0)), 2)
+                    "net_profit": round(float(p.get("NetProfit", 0.0)), 2),
+                    "avg_open_rate": avg_open_rate,
+                    "current_rate": current_rate
                 })
 
             if parsed_items:
-                logger.info(f"✨ 成功透過 SAPI 獲取 {len(parsed_items)} 檔真實持股部位 (精準投資佔比)！")
+                logger.info(f"✨ 成功透過 SAPI 獲取 {len(parsed_items)} 檔真實持股部位 (包含平均開倉價與當前現價)！")
                 return self._clean_and_sort(parsed_items)
 
         except Exception as e:
             logger.warning(f"Direct SAPI 抓取失敗: {e}")
 
         return None
+
+    def _fetch_positions_rates(self, cid: int, inst_ids: List[int], headers: dict) -> Dict[int, Dict[str, Any]]:
+        """
+        並行透過 SAPI 獲取各標的的平均開倉價格 (AverageOpen) 與當前價格 (CurrentRate)
+        """
+        rates_map: Dict[int, Dict[str, Any]] = {}
+        if not inst_ids:
+            return rates_map
+
+        def fetch_single(iid: int):
+            url = f"https://www.etoro.com/sapi/trade-data-real/live/public/positions?cid={cid}&InstrumentID={iid}"
+            try:
+                res = requests.get(url, headers=headers, timeout=6)
+                if res.status_code == 200:
+                    data = res.json()
+                    avg_open = data.get("AverageOpen")
+                    pub_pos = data.get("PublicPositions", [])
+                    cur_rate = pub_pos[0].get("CurrentRate") if (pub_pos and isinstance(pub_pos, list)) else None
+                    
+                    return iid, {
+                        "avg_open_rate": round(float(avg_open), 2) if avg_open is not None else None,
+                        "current_rate": round(float(cur_rate), 2) if cur_rate is not None else None
+                    }
+            except Exception as e:
+                logger.debug(f"獲取 InstrumentID {iid} 價格資訊失敗: {e}")
+            return iid, {"avg_open_rate": None, "current_rate": None}
+
+        try:
+            with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+                results = executor.map(fetch_single, inst_ids)
+                for iid, val in results:
+                    rates_map[iid] = val
+        except Exception as e:
+            logger.warning(f"並行獲取開倉價時發生例外: {e}")
+
+        return rates_map
 
     def _fetch_instruments_metadata(self, inst_ids: List[str], headers: dict) -> Dict[int, Dict[str, str]]:
         """獲取 InstrumentID 的代號與名稱"""

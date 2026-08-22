@@ -323,32 +323,48 @@
                 <table class="w-full text-left text-xs sm:text-sm" id="holdingsTable">
                     <thead class="bg-gray-950/80 text-gray-400 uppercase tracking-wider text-xs border-b border-gray-800">
                         <tr>
-                            <th scope="col" class="py-3.5 px-6 font-semibold">代號 (Symbol)</th>
-                            <th scope="col" class="py-3.5 px-6 font-semibold">資產名稱 (Name)</th>
-                            <th scope="col" class="py-3.5 px-6 font-semibold text-right">
+                            <th scope="col" class="py-3.5 px-5 font-semibold">代號 (Symbol)</th>
+                            <th scope="col" class="py-3.5 px-5 font-semibold">資產名稱 (Name)</th>
+                            <th scope="col" class="py-3.5 px-5 font-semibold text-right text-indigo-300">平均開倉價</th>
+                            <th scope="col" class="py-3.5 px-5 font-semibold text-right text-cyan-300">當前現價</th>
+                            <th scope="col" class="py-3.5 px-5 font-semibold text-right">
                                 昨日佔比 {% if yesterday_date %}<span class="text-[11px] font-normal text-gray-500 font-mono lowercase">({{ yesterday_date }})</span>{% endif %}
                             </th>
-                            <th scope="col" class="py-3.5 px-6 font-semibold text-right">
+                            <th scope="col" class="py-3.5 px-5 font-semibold text-right">
                                 今日佔比 {% if today_date %}<span class="text-[11px] font-normal text-emerald-400 font-mono lowercase">({{ today_date }})</span>{% endif %}
                             </th>
-                            <th scope="col" class="py-3.5 px-6 font-semibold text-right">變動量 (Δ%)</th>
-                            <th scope="col" class="py-3.5 px-6 font-semibold text-center">狀態標籤</th>
+                            <th scope="col" class="py-3.5 px-5 font-semibold text-right">變動量 (Δ%)</th>
+                            <th scope="col" class="py-3.5 px-5 font-semibold text-center">狀態標籤</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-800/60 font-mono">
                         {% for item in changes %}
                         <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="{{ item.status }}" data-symbol="{{ item.symbol }}" data-name="{{ item.name }}">
-                            <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                            <td class="py-3.5 px-5 font-bold text-white flex items-center space-x-2">
                                 <span class="w-2 h-2 rounded-full {% if item.status == 'NEW' %}bg-emerald-400{% elif item.status == 'CLOSED' %}bg-rose-500{% elif item.status == 'INCREASED' %}bg-green-400{% elif item.status == 'DECREASED' %}bg-amber-400{% else %}bg-gray-600{% endif %}"></span>
                                 <span class="text-sm font-bold text-gray-100">{{ item.symbol }}</span>
                             </td>
-                            <td class="py-4 px-6 font-sans text-gray-300">{{ item.name }}</td>
-                            <td class="py-4 px-6 text-right text-gray-400">{% if stats.is_first_day %}-{% else %}{{ item.yesterday_alloc }}%{% endif %}</td>
-                            <td class="py-4 px-6 text-right font-bold {% if item.is_active %}text-white{% else %}text-gray-500{% endif %}">{{ item.today_alloc }}%</td>
-                            <td class="py-4 px-6 text-right font-bold {% if stats.is_first_day %}text-gray-500{% elif item.diff > 0 %}text-emerald-400{% elif item.diff < 0 %}text-rose-400{% else %}text-gray-500{% endif %}">
+                            <td class="py-3.5 px-5 font-sans text-gray-300">{{ item.name }}</td>
+                            <td class="py-3.5 px-5 text-right font-mono text-indigo-300 font-semibold">
+                                {% if item.avg_open_rate is not none and item.avg_open_rate > 0 %}
+                                    ${{ "{:,.2f}".format(item.avg_open_rate) }}
+                                {% else %}
+                                    <span class="text-gray-600 font-sans">-</span>
+                                {% endif %}
+                            </td>
+                            <td class="py-3.5 px-5 text-right font-mono text-cyan-300 font-semibold">
+                                {% if item.current_rate is not none and item.current_rate > 0 %}
+                                    ${{ "{:,.2f}".format(item.current_rate) }}
+                                {% else %}
+                                    <span class="text-gray-600 font-sans">-</span>
+                                {% endif %}
+                            </td>
+                            <td class="py-3.5 px-5 text-right text-gray-400">{% if stats.is_first_day %}-{% else %}{{ item.yesterday_alloc }}%{% endif %}</td>
+                            <td class="py-3.5 px-5 text-right font-bold {% if item.is_active %}text-white{% else %}text-gray-500{% endif %}">{{ item.today_alloc }}%</td>
+                            <td class="py-3.5 px-5 text-right font-bold {% if stats.is_first_day %}text-gray-500{% elif item.diff > 0 %}text-emerald-400{% elif item.diff < 0 %}text-rose-400{% else %}text-gray-500{% endif %}">
                                 {% if stats.is_first_day %}-{% elif item.diff > 0 %}+{{ item.diff }}%{% elif item.diff < 0 %}{{ item.diff }}%{% else %}0.0%{% endif %}
                             </td>
-                            <td class="py-4 px-6 text-center">
+                            <td class="py-3.5 px-5 text-center">
                                 <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-sans font-medium border {% if stats.is_first_day %}text-slate-300 bg-slate-800/60 border-slate-600/30{% else %}{{ item.status_color }}{% endif %}">
                                     {% if stats.is_first_day %}📌 基準持倉{% else %}{{ item.status_badge }}{% endif %}
                                 </span>

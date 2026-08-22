@@ -84,6 +84,10 @@ class PortfolioAnalyzer:
             instrument_type = today_map[sym].get("instrument_type", "Stocks") if in_today else yesterday_map[sym].get("instrument_type", "Stocks")
             cfg = STATUS_CONFIG.get(status, STATUS_CONFIG["UNCHANGED"])
 
+            avg_open_rate = today_map[sym].get("avg_open_rate") if in_today else yesterday_map[sym].get("avg_open_rate")
+            current_rate = today_map[sym].get("current_rate") if in_today else yesterday_map[sym].get("current_rate")
+            net_profit = today_map[sym].get("net_profit") if in_today else yesterday_map[sym].get("net_profit")
+
             changes.append({
                 "symbol": sym,
                 "name": name,
@@ -96,6 +100,9 @@ class PortfolioAnalyzer:
                 "status_badge": cfg["badge"],
                 "status_color": cfg["color"],
                 "status_icon": cfg["icon"],
+                "avg_open_rate": avg_open_rate,
+                "current_rate": current_rate,
+                "net_profit": net_profit,
                 "is_active": in_today
             })
 
