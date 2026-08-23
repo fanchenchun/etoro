@@ -1,7 +1,7 @@
 {
   "username": "miulatw",
-  "date": "2026-08-23",
-  "update_time": "2026-08-23 06:09:16",
+  "date": "2026-08-24",
+  "update_time": "2026-08-24 06:09:13",
   "cash_balance": {
     "available_cash_pct": 18.38,
     "total_invested_pct": 81.62,
@@ -256,6 +256,15 @@
       "current_rate": 419.73
     },
     {
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "allocation": 1.32,
+      "instrument_type": "Stocks",
+      "net_profit": 30.73,
+      "avg_open_rate": 59432.6,
+      "current_rate": 77694.41
+    },
+    {
       "symbol": "CRWD",
       "name": "Crowdstrike Holdings",
       "allocation": 1.32,
@@ -263,15 +272,6 @@
       "net_profit": 112.75,
       "avg_open_rate": 90.23,
       "current_rate": 191.97
-    },
-    {
-      "symbol": "BTC",
-      "name": "Bitcoin",
-      "allocation": 1.32,
-      "instrument_type": "Stocks",
-      "net_profit": 29.79,
-      "avg_open_rate": 59432.6,
-      "current_rate": 77130.66
     },
     {
       "symbol": "STX",
@@ -845,8 +845,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 59432.6,
-        "current_rate": 77130.66,
-        "net_profit": 29.79,
+        "current_rate": 77694.41,
+        "net_profit": 30.73,
         "is_active": true
       },
       {
@@ -1265,6 +1265,15 @@
         "current_rate": 419.73
       },
       {
+        "symbol": "BTC",
+        "name": "Bitcoin",
+        "allocation": 1.32,
+        "instrument_type": "Stocks",
+        "net_profit": 30.73,
+        "avg_open_rate": 59432.6,
+        "current_rate": 77694.41
+      },
+      {
         "symbol": "CRWD",
         "name": "Crowdstrike Holdings",
         "allocation": 1.32,
@@ -1272,15 +1281,6 @@
         "net_profit": 112.75,
         "avg_open_rate": 90.23,
         "current_rate": 191.97
-      },
-      {
-        "symbol": "BTC",
-        "name": "Bitcoin",
-        "allocation": 1.32,
-        "instrument_type": "Stocks",
-        "net_profit": 29.79,
-        "avg_open_rate": 59432.6,
-        "current_rate": 77130.66
       },
       {
         "symbol": "STX",
@@ -1622,9 +1622,9 @@
         "name": "Bitcoin",
         "allocation": 1.32,
         "instrument_type": "Stocks",
-        "net_profit": 31.49,
+        "net_profit": 29.79,
         "avg_open_rate": 59432.6,
-        "current_rate": 78166.5
+        "current_rate": 77130.66
       },
       {
         "symbol": "STX",
@@ -1708,7 +1708,7 @@
         "current_rate": 292.97
       }
     ],
-    "today_date": "2026/08/23",
-    "yesterday_date": "2026/08/22"
+    "today_date": "2026/08/24",
+    "yesterday_date": "2026/08/23"
   }
 }
