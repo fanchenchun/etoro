@@ -2021,5 +2021,415 @@
       "has_significant_changes": false
     },
     "ai_summary": "【今日持倉無明顯變動】miulatw 今日投資組合維持穩定，各主要美股持倉比重未見顯著增減，整體維持原有之科技與大型權值股長期配置架構。"
+  },
+  "2026-08-25": {
+    "update_time": "2026-08-25 06:13:10",
+    "cash_balance": {
+      "available_cash_pct": 18.33,
+      "total_invested_pct": 81.67,
+      "yesterday_available_cash_pct": 18.38,
+      "yesterday_total_invested_pct": 81.62,
+      "diff": -0.05,
+      "invested_diff": 0.05,
+      "has_yesterday": true
+    },
+    "portfolio": [
+      {
+        "symbol": "QQQ",
+        "name": "Invesco QQQ",
+        "allocation": 3.92,
+        "instrument_type": "Stocks",
+        "net_profit": 11.51,
+        "avg_open_rate": 633.86,
+        "current_rate": 706.84
+      },
+      {
+        "symbol": "META",
+        "name": "Meta Platforms Inc",
+        "allocation": 3.67,
+        "instrument_type": "Stocks",
+        "net_profit": 94.11,
+        "avg_open_rate": 287.98,
+        "current_rate": 559.0
+      },
+      {
+        "symbol": "AMZN",
+        "name": "Amazon.com Inc",
+        "allocation": 3.33,
+        "instrument_type": "Stocks",
+        "net_profit": 115.19,
+        "avg_open_rate": 122.04,
+        "current_rate": 262.62
+      },
+      {
+        "symbol": "GOOG",
+        "name": "Alphabet",
+        "allocation": 3.24,
+        "instrument_type": "Stocks",
+        "net_profit": 116.99,
+        "avg_open_rate": 158.97,
+        "current_rate": 344.95
+      },
+      {
+        "symbol": "COPX",
+        "name": "Global X Copper Miners Etf",
+        "allocation": 3.2,
+        "instrument_type": "Stocks",
+        "net_profit": 36.08,
+        "avg_open_rate": 69.29,
+        "current_rate": 94.29
+      },
+      {
+        "symbol": "MSFT",
+        "name": "Microsoft",
+        "allocation": 3.04,
+        "instrument_type": "Stocks",
+        "net_profit": 134.44,
+        "avg_open_rate": 207.78,
+        "current_rate": 487.1
+      },
+      {
+        "symbol": "AAPL",
+        "name": "Apple",
+        "allocation": 2.96,
+        "instrument_type": "Stocks",
+        "net_profit": 88.93,
+        "avg_open_rate": 164.64,
+        "current_rate": 311.05
+      },
+      {
+        "symbol": "SERVICENOW",
+        "name": "ServiceNow Inc",
+        "allocation": 2.78,
+        "instrument_type": "Stocks",
+        "net_profit": -2.02,
+        "avg_open_rate": 129.62,
+        "current_rate": 127.0
+      },
+      {
+        "symbol": "KTOS",
+        "name": "Kratos Defense & Security Solutions Inc",
+        "allocation": 2.78,
+        "instrument_type": "Stocks",
+        "net_profit": -1.75,
+        "avg_open_rate": 53.99,
+        "current_rate": 53.04
+      },
+      {
+        "symbol": "SPACEX",
+        "name": "Space Exploration Technologies Corp",
+        "allocation": 2.7,
+        "instrument_type": "Stocks",
+        "net_profit": 18.68,
+        "avg_open_rate": 113.71,
+        "current_rate": 134.95
+      },
+      {
+        "symbol": "XLV",
+        "name": "State Street Health Care Select Sector SPDR ETF",
+        "allocation": 2.64,
+        "instrument_type": "Stocks",
+        "net_profit": 10.36,
+        "avg_open_rate": 158.3,
+        "current_rate": 174.7
+      },
+      {
+        "symbol": "TSM",
+        "name": "Taiwan Semiconductor Manufacturing Co Ltd - ADR",
+        "allocation": 2.61,
+        "instrument_type": "Stocks",
+        "net_profit": 167.71,
+        "avg_open_rate": 153.09,
+        "current_rate": 409.81
+      },
+      {
+        "symbol": "TSLA",
+        "name": "Tesla Motors, Inc.",
+        "allocation": 2.52,
+        "instrument_type": "Stocks",
+        "net_profit": 131.23,
+        "avg_open_rate": 150.99,
+        "current_rate": 349.13
+      },
+      {
+        "symbol": "PANW",
+        "name": "Palo Alto Networks",
+        "allocation": 2.52,
+        "instrument_type": "Stocks",
+        "net_profit": 12.81,
+        "avg_open_rate": 311.47,
+        "current_rate": 351.37
+      },
+      {
+        "symbol": "VRT",
+        "name": "Vertiv Holdings Co",
+        "allocation": 2.48,
+        "instrument_type": "Stocks",
+        "net_profit": 11.77,
+        "avg_open_rate": 227.9,
+        "current_rate": 254.73
+      },
+      {
+        "symbol": "NFLX",
+        "name": "Netflix, Inc.",
+        "allocation": 2.46,
+        "instrument_type": "Stocks",
+        "net_profit": 19.71,
+        "avg_open_rate": 66.87,
+        "current_rate": 80.05
+      },
+      {
+        "symbol": "MU",
+        "name": "Micron Technology, Inc.",
+        "allocation": 2.43,
+        "instrument_type": "Stocks",
+        "net_profit": 69.77,
+        "avg_open_rate": 535.63,
+        "current_rate": 909.32
+      },
+      {
+        "symbol": "SKHYNIX",
+        "name": "SK hynix Inc ADR",
+        "allocation": 2.38,
+        "instrument_type": "Stocks",
+        "net_profit": 22.06,
+        "avg_open_rate": 127.26,
+        "current_rate": 155.33
+      },
+      {
+        "symbol": "ROK",
+        "name": "Rockwell Automation Inc",
+        "allocation": 2.35,
+        "instrument_type": "Stocks",
+        "net_profit": 19.2,
+        "avg_open_rate": 358.2,
+        "current_rate": 426.98
+      },
+      {
+        "symbol": "NVDA",
+        "name": "NVIDIA Corporation",
+        "allocation": 2.34,
+        "instrument_type": "Stocks",
+        "net_profit": 194.58,
+        "avg_open_rate": 70.83,
+        "current_rate": 208.65
+      },
+      {
+        "symbol": "PLTR",
+        "name": "Palantir Technologies Inc.",
+        "allocation": 2.19,
+        "instrument_type": "Stocks",
+        "net_profit": 230.28,
+        "avg_open_rate": 53.2,
+        "current_rate": 175.71
+      },
+      {
+        "symbol": "MP",
+        "name": "MP Materials Corp.",
+        "allocation": 2.07,
+        "instrument_type": "Stocks",
+        "net_profit": 44.71,
+        "avg_open_rate": 39.69,
+        "current_rate": 57.43
+      },
+      {
+        "symbol": "AVGO",
+        "name": "Broadcom Inc",
+        "allocation": 2.04,
+        "instrument_type": "Stocks",
+        "net_profit": 31.79,
+        "avg_open_rate": 272.26,
+        "current_rate": 358.8
+      },
+      {
+        "symbol": "RDW",
+        "name": "Redwire Corp",
+        "allocation": 1.99,
+        "instrument_type": "Stocks",
+        "net_profit": 39.21,
+        "avg_open_rate": 8.21,
+        "current_rate": 11.43
+      },
+      {
+        "symbol": "GEV",
+        "name": "GE Vernova LLC",
+        "allocation": 1.97,
+        "instrument_type": "Stocks",
+        "net_profit": 8.22,
+        "avg_open_rate": 868.57,
+        "current_rate": 940.0
+      },
+      {
+        "symbol": "ANET",
+        "name": "Arista Networks Inc",
+        "allocation": 1.76,
+        "instrument_type": "Stocks",
+        "net_profit": 57.61,
+        "avg_open_rate": 119.22,
+        "current_rate": 187.9
+      },
+      {
+        "symbol": "ETN",
+        "name": "Eaton Corp PLC",
+        "allocation": 1.69,
+        "instrument_type": "Stocks",
+        "net_profit": 23.42,
+        "avg_open_rate": 331.25,
+        "current_rate": 408.82
+      },
+      {
+        "symbol": "CRWD",
+        "name": "Crowdstrike Holdings",
+        "allocation": 1.32,
+        "instrument_type": "Stocks",
+        "net_profit": 111.45,
+        "avg_open_rate": 90.23,
+        "current_rate": 190.8
+      },
+      {
+        "symbol": "BTC",
+        "name": "Bitcoin",
+        "allocation": 1.31,
+        "instrument_type": "Stocks",
+        "net_profit": 32.94,
+        "avg_open_rate": 59432.6,
+        "current_rate": 79020.75
+      },
+      {
+        "symbol": "STX",
+        "name": "Seagate Technology PLC",
+        "allocation": 1.31,
+        "instrument_type": "Stocks",
+        "net_profit": 10.29,
+        "avg_open_rate": 717.68,
+        "current_rate": 791.52
+      },
+      {
+        "symbol": "SLV",
+        "name": "iShares Silver Trust",
+        "allocation": 1.19,
+        "instrument_type": "Stocks",
+        "net_profit": 22.71,
+        "avg_open_rate": 50.69,
+        "current_rate": 62.2
+      },
+      {
+        "symbol": "COHR",
+        "name": "Coherent Corp",
+        "allocation": 1.16,
+        "instrument_type": "Stocks",
+        "net_profit": 20.43,
+        "avg_open_rate": 227.84,
+        "current_rate": 274.4
+      },
+      {
+        "symbol": "ACHR",
+        "name": "Archer Aviation Inc",
+        "allocation": 1.09,
+        "instrument_type": "Stocks",
+        "net_profit": 32.53,
+        "avg_open_rate": 4.58,
+        "current_rate": 6.07
+      },
+      {
+        "symbol": "LITE",
+        "name": "Lumentum Holdings Inc",
+        "allocation": 1.07,
+        "instrument_type": "Stocks",
+        "net_profit": 34.31,
+        "avg_open_rate": 614.9,
+        "current_rate": 825.88
+      },
+      {
+        "symbol": "CRDO",
+        "name": "Credo Technology Group Holding Ltd",
+        "allocation": 1.0,
+        "instrument_type": "Stocks",
+        "net_profit": 113.99,
+        "avg_open_rate": 103.71,
+        "current_rate": 221.95
+      },
+      {
+        "symbol": "SE",
+        "name": "Sea Ltd-ADR",
+        "allocation": 0.93,
+        "instrument_type": "Stocks",
+        "net_profit": 211.72,
+        "avg_open_rate": 37.09,
+        "current_rate": 115.6
+      },
+      {
+        "symbol": "TER",
+        "name": "Teradyne Inc",
+        "allocation": 0.75,
+        "instrument_type": "Stocks",
+        "net_profit": 184.96,
+        "avg_open_rate": 128.01,
+        "current_rate": 364.83
+      },
+      {
+        "symbol": "NET",
+        "name": "Cloudflare",
+        "allocation": 0.48,
+        "instrument_type": "Stocks",
+        "net_profit": 475.93,
+        "avg_open_rate": 48.68,
+        "current_rate": 280.33
+      }
+    ],
+    "stats": {
+      "is_first_day": false,
+      "total_today": 38,
+      "total_yesterday": 38,
+      "new_count": 1,
+      "closed_count": 1,
+      "increased_count": 12,
+      "decreased_count": 20,
+      "unchanged_count": 5,
+      "new_symbols": [
+        "SERVICENOW"
+      ],
+      "closed_symbols": [
+        "ETOR"
+      ],
+      "increased_symbols": [
+        "COHR",
+        "CRDO",
+        "ETN",
+        "GEV",
+        "MU",
+        "NVDA",
+        "RDW",
+        "SPACEX",
+        "STX",
+        "TER",
+        "TSM",
+        "VRT"
+      ],
+      "decreased_symbols": [
+        "AAPL",
+        "AMZN",
+        "AVGO",
+        "BTC",
+        "COPX",
+        "GOOG",
+        "KTOS",
+        "LITE",
+        "META",
+        "MSFT",
+        "NET",
+        "NFLX",
+        "PLTR",
+        "QQQ",
+        "ROK",
+        "SE",
+        "SKHYNIX",
+        "SLV",
+        "TSLA",
+        "XLV"
+      ],
+      "has_significant_changes": true
+    },
+    "ai_summary": "【調倉動態】miulatw 今日主要操作為：新開倉 SERVICENOW(2.78%)；全數平倉 ETOR；加碼 SPACEX(+0.06%), TSM(+0.07%), VRT(+0.07%)；減碼 QQQ(-0.24%), META(-0.01%), AMZN(-0.01%)。目前總持股維持 38 檔。整體策略顯示投資人正針對強勢龍頭進行微調，資金主要在主要成長股與題材股間進行權重優化。"
   }
 }
