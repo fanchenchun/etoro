@@ -214,23 +214,23 @@ def run_tracker(
         with open(history_file, "w", encoding="utf-8") as f:
             json.dump(history, f, ensure_ascii=False, indent=2)
         logger.info(f"已更新歷史快照檔案: {history_file}")
-    else:
-        logger.info("[Dry Run] 跳過寫入 JSON 檔案")
 
-    # 6. 生成靜態 index.html 頁面
-    logger.info("渲染產生 GitHub Pages 儀表板 (index.html)...")
-    builder = PageBuilder()
-    builder.render(
-        analysis_result=analysis_result,
-        ai_summary=ai_summary_text,
-        username=username,
-        update_time=now_time_str,
-        cash_balance=enhanced_cash_balance
-    )
+        # 6. 生成靜態 index.html 頁面
+        logger.info("渲染產生 GitHub Pages 儀表板 (index.html)...")
+        builder = PageBuilder()
+        builder.render(
+            analysis_result=analysis_result,
+            ai_summary=ai_summary_text,
+            username=username,
+            update_time=now_time_str,
+            cash_balance=enhanced_cash_balance
+        )
+    else:
+        logger.info("[Dry Run] 跳過寫入 JSON 與 index.html 檔案")
 
     # 7. 發送推播通知 (具備防重複檢查)
-    if no_notify:
-        logger.info("已指定 --no-notify，跳過推播發送。")
+    if no_notify or dry_run:
+        logger.info("已指定 --no-notify 或 dry-run，跳過推播發送。")
     elif already_notified_today and not force_notify:
         logger.info(f"⚡ 今日 ({today_date}) 已於稍早成功發送過通知，本次排程自動跳過重複發送 Email/推播 (若需強制發送請帶入 --force-notify)。")
     else:
