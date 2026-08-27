@@ -80,6 +80,7 @@ def run_tracker(
     headless: bool = True,
     dry_run: bool = False,
     no_notify: bool = False,
+    force_notify: bool = False,
     pages_url: str = None
 ):
     logger.info(f"========== 開始執行 eToro 追蹤任務: @{username} ==========")
@@ -169,7 +170,22 @@ def run_tracker(
     ai_summary_text = generate_ai_summary(analysis_result, username=username)
     logger.info(f"AI 摘要:\n{ai_summary_text}")
 
+    # 檢查今日是否已發送過通知 (防重複通知機制)
+    already_notified_today = False
+    if today_date in history and history[today_date].get("notified", False):
+        already_notified_today = True
+    elif os.path.exists(latest_file):
+        try:
+            with open(latest_file, "r", encoding="utf-8") as f:
+                cur_latest = json.load(f)
+                if cur_latest.get("date") == today_date and cur_latest.get("notified", False):
+                    already_notified_today = True
+        except Exception:
+            pass
+
     # 5. 更新 latest.json 與 history.json
+    notified_flag = True if (already_notified_today or not no_notify) else False
+
     latest_payload = {
         "username": username,
         "date": today_date,
@@ -177,7 +193,8 @@ def run_tracker(
         "cash_balance": enhanced_cash_balance,
         "portfolio": today_portfolio,
         "ai_summary": ai_summary_text,
-        "analysis": analysis_result
+        "analysis": analysis_result,
+        "notified": notified_flag
     }
 
     if not dry_run:
@@ -191,7 +208,8 @@ def run_tracker(
             "cash_balance": enhanced_cash_balance,
             "portfolio": today_portfolio,
             "stats": analysis_result["stats"],
-            "ai_summary": ai_summary_text
+            "ai_summary": ai_summary_text,
+            "notified": notified_flag
         }
         with open(history_file, "w", encoding="utf-8") as f:
             json.dump(history, f, ensure_ascii=False, indent=2)
@@ -210,9 +228,11 @@ def run_tracker(
         cash_balance=enhanced_cash_balance
     )
 
-    # 7. 發送推播通知
+    # 7. 發送推播通知 (具備防重複檢查)
     if no_notify:
         logger.info("已指定 --no-notify，跳過推播發送。")
+    elif already_notified_today and not force_notify:
+        logger.info(f"⚡ 今日 ({today_date}) 已於稍早成功發送過通知，本次排程自動跳過重複發送 Email/推播 (若需強制發送請帶入 --force-notify)。")
     else:
         logger.info("正在執行推播分發...")
         dispatcher = NotificationDispatcher(username=username, pages_url=pages_url)
@@ -229,6 +249,7 @@ def main():
     parser.add_argument("--no-headless", action="store_true", help="顯示瀏覽器視窗")
     parser.add_argument("--dry-run", action="store_true", help="試運行不儲存歷史資料")
     parser.add_argument("--no-notify", action="store_true", help="跳過發送推播通知")
+    parser.add_argument("--force-notify", action="store_true", help="強制重新發送推播通知 (忽略今日已通知標記)")
     parser.add_argument("--pages-url", default=os.getenv("PAGES_URL"), help="GitHub Pages 網址")
 
     args = parser.parse_args()
@@ -239,6 +260,7 @@ def main():
         headless=not args.no_headless,
         dry_run=args.dry_run,
         no_notify=args.no_notify,
+        force_notify=args.force_notify,
         pages_url=args.pages_url
     )
 

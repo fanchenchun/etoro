@@ -2,9 +2,16 @@ name: eToro Portfolio Daily Tracker
 
 on:
   schedule:
-    # 每日定時執行 (UTC 22:00 = 台灣時間 UTC+8 每日清晨 06:00)
-    - cron: '0 22 * * *'
+    # 每日定時執行 (UTC 22:17 與 23:17 = 台灣時間 UTC+8 每日清晨 06:17 與 07:17 雙重保險，自動防重複發信)
+    - cron: '17 22 * * *'
+    - cron: '17 23 * * *'
   workflow_dispatch: # 支援在 GitHub 網頁上手動觸發執行
+    inputs:
+      force_notify:
+        description: '強制發送推播通知 (忽略今日已通知標記)'
+        required: false
+        type: boolean
+        default: true
 
 permissions:
   contents: write
@@ -51,8 +58,13 @@ jobs:
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
           NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          FORCE_NOTIFY: ${{ github.event_name == 'workflow_dispatch' && (inputs.force_notify != false) }}
         run: |
-          python src/main.py
+          EXTRA_ARGS=""
+          if [ "$FORCE_NOTIFY" = "true" ]; then
+            EXTRA_ARGS="--force-notify"
+          fi
+          python src/main.py $EXTRA_ARGS
 
       - name: 提交並推送更新至儲存庫 (Commit & Push Changes)
         run: |
