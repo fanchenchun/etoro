@@ -75,6 +75,7 @@ jobs:
           if [ -n "$(git status --porcelain data/ index.html)" ]; then
             git add data/latest.json data/history.json index.html
             git commit -m "chore(data): auto-update etoro portfolio & dashboard [$(date +'%Y-%m-%d')]"
+            git pull --rebase origin main || true
             git push origin main
             echo "✅ 成功更新資料與 index.html 並推送到儲存庫！"
           else

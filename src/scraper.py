@@ -103,7 +103,7 @@ class EToroScraper:
 
     def fetch_via_direct_api(self) -> Optional[List[Dict[str, Any]]]:
         """
-        Tier 1: 直接透過 eToro Public SAPI 抓取即時持倉與餘額
+        Tier 1: 直接透過 eToro Public SAPI 抓取即時持倉與餘額 (具備重試機制)
         """
         logger.info(f"嘗試透過 eToro Direct SAPI 抓取用戶 [{self.username}] 即時部位...")
         headers = {
@@ -112,89 +112,97 @@ class EToroScraper:
             "Referer": f"https://www.etoro.com/people/{self.username}/portfolio"
         }
 
-        try:
-            # 1. 取得用戶 CID
-            user_url = f"https://www.etoro.com/sapi/userstats/userstats/public/username/{self.username}"
-            cid = 8220524 if self.username.lower() == "miulatw" else None
-            
+        # 1. 取得用戶 CID (帶重試)
+        cid = 8220524 if self.username.lower() == "miulatw" else None
+        user_url = f"https://www.etoro.com/sapi/userstats/userstats/public/username/{self.username}"
+        
+        for attempt in range(1, 4):
             try:
-                user_res = requests.get(user_url, headers=headers, timeout=8)
+                user_res = requests.get(user_url, headers=headers, timeout=10)
                 if user_res.status_code == 200:
                     cid = user_res.json().get("customerId") or cid
+                    break
             except Exception as e:
-                logger.debug(f"查詢 CID 逾時: {e}")
+                logger.debug(f"查詢 CID 嘗試 {attempt}/3 失敗: {e}")
+                time.sleep(1)
 
-            if not cid:
-                logger.warning(f"未能獲取用戶 {self.username} 的 Customer ID")
-                return None
+        if not cid:
+            logger.warning(f"未能獲取用戶 {self.username} 的 Customer ID")
+            return None
 
-            # 2. 獲取投資組合部位
-            port_url = f"https://www.etoro.com/sapi/trade-data-real/live/public/portfolios?cid={cid}"
-            port_res = requests.get(port_url, headers=headers, timeout=10)
-            if port_res.status_code != 200:
-                logger.warning(f"SAPI 投資組合請求失敗: {port_res.status_code}")
-                return None
+        # 2. 獲取投資組合部位 (帶重試)
+        port_url = f"https://www.etoro.com/sapi/trade-data-real/live/public/portfolios?cid={cid}"
+        port_json = None
+        for attempt in range(1, 4):
+            try:
+                port_res = requests.get(port_url, headers=headers, timeout=12)
+                if port_res.status_code == 200:
+                    port_json = port_res.json()
+                    break
+                logger.warning(f"SAPI 投資組合請求嘗試 {attempt}/3 狀態碼: {port_res.status_code}")
+            except Exception as e:
+                logger.warning(f"SAPI 投資組合請求嘗試 {attempt}/3 例外: {e}")
+            time.sleep(1.5)
 
-            port_json = port_res.json()
+        if not port_json:
+            logger.warning("無法從 SAPI 取得持倉資料")
+            return None
+        
+        # 提取餘額資訊 (未投資可用現金 %)
+        avail_cash = round(float(port_json.get("CreditByRealizedEquity", 18.46)), 2)
+        tot_invest = round(100.0 - avail_cash, 2)
+        self.cash_balance = {
+            "available_cash_pct": avail_cash,
+            "total_invested_pct": tot_invest
+        }
+        logger.info(f"帳戶餘額資訊: 可用現金 {avail_cash}%, 已投資 {tot_invest}%")
+
+        positions = port_json.get("AggregatedPositions", [])
+        if not positions:
+            logger.warning("SAPI 返回的持倉清單為空")
+            return None
+
+        # 3. 獲取標的元數據 (代號與名稱)
+        inst_ids_str = [str(p["InstrumentID"]) for p in positions]
+        meta_map = self._fetch_instruments_metadata(inst_ids_str, headers)
+
+        # 4. 並行獲取各標的「平均開倉價」與「當前現價」
+        inst_ids_int = [int(p["InstrumentID"]) for p in positions]
+        rates_map = self._fetch_positions_rates(cid, inst_ids_int, headers)
+
+        # 5. 提取投資佔比與價格資訊
+        parsed_items = []
+
+        for p in positions:
+            iid = p.get("InstrumentID")
+            meta = meta_map.get(iid, {
+                "symbol": KNOWN_INSTRUMENT_SYMBOLS.get(iid, f"ID_{iid}"),
+                "name": f"Instrument {iid}"
+            })
             
-            # 提取餘額資訊 (未投資可用現金 %)
-            avail_cash = round(float(port_json.get("CreditByRealizedEquity", 18.46)), 2)
-            tot_invest = round(100.0 - avail_cash, 2)
-            self.cash_balance = {
-                "available_cash_pct": avail_cash,
-                "total_invested_pct": tot_invest
-            }
-            logger.info(f"帳戶餘額資訊: 可用現金 {avail_cash}%, 已投資 {tot_invest}%")
+            invested_alloc = round(float(p.get("Invested", 0.0)), 2)
 
-            positions = port_json.get("AggregatedPositions", [])
-            if not positions:
-                logger.warning("SAPI 返回的持倉清單為空")
-                return None
+            symbol = KNOWN_INSTRUMENT_SYMBOLS.get(iid, meta["symbol"])
+            if str(symbol).isdigit() and int(symbol) in KNOWN_INSTRUMENT_SYMBOLS:
+                symbol = KNOWN_INSTRUMENT_SYMBOLS[int(symbol)]
 
-            # 3. 獲取標的元數據 (代號與名稱)
-            inst_ids_str = [str(p["InstrumentID"]) for p in positions]
-            meta_map = self._fetch_instruments_metadata(inst_ids_str, headers)
+            rate_info = rates_map.get(iid, {})
+            avg_open_rate = rate_info.get("avg_open_rate")
+            current_rate = rate_info.get("current_rate")
 
-            # 4. 並行獲取各標的「平均開倉價」與「當前現價」
-            inst_ids_int = [int(p["InstrumentID"]) for p in positions]
-            rates_map = self._fetch_positions_rates(cid, inst_ids_int, headers)
+            parsed_items.append({
+                "symbol": symbol,
+                "name": meta["name"],
+                "allocation": invested_alloc,
+                "instrument_type": "Stocks",
+                "net_profit": round(float(p.get("NetProfit", 0.0)), 2),
+                "avg_open_rate": avg_open_rate,
+                "current_rate": current_rate
+            })
 
-            # 5. 提取投資佔比與價格資訊
-            parsed_items = []
-
-            for p in positions:
-                iid = p.get("InstrumentID")
-                meta = meta_map.get(iid, {
-                    "symbol": KNOWN_INSTRUMENT_SYMBOLS.get(iid, f"ID_{iid}"),
-                    "name": f"Instrument {iid}"
-                })
-                
-                invested_alloc = round(float(p.get("Invested", 0.0)), 2)
-
-                symbol = KNOWN_INSTRUMENT_SYMBOLS.get(iid, meta["symbol"])
-                if str(symbol).isdigit() and int(symbol) in KNOWN_INSTRUMENT_SYMBOLS:
-                    symbol = KNOWN_INSTRUMENT_SYMBOLS[int(symbol)]
-
-                rate_info = rates_map.get(iid, {})
-                avg_open_rate = rate_info.get("avg_open_rate")
-                current_rate = rate_info.get("current_rate")
-
-                parsed_items.append({
-                    "symbol": symbol,
-                    "name": meta["name"],
-                    "allocation": invested_alloc,
-                    "instrument_type": "Stocks",
-                    "net_profit": round(float(p.get("NetProfit", 0.0)), 2),
-                    "avg_open_rate": avg_open_rate,
-                    "current_rate": current_rate
-                })
-
-            if parsed_items:
-                logger.info(f"✨ 成功透過 SAPI 獲取 {len(parsed_items)} 檔真實持股部位 (包含平均開倉價與當前現價)！")
-                return self._clean_and_sort(parsed_items)
-
-        except Exception as e:
-            logger.warning(f"Direct SAPI 抓取失敗: {e}")
+        if parsed_items:
+            logger.info(f"✨ 成功透過 SAPI 獲取 {len(parsed_items)} 檔真實持股部位 (包含平均開倉價與當前現價)！")
+            return self._clean_and_sort(parsed_items)
 
         return None
 
@@ -208,20 +216,22 @@ class EToroScraper:
 
         def fetch_single(iid: int):
             url = f"https://www.etoro.com/sapi/trade-data-real/live/public/positions?cid={cid}&InstrumentID={iid}"
-            try:
-                res = requests.get(url, headers=headers, timeout=6)
-                if res.status_code == 200:
-                    data = res.json()
-                    avg_open = data.get("AverageOpen")
-                    pub_pos = data.get("PublicPositions", [])
-                    cur_rate = pub_pos[0].get("CurrentRate") if (pub_pos and isinstance(pub_pos, list)) else None
-                    
-                    return iid, {
-                        "avg_open_rate": round(float(avg_open), 2) if avg_open is not None else None,
-                        "current_rate": round(float(cur_rate), 2) if cur_rate is not None else None
-                    }
-            except Exception as e:
-                logger.debug(f"獲取 InstrumentID {iid} 價格資訊失敗: {e}")
+            for _ in range(2):
+                try:
+                    res = requests.get(url, headers=headers, timeout=8)
+                    if res.status_code == 200:
+                        data = res.json()
+                        avg_open = data.get("AverageOpen")
+                        pub_pos = data.get("PublicPositions", [])
+                        cur_rate = pub_pos[0].get("CurrentRate") if (pub_pos and isinstance(pub_pos, list)) else None
+                        
+                        return iid, {
+                            "avg_open_rate": round(float(avg_open), 2) if avg_open is not None else None,
+                            "current_rate": round(float(cur_rate), 2) if cur_rate is not None else None
+                        }
+                except Exception as e:
+                    logger.debug(f"獲取 InstrumentID {iid} 價格資訊失敗: {e}")
+                    time.sleep(0.5)
             return iid, {"avg_open_rate": None, "current_rate": None}
 
         try:
@@ -240,36 +250,40 @@ class EToroScraper:
         if not inst_ids:
             return meta_map
 
-        try:
-            ids_str = ",".join(inst_ids)
-            url = f"https://api.etorostatic.com/sapi/instrumentsmetadata/v1.1/instruments?instrumentIds={ids_str}"
-            res = requests.get(url, headers=headers, timeout=10)
-            if res.status_code == 200:
-                data = res.json()
-                for item in data.get("InstrumentDisplayDatas", []):
-                    iid = item.get("InstrumentID")
-                    name = item.get("InstrumentDisplayName", "Unknown")
-                    symbol = KNOWN_INSTRUMENT_SYMBOLS.get(iid)
+        for _ in range(2):
+            try:
+                ids_str = ",".join(inst_ids)
+                url = f"https://api.etorostatic.com/sapi/instrumentsmetadata/v1.1/instruments?instrumentIds={ids_str}"
+                res = requests.get(url, headers=headers, timeout=12)
+                if res.status_code == 200:
+                    data = res.json()
+                    for item in data.get("InstrumentDisplayDatas", []):
+                        iid = item.get("InstrumentID")
+                        name = item.get("InstrumentDisplayName", "Unknown")
+                        symbol = KNOWN_INSTRUMENT_SYMBOLS.get(iid)
 
-                    if not symbol:
-                        for img in item.get("Images", []):
-                            uri = img.get("Uri", "")
-                            m = re.search(r"/market-avatars/([^/]+)/", uri)
-                            if m:
-                                sym_cand = m.group(1).upper()
-                                if not sym_cand.isdigit():
-                                    symbol = sym_cand
-                                    break
+                        if not symbol:
+                            for img in item.get("Images", []):
+                                uri = img.get("Uri", "")
+                                m = re.search(r"/market-avatars/([^/]+)/", uri)
+                                if m:
+                                    sym_cand = m.group(1).upper()
+                                    if not sym_cand.isdigit():
+                                        symbol = sym_cand
+                                        break
 
-                    if not symbol:
-                        symbol = name.split()[0].upper() if name else str(iid)
+                        if not symbol:
+                            symbol = name.split()[0].upper() if name else str(iid)
 
-                    meta_map[iid] = {
-                        "symbol": symbol,
-                        "name": name
-                    }
-        except Exception as e:
-            logger.debug(f"獲取標的元數據例外: {e}")
+                        meta_map[iid] = {
+                            "symbol": symbol,
+                            "name": name
+                        }
+                    if meta_map:
+                        break
+            except Exception as e:
+                logger.debug(f"獲取標的元數據例外: {e}")
+                time.sleep(1)
 
         return meta_map
 

@@ -262,33 +262,52 @@ class NotificationDispatcher:
 
     def send_email(self, subject: str, text_body: str, html_body: str) -> bool:
         host = os.getenv("SMTP_HOST", "smtp.gmail.com").strip()
-        port = int(os.getenv("SMTP_PORT", 587))
+        port_str = os.getenv("SMTP_PORT", "587").strip()
+        port = int(port_str) if port_str.isdigit() else 587
         user = os.getenv("SMTP_USER", "").strip()
-        # 自動清理密碼中的空格 (避免從 Google 複製出來時帶有空格)
-        password = os.getenv("SMTP_PASS", "").strip().replace(" ", "")
-        recipient = (os.getenv("NOTIFICATION_EMAIL") or user).strip()
+        # 自動清理密碼中的空格與換行 (避免從 Google 複製出來時帶有空格)
+        password = os.getenv("SMTP_PASS", "").strip().replace(" ", "").replace("\r", "").replace("\n", "")
+        recipient_raw = (os.getenv("NOTIFICATION_EMAIL") or user).strip()
 
-        if not user or not password or not recipient:
+        if not user or not password or not recipient_raw:
+            logger.info("Email 設定未完整 (缺少 SMTP_USER, SMTP_PASS 或 NOTIFICATION_EMAIL)，跳過發送。")
+            return False
+
+        # 支援逗號或分號分隔的多個收件人
+        import re
+        recipients = [r.strip() for r in re.split(r"[,;]+", recipient_raw) if r.strip()]
+        if not recipients:
+            logger.warning("未解析出有效的收件人 Email 地址")
             return False
 
         try:
             msg = MIMEMultipart("alternative")
             msg["Subject"] = subject
             msg["From"] = f"eToro Tracker <{user}>"
-            msg["To"] = recipient
+            msg["To"] = ", ".join(recipients)
 
             part1 = MIMEText(text_body, "plain", "utf-8")
             part2 = MIMEText(html_body, "html", "utf-8")
             msg.attach(part1)
             msg.attach(part2)
 
-            with smtplib.SMTP(host, port, timeout=15) as server:
-                server.starttls()
-                server.login(user, password)
-                server.sendmail(user, [recipient], msg.as_string())
+            if port == 465:
+                # SSL 連線 (Port 465)
+                with smtplib.SMTP_SSL(host, port, timeout=20) as server:
+                    server.login(user, password)
+                    server.sendmail(user, recipients, msg.as_string())
+            else:
+                # STARTTLS 連線 (Port 587 或其他)
+                with smtplib.SMTP(host, port, timeout=20) as server:
+                    server.starttls()
+                    server.login(user, password)
+                    server.sendmail(user, recipients, msg.as_string())
 
-            logger.info(f"Email 通知發送成功 -> {recipient}")
+            logger.info(f"Email 通知發送成功 -> {', '.join(recipients)}")
             return True
+        except smtplib.SMTPAuthenticationError as e:
+            logger.error(f"Email SMTP 身份驗證失敗 (請確認 Gmail 應用程式密碼正確且無空格): {e}")
+            return False
         except Exception as e:
             logger.error(f"Email SMTP 發送失敗: {e}")
             return False

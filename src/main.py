@@ -170,7 +170,7 @@ def run_tracker(
     ai_summary_text = generate_ai_summary(analysis_result, username=username)
     logger.info(f"AI 摘要:\n{ai_summary_text}")
 
-    # 檢查今日是否已發送過通知 (防重複通知機制)
+    # 檢查今日是否已成功發送過通知 (防重複通知機制)
     already_notified_today = False
     if today_date in history and history[today_date].get("notified", False):
         already_notified_today = True
@@ -183,9 +183,7 @@ def run_tracker(
         except Exception:
             pass
 
-    # 5. 更新 latest.json 與 history.json
-    notified_flag = True if (already_notified_today or not no_notify) else False
-
+    # 5. 更新 latest.json 與 history.json (先繼承今日是否已成功通知之狀態)
     latest_payload = {
         "username": username,
         "date": today_date,
@@ -194,7 +192,7 @@ def run_tracker(
         "portfolio": today_portfolio,
         "ai_summary": ai_summary_text,
         "analysis": analysis_result,
-        "notified": notified_flag
+        "notified": already_notified_today
     }
 
     if not dry_run:
@@ -209,7 +207,7 @@ def run_tracker(
             "portfolio": today_portfolio,
             "stats": analysis_result["stats"],
             "ai_summary": ai_summary_text,
-            "notified": notified_flag
+            "notified": already_notified_today
         }
         with open(history_file, "w", encoding="utf-8") as f:
             json.dump(history, f, ensure_ascii=False, indent=2)
@@ -228,7 +226,7 @@ def run_tracker(
     else:
         logger.info("[Dry Run] 跳過寫入 JSON 與 index.html 檔案")
 
-    # 7. 發送推播通知 (具備防重複檢查)
+    # 7. 發送推播通知 (具備防重複檢查與實際成功判定)
     if no_notify or dry_run:
         logger.info("已指定 --no-notify 或 dry-run，跳過推播發送。")
     elif already_notified_today and not force_notify:
@@ -236,7 +234,22 @@ def run_tracker(
     else:
         logger.info("正在執行推播分發...")
         dispatcher = NotificationDispatcher(username=username, pages_url=pages_url)
-        dispatcher.dispatch(analysis_result, ai_summary_text, cash_balance=enhanced_cash_balance)
+        dispatch_results = dispatcher.dispatch(analysis_result, ai_summary_text, cash_balance=enhanced_cash_balance)
+        
+        # 只要有任一管道成功送出，即記錄今日已通知成功
+        any_success = any(dispatch_results.values())
+        if any_success:
+            logger.info("✅ 今日通知已成功分發至至少一個推播管道！")
+            if not dry_run:
+                latest_payload["notified"] = True
+                history[today_date]["notified"] = True
+                with open(latest_file, "w", encoding="utf-8") as f:
+                    json.dump(latest_payload, f, ensure_ascii=False, indent=2)
+                with open(history_file, "w", encoding="utf-8") as f:
+                    json.dump(history, f, ensure_ascii=False, indent=2)
+                logger.info("已更新通知成功狀態 (notified: true)。")
+        else:
+            logger.warning("⚠️ 未能成功送出至任何推播管道 (請檢查 GitHub Secrets 或 .env 設定)，今日通知標記保持未發送以供下次重試。")
 
     logger.info("========== eToro 追蹤任務圓滿完成 ==========")
     return True
