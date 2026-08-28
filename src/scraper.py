@@ -13,10 +13,14 @@ import json
 import time
 import logging
 import re
+import uuid
 import requests
 import concurrent.futures
 from typing import Dict, List, Optional, Any
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
+
+# 台灣時區 (UTC+8)
+TAIPEI_TZ = timezone(timedelta(hours=8))
 
 if sys.platform == "win32" and hasattr(sys.stdout, "reconfigure"):
     try:
@@ -71,6 +75,49 @@ KNOWN_INSTRUMENT_SYMBOLS = {
 }
 
 
+def format_relative_time(iso_str: str) -> str:
+    """計算相對於現在的時間差 (例如：7 天前、2 小時前、剛剛)"""
+    if not iso_str:
+        return "近期"
+    try:
+        cleaned = iso_str.replace("Z", "+00:00")
+        created_dt = datetime.fromisoformat(cleaned)
+        now_dt = datetime.now(timezone.utc)
+        delta = now_dt - created_dt
+        
+        if delta.days > 365:
+            return f"{delta.days // 365} 年前"
+        if delta.days > 30:
+            return f"{delta.days // 30} 個月前"
+        if delta.days > 0:
+            return f"{delta.days} 天前"
+        
+        hours = delta.seconds // 3600
+        if hours > 0:
+            return f"{hours} 小時前"
+        
+        minutes = delta.seconds // 60
+        if minutes > 0:
+            return f"{minutes} 分鐘前"
+            
+        return "剛剛"
+    except Exception:
+        return "近期"
+
+
+def format_iso_to_taipei(iso_str: str) -> str:
+    """將 ISO 時間格式化為台灣時間 (YYYY/MM/DD HH:MM)"""
+    if not iso_str:
+        return ""
+    try:
+        cleaned = iso_str.replace("Z", "+00:00")
+        dt_utc = datetime.fromisoformat(cleaned)
+        dt_taipei = dt_utc.astimezone(TAIPEI_TZ)
+        return dt_taipei.strftime("%Y/%m/%d %H:%M")
+    except Exception:
+        return iso_str[:16].replace("T", " ")
+
+
 def get_mock_portfolio_data() -> List[Dict[str, Any]]:
     """
     提供標準結構的模擬資料 (以 miulatw 典型持倉為基準)
@@ -89,17 +136,152 @@ def get_mock_portfolio_data() -> List[Dict[str, Any]]:
     ]
 
 
+def get_mock_comment_data() -> Dict[str, Any]:
+    """
+    提供最新留言模擬資料
+    """
+    return {
+        "id": "mock-comment-001",
+        "author_name": "Yueh Nung Hung",
+        "username": "miulatw",
+        "avatar_url": "https://etoro-cdn.etorostatic.com/avatars/50X50/8220524/1.jpg",
+        "country": "臺灣",
+        "created_at": "2026-08-21T14:23:13.853Z",
+        "created_at_formatted": "2026/08/21 22:23",
+        "relative_time": "7 天前",
+        "content": "買進 $KTOS",
+        "likes_count": 5,
+        "comments_count": 1,
+        "shares_count": 0,
+        "post_url": "https://www.etoro.com/zh-tw/people/miulatw",
+        "is_new": False
+    }
+
+
 class EToroScraper:
     def __init__(self, username: str = "miulatw", headless: bool = True, timeout: int = 35000):
         self.username = username
-        self.url = f"https://www.etoro.com/zh-tw/people/{username}/portfolio"
+        self.url = f"https://www.etoro.com/zh-tw/people/{username}"
+        self.portfolio_url = f"https://www.etoro.com/zh-tw/people/{username}/portfolio"
         self.headless = headless
         self.timeout = timeout
         self.intercepted_data: Optional[List[Dict[str, Any]]] = None
+        self.gcid: Optional[int] = 8506401 if username.lower() == "miulatw" else None
+        self.real_cid: Optional[int] = 8220524 if username.lower() == "miulatw" else None
         self.cash_balance: Dict[str, float] = {
             "available_cash_pct": 18.46,
             "total_invested_pct": 81.54
         }
+        self.latest_comment: Optional[Dict[str, Any]] = None
+
+    def fetch_user_info(self) -> bool:
+        """
+        查詢用戶的 GCID 與 RealCID
+        """
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+            "Accept": "application/json",
+            "Referer": f"https://www.etoro.com/people/{self.username}"
+        }
+        user_url = f"https://www.etoro.com/api/logininfo/v1.1/users/{self.username}"
+        for attempt in range(1, 4):
+            try:
+                res = requests.get(user_url, headers=headers, timeout=10)
+                if res.status_code == 200:
+                    data = res.json()
+                    self.gcid = data.get("gcid") or self.gcid
+                    self.real_cid = data.get("realCID") or self.real_cid
+                    logger.info(f"用戶 [{self.username}] 資訊解析成功: GCID={self.gcid}, RealCID={self.real_cid}")
+                    return True
+            except Exception as e:
+                logger.debug(f"查詢用戶資訊嘗試 {attempt}/3 失敗: {e}")
+                time.sleep(1)
+        return False
+
+    def fetch_latest_comment(self) -> Optional[Dict[str, Any]]:
+        """
+        抓取用戶在 eToro 上最新一則留言/貼文 (Feed / Comment)
+        """
+        logger.info(f"嘗試抓取用戶 [{self.username}] 最新動態留言 (Comment / Feed)...")
+        if not self.gcid:
+            self.fetch_user_info()
+
+        if not self.gcid:
+            logger.warning(f"缺少 GCID，無法抓取 {self.username} 的動態貼文")
+            return None
+
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+            "Accept": "application/json",
+            "Referer": f"https://www.etoro.com/people/{self.username}",
+            "Account-Type": "Real",
+            "Application-Identifier": "ReToro"
+        }
+
+        req_id = str(uuid.uuid4())
+        feed_url = f"https://www.etoro.com/api/edm-streams/v1/feed/user/top/{self.gcid}?take=10&offset=0&reactionsPageSize=20&client_request_id={req_id}"
+
+        for attempt in range(1, 4):
+            try:
+                res = requests.get(feed_url, headers=headers, timeout=12)
+                if res.status_code == 200:
+                    data = res.json()
+                    discussions = data.get("discussions", [])
+                    if not discussions:
+                        logger.warning("動態貼文清單為空")
+                        return None
+
+                    # 取出最新一則 discussion
+                    top_disc = discussions[0]
+                    post = top_disc.get("post", {})
+                    owner = post.get("owner", {})
+
+                    likes = top_disc.get("emotionsData", {}).get("like", {}).get("paging", {}).get("totalCount", 0)
+                    if not likes:
+                        likes = top_disc.get("reactions", {}).get("totalReactionsCount", 0)
+
+                    comments_count = top_disc.get("summary", {}).get("totalCommentsAndReplies", 0)
+                    if not comments_count:
+                        comments_count = top_disc.get("commentsCount", 0)
+
+                    shares_count = top_disc.get("summary", {}).get("sharedCount", 0)
+                    if not shares_count:
+                        shares_count = top_disc.get("sharesCount", 0)
+
+                    created_at = post.get("created", "")
+                    content_text = post.get("message", {}).get("text", "").strip()
+
+                    author_name = f"{owner.get('firstName', '')} {owner.get('lastName', '')}".strip() or self.username
+                    avatar = owner.get("avatar", {}).get("medium") or owner.get("avatar", {}).get("small") or "https://etoro-cdn.etorostatic.com/avatars/50X50/8220524/1.jpg"
+
+                    country_code = owner.get("countryCode")
+                    country_name = "臺灣" if country_code == 199 else "全球"
+
+                    comment_info = {
+                        "id": post.get("id"),
+                        "author_name": author_name,
+                        "username": owner.get("username", self.username),
+                        "avatar_url": avatar,
+                        "country": country_name,
+                        "created_at": created_at,
+                        "created_at_formatted": format_iso_to_taipei(created_at),
+                        "relative_time": format_relative_time(created_at),
+                        "content": content_text,
+                        "likes_count": likes,
+                        "comments_count": comments_count,
+                        "shares_count": shares_count,
+                        "post_url": f"https://www.etoro.com/zh-tw/people/{self.username}",
+                        "is_new": False
+                    }
+
+                    self.latest_comment = comment_info
+                    logger.info(f"✨ 成功獲取最新動態: [{author_name}] {content_text[:30]}... ({comment_info['relative_time']})")
+                    return comment_info
+            except Exception as e:
+                logger.warning(f"抓取最新動態嘗試 {attempt}/3 失敗: {e}")
+                time.sleep(1.5)
+
+        return None
 
     def fetch_via_direct_api(self) -> Optional[List[Dict[str, Any]]]:
         """
@@ -112,20 +294,11 @@ class EToroScraper:
             "Referer": f"https://www.etoro.com/people/{self.username}/portfolio"
         }
 
-        # 1. 取得用戶 CID (帶重試)
-        cid = 8220524 if self.username.lower() == "miulatw" else None
-        user_url = f"https://www.etoro.com/sapi/userstats/userstats/public/username/{self.username}"
-        
-        for attempt in range(1, 4):
-            try:
-                user_res = requests.get(user_url, headers=headers, timeout=10)
-                if user_res.status_code == 200:
-                    cid = user_res.json().get("customerId") or cid
-                    break
-            except Exception as e:
-                logger.debug(f"查詢 CID 嘗試 {attempt}/3 失敗: {e}")
-                time.sleep(1)
+        # 1. 取得用戶 CID
+        if not self.real_cid:
+            self.fetch_user_info()
 
+        cid = self.real_cid or (8220524 if self.username.lower() == "miulatw" else None)
         if not cid:
             logger.warning(f"未能獲取用戶 {self.username} 的 Customer ID")
             return None
@@ -336,21 +509,28 @@ class EToroScraper:
 
     def scrape(self, mock_on_fail: bool = True) -> List[Dict[str, Any]]:
         """
-        執行爬蟲抓取流程 (Tier 1 SAPI -> Tier 2 Playwright -> Tier 3 Mock)
+        執行爬蟲抓取流程 (包含持倉部位、餘額與最新動態留言)
         """
+        # 抓取持股部位
         data = self.fetch_via_direct_api()
-        if data and len(data) > 0:
-            return data
+        if not data:
+            data = self.fetch_via_playwright()
 
-        data = self.fetch_via_playwright()
-        if data and len(data) > 0:
-            return data
+        # 抓取最新動態留言
+        self.fetch_latest_comment()
 
-        if mock_on_fail:
-            logger.warning("未能從網路獲取到部位資料，降級使用 Mock 數據進行後續流程。")
-            return self._clean_and_sort(get_mock_portfolio_data())
+        if not data:
+            if mock_on_fail:
+                logger.warning("未能從網路獲取到部位資料，降級使用 Mock 數據進行後續流程。")
+                data = get_mock_portfolio_data()
+            else:
+                data = []
 
-        return []
+        if not self.latest_comment and mock_on_fail:
+            logger.warning("未能從網路獲取到動態留言，降級使用 Mock 留言數據。")
+            self.latest_comment = get_mock_comment_data()
+
+        return self._clean_and_sort(data)
 
     def _clean_and_sort(self, data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """清洗數據並依佔比由大到小排序"""
@@ -366,9 +546,14 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.mock:
+        print("=== Mock 持股部位 ===")
         print(json.dumps(get_mock_portfolio_data(), indent=2, ensure_ascii=False))
+        print("=== Mock 動態留言 ===")
+        print(json.dumps(get_mock_comment_data(), indent=2, ensure_ascii=False))
     else:
         scraper = EToroScraper(username=args.username)
         result = scraper.scrape(mock_on_fail=True)
         print(f"成功抓取 {len(result)} 筆持股，餘額資訊: {scraper.cash_balance}")
+        print(f"最新動態留言: {scraper.latest_comment}")
         print(json.dumps(result, indent=2, ensure_ascii=False))
+

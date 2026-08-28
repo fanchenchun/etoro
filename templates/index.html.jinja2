@@ -171,6 +171,98 @@
             </div>
         </section>
 
+        <!-- Miula Latest Comment Section (eToro Feed Post) -->
+        <section class="relative rounded-2xl bg-gradient-to-b from-gray-900/90 to-gray-950/90 border {% if latest_comment.is_new %}border-emerald-500/60 ring-1 ring-emerald-500/40 shadow-lg shadow-emerald-500/10{% else %}border-gray-800{% endif %} p-6 sm:p-7 overflow-hidden transition-all duration-300">
+            <div class="flex flex-col space-y-4">
+                <!-- Top Header Row: Author Info + Badges -->
+                <div class="flex items-start justify-between flex-wrap gap-3">
+                    <div class="flex items-center space-x-3.5">
+                        <!-- Avatar with Popular Investor Badge -->
+                        <div class="relative shrink-0">
+                            <img src="{{ latest_comment.avatar_url }}" alt="{{ latest_comment.author_name }}" class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl object-cover border border-gray-700 shadow-md bg-black" onerror="this.src='https://etoro-cdn.etorostatic.com/avatars/50X50/8220524/1.jpg'">
+                            <!-- Popular Investor Star Badge -->
+                            <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#d6453d] border-2 border-[#090d16] flex items-center justify-center shadow-sm" title="eToro 明星投資者 (Popular Investor)">
+                                <svg class="w-2.5 h-2.5 text-white fill-current" viewBox="0 0 24 24">
+                                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Name, Country, Time -->
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <h3 class="text-base sm:text-lg font-bold text-white tracking-tight">{{ latest_comment.author_name }}</h3>
+                                <span class="text-xs text-gray-400 font-mono">@{{ latest_comment.username }}</span>
+                            </div>
+                            <div class="flex items-center space-x-2 text-xs text-gray-400 mt-0.5">
+                                <span>{{ latest_comment.country }}</span>
+                                <span>•</span>
+                                <span class="text-cyan-400 font-medium">{{ latest_comment.relative_time }}</span>
+                                {% if latest_comment.created_at_formatted %}
+                                <span class="hidden sm:inline text-gray-500 font-mono">({{ latest_comment.created_at_formatted }})</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Status / Notification Badge -->
+                    <div class="flex items-center space-x-2">
+                        {% if latest_comment.is_new %}
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 animate-pulse shadow-sm shadow-emerald-500/20">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 mr-1.5"></span>
+                            🔔 最新動態已更新
+                        </span>
+                        {% else %}
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-800/80 text-gray-400 border border-gray-700/80">
+                            <i data-lucide="message-square" class="w-3.5 h-3.5 mr-1 text-emerald-400"></i>
+                            最新留言紀錄
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Comment Content -->
+                <div class="pt-1">
+                    <div class="text-white text-base sm:text-lg font-medium leading-relaxed tracking-wide bg-gray-950/50 p-4 sm:p-5 rounded-xl border border-gray-800/80 whitespace-pre-line">
+                        {{ latest_comment.content }}
+                    </div>
+                </div>
+
+                <!-- Disclaimer Text (Exact match from eToro) -->
+                <p class="text-xs text-gray-400 select-none">
+                    不構成投資建議。作者可能在所提及的金融工具中具有財務利益。
+                </p>
+
+                <!-- Action / Reactions Bar (Thumbs up, comment, share, link) -->
+                <div class="flex items-center justify-between pt-2 border-t border-gray-800/60 text-gray-400 text-xs sm:text-sm">
+                    <div class="flex items-center space-x-6 select-none">
+                        <!-- Likes -->
+                        <div class="flex items-center space-x-1.5 hover:text-white transition cursor-default">
+                            <i data-lucide="thumbs-up" class="w-4 h-4 text-gray-400"></i>
+                            <span class="font-mono text-gray-300 font-semibold">{{ latest_comment.likes_count }}</span>
+                        </div>
+                        <!-- Comments -->
+                        <div class="flex items-center space-x-1.5 hover:text-white transition cursor-default">
+                            <i data-lucide="message-circle" class="w-4 h-4 text-gray-400"></i>
+                            <span class="font-mono text-gray-300 font-semibold">{{ latest_comment.comments_count }}</span>
+                        </div>
+                        <!-- Shares -->
+                        <div class="flex items-center space-x-1.5 hover:text-white transition cursor-default">
+                            <i data-lucide="share-2" class="w-4 h-4 text-gray-400"></i>
+                            <span class="font-mono text-gray-300 font-semibold">{{ latest_comment.shares_count }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Link to eToro post -->
+                    <a href="{{ latest_comment.post_url }}" target="_blank" rel="noopener noreferrer" 
+                       class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-gray-800/90 hover:bg-gray-700 text-gray-200 border border-gray-700 hover:border-gray-600 transition">
+                        <span>查看 eToro 原文</span>
+                        <i data-lucide="external-link" class="w-3.5 h-3.5 text-gray-400"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
         <!-- KPI Summary Cards (5-Column Layout with Cash Balance on the Right) -->
         <section class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             <!-- 1. Total Holdings -->

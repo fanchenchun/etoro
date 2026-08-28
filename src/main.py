@@ -36,7 +36,7 @@ if sys.platform == "win32" and hasattr(sys.stdout, "reconfigure"):
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE_DIR)
 
-from src.scraper import EToroScraper, get_mock_portfolio_data
+from src.scraper import EToroScraper, get_mock_portfolio_data, get_mock_comment_data
 from src.analyzer import PortfolioAnalyzer
 from src.ai_summary import generate_ai_summary
 from src.notifier import NotificationDispatcher
@@ -93,15 +93,17 @@ def run_tracker(
     history_file = os.path.join(data_dir, "history.json")
     latest_file = os.path.join(data_dir, "latest.json")
 
-    # 1. 抓取當前持股資料與餘額
+    # 1. 抓取當前持股資料、餘額與最新動態留言
     if use_mock:
         logger.info("採用 Mock 模擬模式...")
         today_portfolio = get_mock_portfolio_data()
         cash_balance = {"available_cash_pct": 18.46, "total_invested_pct": 81.54}
+        today_comment = get_mock_comment_data()
     else:
         scraper = EToroScraper(username=username, headless=headless)
         today_portfolio = scraper.scrape(mock_on_fail=True)
         cash_balance = scraper.cash_balance
+        today_comment = scraper.latest_comment
 
     if not today_portfolio:
         logger.error("無法取得任何持股資料，程序終止！")
@@ -115,6 +117,7 @@ def run_tracker(
     yesterday_date_raw = sorted_prev_dates[0] if sorted_prev_dates else None
     yesterday_portfolio = history[yesterday_date_raw].get("portfolio", []) if yesterday_date_raw else []
     yesterday_cash = history[yesterday_date_raw].get("cash_balance") if yesterday_date_raw else None
+    prev_comment = history[yesterday_date_raw].get("latest_comment") if yesterday_date_raw else None
 
     if not yesterday_portfolio and os.path.exists(latest_file):
         try:
@@ -125,8 +128,26 @@ def run_tracker(
                     yesterday_date_raw = prev_latest.get("date")
                     if not yesterday_cash:
                         yesterday_cash = prev_latest.get("cash_balance")
+                    if not prev_comment:
+                        prev_comment = prev_latest.get("latest_comment")
         except Exception:
             pass
+
+    # 若未能從網路取得留言，維持使用前次歷史留言或 Mock
+    if not today_comment and prev_comment:
+        today_comment = prev_comment
+    elif not today_comment:
+        today_comment = get_mock_comment_data()
+
+    # 比對動態留言是否有新發布 (ID 是否與前次不同)
+    is_new_comment = False
+    if today_comment:
+        prev_id = prev_comment.get("id") if prev_comment else None
+        cur_id = today_comment.get("id")
+        if prev_id and cur_id and prev_id != cur_id:
+            is_new_comment = True
+            logger.info(f"🔔 偵測到 Miula 發布了新留言 (前次: {prev_id} -> 今日: {cur_id})！")
+        today_comment["is_new"] = is_new_comment
 
     # 計算現金餘額相較昨日之變動量 (Δ%)
     today_avail = float(cash_balance.get("available_cash_pct", 18.46))
@@ -190,6 +211,7 @@ def run_tracker(
         "update_time": now_time_str,
         "cash_balance": enhanced_cash_balance,
         "portfolio": today_portfolio,
+        "latest_comment": today_comment,
         "ai_summary": ai_summary_text,
         "analysis": analysis_result,
         "notified": already_notified_today
@@ -205,6 +227,7 @@ def run_tracker(
             "update_time": now_time_str,
             "cash_balance": enhanced_cash_balance,
             "portfolio": today_portfolio,
+            "latest_comment": today_comment,
             "stats": analysis_result["stats"],
             "ai_summary": ai_summary_text,
             "notified": already_notified_today
@@ -221,7 +244,8 @@ def run_tracker(
             ai_summary=ai_summary_text,
             username=username,
             update_time=now_time_str,
-            cash_balance=enhanced_cash_balance
+            cash_balance=enhanced_cash_balance,
+            latest_comment=today_comment
         )
     else:
         logger.info("[Dry Run] 跳過寫入 JSON 與 index.html 檔案")
@@ -234,7 +258,12 @@ def run_tracker(
     else:
         logger.info("正在執行推播分發...")
         dispatcher = NotificationDispatcher(username=username, pages_url=pages_url)
-        dispatch_results = dispatcher.dispatch(analysis_result, ai_summary_text, cash_balance=enhanced_cash_balance)
+        dispatch_results = dispatcher.dispatch(
+            analysis_result,
+            ai_summary_text,
+            cash_balance=enhanced_cash_balance,
+            latest_comment=today_comment
+        )
         
         # 只要有任一管道成功送出，即記錄今日已通知成功
         any_success = any(dispatch_results.values())

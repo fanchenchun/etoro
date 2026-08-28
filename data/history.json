@@ -3227,7 +3227,7 @@
     "notified": true
   },
   "2026-08-28": {
-    "update_time": "2026-08-28 14:56:16",
+    "update_time": "2026-08-28 21:06:22",
     "cash_balance": {
       "available_cash_pct": 18.36,
       "total_invested_pct": 81.64,
@@ -3243,36 +3243,36 @@
         "name": "Invesco QQQ",
         "allocation": 5.18,
         "instrument_type": "Stocks",
-        "net_profit": 10.63,
+        "net_profit": 10.72,
         "avg_open_rate": 650.61,
-        "current_rate": 719.8
+        "current_rate": 720.38
       },
       {
         "symbol": "META",
         "name": "Meta Platforms Inc",
         "allocation": 3.53,
         "instrument_type": "Stocks",
-        "net_profit": 102.15,
+        "net_profit": 102.55,
         "avg_open_rate": 282.72,
-        "current_rate": 571.5
+        "current_rate": 572.63
       },
       {
         "symbol": "AMZN",
         "name": "Amazon.com Inc",
         "allocation": 3.33,
         "instrument_type": "Stocks",
-        "net_profit": 110.39,
+        "net_profit": 110.94,
         "avg_open_rate": 122.04,
-        "current_rate": 256.76
+        "current_rate": 257.43
       },
       {
         "symbol": "GOOG",
         "name": "Alphabet",
         "allocation": 3.32,
         "instrument_type": "Stocks",
-        "net_profit": 110.27,
+        "net_profit": 110.37,
         "avg_open_rate": 160.85,
-        "current_rate": 338.21
+        "current_rate": 338.38
       },
       {
         "symbol": "COPX",
@@ -3288,27 +3288,27 @@
         "name": "Microsoft",
         "allocation": 3.04,
         "instrument_type": "Stocks",
-        "net_profit": 142.28,
+        "net_profit": 143.47,
         "avg_open_rate": 207.78,
-        "current_rate": 503.42
+        "current_rate": 505.86
       },
       {
         "symbol": "AAPL",
         "name": "Apple",
         "allocation": 2.96,
         "instrument_type": "Stocks",
-        "net_profit": 91.75,
+        "net_profit": 91.81,
         "avg_open_rate": 164.64,
-        "current_rate": 315.7
+        "current_rate": 315.78
       },
       {
         "symbol": "SPACEX",
         "name": "Space Exploration Technologies Corp",
         "allocation": 2.78,
         "instrument_type": "Stocks",
-        "net_profit": 23.11,
+        "net_profit": 22.6,
         "avg_open_rate": 114.27,
-        "current_rate": 140.68
+        "current_rate": 140.1
       },
       {
         "symbol": "XLV",
@@ -3324,27 +3324,27 @@
         "name": "Taiwan Semiconductor Manufacturing Co Ltd - ADR",
         "allocation": 2.61,
         "instrument_type": "Stocks",
-        "net_profit": 178.08,
+        "net_profit": 178.75,
         "avg_open_rate": 153.09,
-        "current_rate": 425.7
+        "current_rate": 426.71
       },
       {
         "symbol": "PANW",
         "name": "Palo Alto Networks",
         "allocation": 2.52,
         "instrument_type": "Stocks",
-        "net_profit": 22.64,
+        "net_profit": 23.31,
         "avg_open_rate": 311.47,
-        "current_rate": 382.0
+        "current_rate": 384.06
       },
       {
         "symbol": "MU",
         "name": "Micron Technology, Inc.",
         "allocation": 2.49,
         "instrument_type": "Stocks",
-        "net_profit": 69.57,
+        "net_profit": 70.52,
         "avg_open_rate": 540.47,
-        "current_rate": 916.45
+        "current_rate": 921.6
       },
       {
         "symbol": "VRT",
@@ -3360,18 +3360,18 @@
         "name": "Netflix, Inc.",
         "allocation": 2.46,
         "instrument_type": "Stocks",
-        "net_profit": 19.99,
+        "net_profit": 19.86,
         "avg_open_rate": 66.87,
-        "current_rate": 80.24
+        "current_rate": 80.15
       },
       {
         "symbol": "TSLA",
         "name": "Tesla Motors, Inc.",
         "allocation": 2.46,
         "instrument_type": "Stocks",
-        "net_profit": 138.1,
+        "net_profit": 138.59,
         "avg_open_rate": 149.1,
-        "current_rate": 355.0
+        "current_rate": 355.84
       },
       {
         "symbol": "SKHYNIX",
@@ -3387,36 +3387,36 @@
         "name": "Rockwell Automation Inc",
         "allocation": 2.36,
         "instrument_type": "Stocks",
-        "net_profit": 19.57,
+        "net_profit": 18.73,
         "avg_open_rate": 358.2,
-        "current_rate": 428.3
+        "current_rate": 425.3
       },
       {
         "symbol": "NVDA",
         "name": "NVIDIA Corporation",
         "allocation": 2.27,
         "instrument_type": "Stocks",
-        "net_profit": 227.0,
+        "net_profit": 228.81,
         "avg_open_rate": 69.35,
-        "current_rate": 226.81
+        "current_rate": 228.02
       },
       {
         "symbol": "PLTR",
         "name": "Palantir Technologies Inc.",
         "allocation": 2.26,
         "instrument_type": "Stocks",
-        "net_profit": 240.3,
+        "net_profit": 239.95,
         "avg_open_rate": 54.42,
-        "current_rate": 185.19
+        "current_rate": 185.0
       },
       {
         "symbol": "AVGO",
         "name": "Broadcom Inc",
         "allocation": 2.12,
         "instrument_type": "Stocks",
-        "net_profit": 35.94,
+        "net_profit": 37.48,
         "avg_open_rate": 272.8,
-        "current_rate": 370.83
+        "current_rate": 375.03
       },
       {
         "symbol": "MP",
@@ -3432,54 +3432,45 @@
         "name": "Redwire Corp",
         "allocation": 2.06,
         "instrument_type": "Stocks",
-        "net_profit": 35.42,
+        "net_profit": 35.05,
         "avg_open_rate": 8.28,
-        "current_rate": 11.21
+        "current_rate": 11.18
       },
       {
         "symbol": "GEV",
         "name": "GE Vernova LLC",
         "allocation": 1.97,
         "instrument_type": "Stocks",
-        "net_profit": 8.8,
+        "net_profit": 9.61,
         "avg_open_rate": 868.57,
-        "current_rate": 944.96
+        "current_rate": 952.0
       },
       {
         "symbol": "ANET",
         "name": "Arista Networks Inc",
         "allocation": 1.76,
         "instrument_type": "Stocks",
-        "net_profit": 66.08,
+        "net_profit": 67.34,
         "avg_open_rate": 119.22,
-        "current_rate": 198.0
+        "current_rate": 199.5
       },
       {
         "symbol": "ETN",
         "name": "Eaton Corp PLC",
         "allocation": 1.69,
         "instrument_type": "Stocks",
-        "net_profit": 24.59,
+        "net_profit": 24.9,
         "avg_open_rate": 331.25,
-        "current_rate": 412.7
+        "current_rate": 413.73
       },
       {
         "symbol": "INTC",
         "name": "Intel",
         "allocation": 1.43,
         "instrument_type": "Stocks",
-        "net_profit": 4.31,
+        "net_profit": 3.9,
         "avg_open_rate": 86.92,
-        "current_rate": 90.67
-      },
-      {
-        "symbol": "KTOS",
-        "name": "Kratos Defense & Security Solutions Inc",
-        "allocation": 1.39,
-        "instrument_type": "Stocks",
-        "net_profit": 2.11,
-        "avg_open_rate": 52.58,
-        "current_rate": 53.69
+        "current_rate": 90.3
       },
       {
         "symbol": "ENERGY",
@@ -3491,31 +3482,40 @@
         "current_rate": 3.74
       },
       {
+        "symbol": "KTOS",
+        "name": "Kratos Defense & Security Solutions Inc",
+        "allocation": 1.39,
+        "instrument_type": "Stocks",
+        "net_profit": 2.11,
+        "avg_open_rate": 52.58,
+        "current_rate": 53.69
+      },
+      {
         "symbol": "STX",
         "name": "Seagate Technology PLC",
         "allocation": 1.32,
         "instrument_type": "Stocks",
-        "net_profit": 15.59,
+        "net_profit": 15.79,
         "avg_open_rate": 717.68,
-        "current_rate": 829.6
+        "current_rate": 836.0
       },
       {
         "symbol": "CRWD",
         "name": "Crowdstrike Holdings",
         "allocation": 1.25,
         "instrument_type": "Stocks",
-        "net_profit": 159.98,
+        "net_profit": 161.01,
         "avg_open_rate": 87.26,
-        "current_rate": 226.85
+        "current_rate": 227.75
       },
       {
         "symbol": "BTC",
         "name": "Bitcoin",
         "allocation": 1.2,
         "instrument_type": "Stocks",
-        "net_profit": 34.54,
+        "net_profit": 33.63,
         "avg_open_rate": 59432.6,
-        "current_rate": 79957.1
+        "current_rate": 79420.15
       },
       {
         "symbol": "SLV",
@@ -3531,9 +3531,9 @@
         "name": "Coherent Corp",
         "allocation": 1.16,
         "instrument_type": "Stocks",
-        "net_profit": 26.41,
+        "net_profit": 27.72,
         "avg_open_rate": 227.84,
-        "current_rate": 288.0
+        "current_rate": 291.0
       },
       {
         "symbol": "ACHR",
@@ -3549,18 +3549,18 @@
         "name": "Lumentum Holdings Inc",
         "allocation": 1.07,
         "instrument_type": "Stocks",
-        "net_profit": 51.95,
+        "net_profit": 53.12,
         "avg_open_rate": 614.9,
-        "current_rate": 934.38
+        "current_rate": 941.55
       },
       {
         "symbol": "CRDO",
         "name": "Credo Technology Group Holding Ltd",
         "allocation": 1.0,
         "instrument_type": "Stocks",
-        "net_profit": 128.46,
+        "net_profit": 128.53,
         "avg_open_rate": 103.71,
-        "current_rate": 236.96
+        "current_rate": 237.03
       },
       {
         "symbol": "SE",
@@ -3576,9 +3576,9 @@
         "name": "Teradyne Inc",
         "allocation": 0.75,
         "instrument_type": "Stocks",
-        "net_profit": 187.96,
+        "net_profit": 186.68,
         "avg_open_rate": 128.01,
-        "current_rate": 368.66
+        "current_rate": 367.01
       },
       {
         "symbol": "NET",
@@ -3590,6 +3590,22 @@
         "current_rate": 307.94
       }
     ],
+    "latest_comment": {
+      "id": "d82486d0-9d6b-11f1-8080-8000546bdfdf",
+      "author_name": "Yueh Nung Hung",
+      "username": "miulatw",
+      "avatar_url": "https://etoro-cdn.etorostatic.com/avatars/50X50/8220524/1.jpg",
+      "country": "臺灣",
+      "created_at": "2026-08-21T14:23:13.853Z",
+      "created_at_formatted": "2026/08/21 22:23",
+      "relative_time": "6 天前",
+      "content": "買進 $KTOS",
+      "likes_count": 2,
+      "comments_count": 0,
+      "shares_count": 0,
+      "post_url": "https://www.etoro.com/zh-tw/people/miulatw",
+      "is_new": false
+    },
     "stats": {
       "is_first_day": false,
       "total_today": 39,

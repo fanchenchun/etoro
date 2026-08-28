@@ -43,7 +43,8 @@ class PageBuilder:
         ai_summary: str,
         username: str = "miulatw",
         update_time: Optional[str] = None,
-        cash_balance: Optional[Dict[str, Any]] = None
+        cash_balance: Optional[Dict[str, Any]] = None,
+        latest_comment: Optional[Dict[str, Any]] = None
     ) -> str:
         """
         渲染 index.html
@@ -66,6 +67,22 @@ class PageBuilder:
         today_date = analysis_result.get("today_date") or get_taipei_now().strftime("%Y/%m/%d")
         yesterday_date = analysis_result.get("yesterday_date")
 
+        comment = latest_comment or {
+            "id": "default",
+            "author_name": "Yueh Nung Hung",
+            "username": username,
+            "avatar_url": "https://etoro-cdn.etorostatic.com/avatars/50X50/8220524/1.jpg",
+            "country": "臺灣",
+            "created_at_formatted": "",
+            "relative_time": "近期",
+            "content": "暫無最新動態留言",
+            "likes_count": 0,
+            "comments_count": 0,
+            "shares_count": 0,
+            "post_url": f"https://www.etoro.com/zh-tw/people/{username}",
+            "is_new": False
+        }
+
         html_content = template.render(
             username=username,
             update_time=formatted_time,
@@ -75,6 +92,7 @@ class PageBuilder:
             stats=stats,
             changes=changes,
             cash_balance=cash,
+            latest_comment=comment,
             portfolio_json=json.dumps(portfolio, ensure_ascii=False),
             changes_json=json.dumps(changes, ensure_ascii=False)
         )
@@ -105,7 +123,8 @@ def build_from_latest_json() -> str:
         ai_summary=data.get("ai_summary", "無 AI 摘要"),
         username=data.get("username", "miulatw"),
         update_time=data.get("update_time"),
-        cash_balance=data.get("cash_balance")
+        cash_balance=data.get("cash_balance"),
+        latest_comment=data.get("latest_comment")
     )
 
 

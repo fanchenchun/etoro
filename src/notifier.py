@@ -41,7 +41,13 @@ class NotificationDispatcher:
         self.username = username
         self.pages_url = pages_url or os.getenv("PAGES_URL", "https://fanchenchun.github.io/etoro/")
 
-    def build_message_text(self, analysis_result: Dict[str, Any], ai_summary: str, cash_balance: Optional[Dict[str, Any]] = None) -> str:
+    def build_message_text(
+        self,
+        analysis_result: Dict[str, Any],
+        ai_summary: str,
+        cash_balance: Optional[Dict[str, Any]] = None,
+        latest_comment: Optional[Dict[str, Any]] = None
+    ) -> str:
         """
         組合純文字通知內容 (針對 LINE Bot / Telegram 等管道)
         """
@@ -56,9 +62,21 @@ class NotificationDispatcher:
             "",
             "🤖 【AI 每日調倉洞察總結】",
             f"{ai_summary}",
-            "",
-            "📊 【重點部位變動摘要】"
+            ""
         ]
+
+        # 若有最新動態留言
+        if latest_comment and latest_comment.get("content"):
+            if latest_comment.get("is_new"):
+                lines.append("🔔 【Miula 最新動態更新 (NEW)】")
+            else:
+                lines.append("💬 【Miula 最新動態留言】")
+            lines.append(f"「{latest_comment.get('content')}」")
+            lines.append(f"🕒 發布時間：{latest_comment.get('relative_time')} ({latest_comment.get('created_at_formatted')})")
+            lines.append(f"👍 讚數: {latest_comment.get('likes_count', 0)} | 💬 留言: {latest_comment.get('comments_count', 0)}")
+            lines.append("")
+
+        lines.append("📊 【重點部位變動摘要】")
 
         if stats.get("is_first_day"):
             top5 = [f"{c['symbol']}({c['today_alloc']}%)" for c in changes[:5]]
@@ -98,7 +116,13 @@ class NotificationDispatcher:
         lines.append(f"🔗 完整視覺化儀表板：{self.pages_url}")
         return "\n".join(lines)
 
-    def build_html_report(self, analysis_result: Dict[str, Any], ai_summary: str, cash_balance: Optional[Dict[str, Any]] = None) -> str:
+    def build_html_report(
+        self,
+        analysis_result: Dict[str, Any],
+        ai_summary: str,
+        cash_balance: Optional[Dict[str, Any]] = None,
+        latest_comment: Optional[Dict[str, Any]] = None
+    ) -> str:
         """
         生成適合 Email 的深色科技感 HTML 格式報表
         """
@@ -119,6 +143,37 @@ class NotificationDispatcher:
         else:
             cash_diff_str = "持平 0.0% vs昨日"
             cash_diff_color = "#94a3b8"
+
+        # 動態留言 HTML 卡片
+        comment_html = ""
+        if latest_comment and latest_comment.get("content"):
+            is_new = latest_comment.get("is_new", False)
+            border_color = "#10b981" if is_new else "#334155"
+            badge_text = "🔔 最新動態已更新" if is_new else "💬 最新留言紀錄"
+            badge_bg = "rgba(16, 185, 129, 0.2)" if is_new else "#1e293b"
+            badge_color = "#34d399" if is_new else "#94a3b8"
+
+            comment_html = f"""
+            <div style="background-color: #111827; padding: 16px; border-radius: 10px; border: 1px solid {border_color}; margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <div style="display: flex; align-items: center;">
+                        <img src="{latest_comment.get('avatar_url', '')}" style="width: 38px; height: 38px; border-radius: 8px; margin-right: 10px;" alt="Avatar">
+                        <div>
+                            <strong style="color: #f8fafc; font-size: 14px;">{latest_comment.get('author_name', 'Miula')}</strong>
+                            <div style="color: #94a3b8; font-size: 11px;">{latest_comment.get('country', '臺灣')} • <span style="color: #38bdf8;">{latest_comment.get('relative_time', '')}</span> ({latest_comment.get('created_at_formatted', '')})</div>
+                        </div>
+                    </div>
+                    <span style="background-color: {badge_bg}; color: {badge_color}; font-size: 11px; padding: 3px 8px; border-radius: 9999px; font-weight: bold;">{badge_text}</span>
+                </div>
+                <div style="background-color: #090d16; padding: 12px; border-radius: 8px; color: #f1f5f9; font-size: 14px; line-height: 1.5; margin-bottom: 8px;">
+                    {latest_comment.get('content', '').replace(chr(10), '<br>')}
+                </div>
+                <div style="color: #64748b; font-size: 11px; display: flex; justify-content: space-between;">
+                    <span>👍 {latest_comment.get('likes_count', 0)} 讚 • 💬 {latest_comment.get('comments_count', 0)} 則留言</span>
+                    <span>不構成投資建議</span>
+                </div>
+            </div>
+            """
 
         rows_html = ""
         for c in analysis_result.get("changes", [])[:12]:
@@ -151,6 +206,9 @@ class NotificationDispatcher:
                 </h3>
                 <p style="margin: 0; line-height: 1.7; color: #f1f5f9; font-size: 14px;">{formatted_summary}</p>
             </div>
+
+            <!-- Latest Comment Card -->
+            {comment_html}
 
             <!-- Cash KPI -->
             <div style="background-color: #111827; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #cbd5e1; border: 1px solid #1e293b;">
@@ -327,12 +385,18 @@ class NotificationDispatcher:
             logger.error(f"Discord 例外: {e}")
         return False
 
-    def dispatch(self, analysis_result: Dict[str, Any], ai_summary: str, cash_balance: Optional[Dict[str, Any]] = None) -> Dict[str, bool]:
+    def dispatch(
+        self,
+        analysis_result: Dict[str, Any],
+        ai_summary: str,
+        cash_balance: Optional[Dict[str, Any]] = None,
+        latest_comment: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, bool]:
         """
         統一分發推播通知至所有已配置之管道
         """
-        text_msg = self.build_message_text(analysis_result, ai_summary, cash_balance)
-        html_msg = self.build_html_report(analysis_result, ai_summary, cash_balance)
+        text_msg = self.build_message_text(analysis_result, ai_summary, cash_balance, latest_comment)
+        html_msg = self.build_html_report(analysis_result, ai_summary, cash_balance, latest_comment)
         date_str = get_taipei_now().strftime('%m/%d')
         subject = f"📊 【eToro 調倉日報】@{self.username} - {date_str}"
 
