@@ -224,7 +224,7 @@
                 <!-- Comment Content -->
                 <div class="pt-1">
                     <div class="text-white text-base sm:text-lg font-medium leading-relaxed tracking-wide bg-gray-950/50 p-4 sm:p-5 rounded-xl border border-gray-800/80 whitespace-pre-line">
-                        {{ latest_comment.content }}
+                        {% if latest_comment.content_html %}{{ latest_comment.content_html | safe }}{% else %}{{ latest_comment.content }}{% endif %}
                     </div>
                 </div>
 

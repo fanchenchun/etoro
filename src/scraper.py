@@ -136,9 +136,47 @@ def get_mock_portfolio_data() -> List[Dict[str, Any]]:
     ]
 
 
+def expand_tags_and_format(raw_text: str, tags: list) -> tuple[str, str]:
+    """
+    將 eToro 原始貼文中的標籤符號 (例如 $KTOS) 展開為完整名稱 (例如 $KTOS (Kratos Defense & Security Solutions Inc))
+    並生成高亮綠色標籤的 HTML 格式
+    """
+    if not raw_text:
+        return "", ""
+        
+    expanded_text = raw_text
+    html_text = raw_text
+    
+    # 建立 symbol -> displayName 的對應
+    tag_map = {}
+    for t in tags:
+        m = t.get("market", {})
+        if m:
+            sym = m.get("symbolName", "").strip()
+            disp = m.get("displayName", "").strip()
+            if sym and disp:
+                tag_map[sym] = disp
+                
+    # 遍歷替換
+    for sym, disp in tag_map.items():
+        pattern = rf"\${re.escape(sym)}(?!\s*\({re.escape(disp)}\))"
+        replacement_plain = f"${sym} ({disp})"
+        replacement_html = f'<span class="text-emerald-400 font-semibold">${sym} ({disp})</span>'
+        
+        expanded_text = re.sub(pattern, replacement_plain, expanded_text)
+        html_text = re.sub(pattern, replacement_html, html_text)
+        
+    for sym, disp in tag_map.items():
+        target_str = f"${sym} ({disp})"
+        if target_str in html_text and f'<span class="text-emerald-400 font-semibold">{target_str}</span>' not in html_text:
+            html_text = html_text.replace(target_str, f'<span class="text-emerald-400 font-semibold">{target_str}</span>')
+
+    return expanded_text, html_text
+
+
 def get_mock_comment_data() -> Dict[str, Any]:
     """
-    提供最新留言模擬資料
+    提供最新留言模擬資料 (包含完整標的名稱與 HTML 高亮)
     """
     return {
         "id": "mock-comment-001",
@@ -149,7 +187,9 @@ def get_mock_comment_data() -> Dict[str, Any]:
         "created_at": "2026-08-21T14:23:13.853Z",
         "created_at_formatted": "2026/08/21 22:23",
         "relative_time": "7 天前",
-        "content": "買進 $KTOS",
+        "raw_content": "買進 $KTOS",
+        "content": "買進 $KTOS (Kratos Defense & Security Solutions Inc)",
+        "content_html": "買進 <span class=\"text-emerald-400 font-semibold\">$KTOS (Kratos Defense & Security Solutions Inc)</span>",
         "likes_count": 5,
         "comments_count": 1,
         "shares_count": 0,
@@ -200,7 +240,7 @@ class EToroScraper:
 
     def fetch_latest_comment(self) -> Optional[Dict[str, Any]]:
         """
-        抓取用戶在 eToro 上最新一則留言/貼文 (Feed / Comment)
+        抓取用戶在 eToro 上最新一則留言/貼文 (Feed / Comment) 並展開標的完整名稱
         """
         logger.info(f"嘗試抓取用戶 [{self.username}] 最新動態留言 (Comment / Feed)...")
         if not self.gcid:
@@ -235,6 +275,7 @@ class EToroScraper:
                     top_disc = discussions[0]
                     post = top_disc.get("post", {})
                     owner = post.get("owner", {})
+                    tags = post.get("tags", [])
 
                     likes = top_disc.get("emotionsData", {}).get("like", {}).get("paging", {}).get("totalCount", 0)
                     if not likes:
@@ -249,7 +290,10 @@ class EToroScraper:
                         shares_count = top_disc.get("sharesCount", 0)
 
                     created_at = post.get("created", "")
-                    content_text = post.get("message", {}).get("text", "").strip()
+                    raw_content = post.get("message", {}).get("text", "").strip()
+
+                    # 展開標的名稱與生成高亮 HTML
+                    expanded_content, content_html = expand_tags_and_format(raw_content, tags)
 
                     author_name = f"{owner.get('firstName', '')} {owner.get('lastName', '')}".strip() or self.username
                     avatar = owner.get("avatar", {}).get("medium") or owner.get("avatar", {}).get("small") or "https://etoro-cdn.etorostatic.com/avatars/50X50/8220524/1.jpg"
@@ -266,7 +310,9 @@ class EToroScraper:
                         "created_at": created_at,
                         "created_at_formatted": format_iso_to_taipei(created_at),
                         "relative_time": format_relative_time(created_at),
-                        "content": content_text,
+                        "raw_content": raw_content,
+                        "content": expanded_content,
+                        "content_html": content_html,
                         "likes_count": likes,
                         "comments_count": comments_count,
                         "shares_count": shares_count,
@@ -275,7 +321,7 @@ class EToroScraper:
                     }
 
                     self.latest_comment = comment_info
-                    logger.info(f"✨ 成功獲取最新動態: [{author_name}] {content_text[:30]}... ({comment_info['relative_time']})")
+                    logger.info(f"✨ 成功獲取最新動態: [{author_name}] {expanded_content[:45]}... ({comment_info['relative_time']})")
                     return comment_info
             except Exception as e:
                 logger.warning(f"抓取最新動態嘗試 {attempt}/3 失敗: {e}")

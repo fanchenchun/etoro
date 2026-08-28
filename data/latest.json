@@ -1,7 +1,7 @@
 {
   "username": "miulatw",
   "date": "2026-08-28",
-  "update_time": "2026-08-28 21:06:22",
+  "update_time": "2026-08-28 21:14:07",
   "cash_balance": {
     "available_cash_pct": 18.36,
     "total_invested_pct": 81.64,
@@ -19,34 +19,34 @@
       "instrument_type": "Stocks",
       "net_profit": 10.72,
       "avg_open_rate": 650.61,
-      "current_rate": 720.38
+      "current_rate": 720.46
     },
     {
       "symbol": "META",
       "name": "Meta Platforms Inc",
       "allocation": 3.53,
       "instrument_type": "Stocks",
-      "net_profit": 102.55,
+      "net_profit": 102.53,
       "avg_open_rate": 282.72,
-      "current_rate": 572.63
+      "current_rate": 572.6
     },
     {
       "symbol": "AMZN",
       "name": "Amazon.com Inc",
       "allocation": 3.33,
       "instrument_type": "Stocks",
-      "net_profit": 110.94,
+      "net_profit": 110.87,
       "avg_open_rate": 122.04,
-      "current_rate": 257.43
+      "current_rate": 257.35
     },
     {
       "symbol": "GOOG",
       "name": "Alphabet",
       "allocation": 3.32,
       "instrument_type": "Stocks",
-      "net_profit": 110.37,
+      "net_profit": 110.32,
       "avg_open_rate": 160.85,
-      "current_rate": 338.38
+      "current_rate": 338.31
     },
     {
       "symbol": "COPX",
@@ -62,27 +62,27 @@
       "name": "Microsoft",
       "allocation": 3.04,
       "instrument_type": "Stocks",
-      "net_profit": 143.47,
+      "net_profit": 143.1,
       "avg_open_rate": 207.78,
-      "current_rate": 505.86
+      "current_rate": 505.1
     },
     {
       "symbol": "AAPL",
       "name": "Apple",
       "allocation": 2.96,
       "instrument_type": "Stocks",
-      "net_profit": 91.81,
+      "net_profit": 91.93,
       "avg_open_rate": 164.64,
-      "current_rate": 315.78
+      "current_rate": 315.99
     },
     {
       "symbol": "SPACEX",
       "name": "Space Exploration Technologies Corp",
       "allocation": 2.78,
       "instrument_type": "Stocks",
-      "net_profit": 22.6,
+      "net_profit": 22.53,
       "avg_open_rate": 114.27,
-      "current_rate": 140.1
+      "current_rate": 140.05
     },
     {
       "symbol": "XLV",
@@ -98,54 +98,54 @@
       "name": "Taiwan Semiconductor Manufacturing Co Ltd - ADR",
       "allocation": 2.61,
       "instrument_type": "Stocks",
-      "net_profit": 178.75,
+      "net_profit": 178.69,
       "avg_open_rate": 153.09,
-      "current_rate": 426.71
+      "current_rate": 426.63
     },
     {
       "symbol": "PANW",
       "name": "Palo Alto Networks",
       "allocation": 2.52,
       "instrument_type": "Stocks",
-      "net_profit": 23.31,
+      "net_profit": 22.79,
       "avg_open_rate": 311.47,
-      "current_rate": 384.06
+      "current_rate": 382.45
     },
     {
       "symbol": "MU",
       "name": "Micron Technology, Inc.",
       "allocation": 2.49,
       "instrument_type": "Stocks",
-      "net_profit": 70.52,
+      "net_profit": 70.78,
       "avg_open_rate": 540.47,
-      "current_rate": 921.6
+      "current_rate": 923.0
     },
     {
       "symbol": "VRT",
       "name": "Vertiv Holdings Co",
       "allocation": 2.48,
       "instrument_type": "Stocks",
-      "net_profit": 17.16,
+      "net_profit": 17.2,
       "avg_open_rate": 227.9,
-      "current_rate": 267.0
-    },
-    {
-      "symbol": "NFLX",
-      "name": "Netflix, Inc.",
-      "allocation": 2.46,
-      "instrument_type": "Stocks",
-      "net_profit": 19.86,
-      "avg_open_rate": 66.87,
-      "current_rate": 80.15
+      "current_rate": 267.1
     },
     {
       "symbol": "TSLA",
       "name": "Tesla Motors, Inc.",
       "allocation": 2.46,
       "instrument_type": "Stocks",
-      "net_profit": 138.59,
+      "net_profit": 138.61,
       "avg_open_rate": 149.1,
-      "current_rate": 355.84
+      "current_rate": 355.75
+    },
+    {
+      "symbol": "NFLX",
+      "name": "Netflix, Inc.",
+      "allocation": 2.46,
+      "instrument_type": "Stocks",
+      "net_profit": 19.68,
+      "avg_open_rate": 66.87,
+      "current_rate": 80.03
     },
     {
       "symbol": "SKHYNIX",
@@ -170,27 +170,27 @@
       "name": "NVIDIA Corporation",
       "allocation": 2.27,
       "instrument_type": "Stocks",
-      "net_profit": 228.81,
+      "net_profit": 229.57,
       "avg_open_rate": 69.35,
-      "current_rate": 228.02
+      "current_rate": 228.55
     },
     {
       "symbol": "PLTR",
       "name": "Palantir Technologies Inc.",
       "allocation": 2.26,
       "instrument_type": "Stocks",
-      "net_profit": 239.95,
+      "net_profit": 239.77,
       "avg_open_rate": 54.42,
-      "current_rate": 185.0
+      "current_rate": 184.9
     },
     {
       "symbol": "AVGO",
       "name": "Broadcom Inc",
       "allocation": 2.12,
       "instrument_type": "Stocks",
-      "net_profit": 37.48,
+      "net_profit": 37.46,
       "avg_open_rate": 272.8,
-      "current_rate": 375.03
+      "current_rate": 375.0
     },
     {
       "symbol": "MP",
@@ -206,18 +206,18 @@
       "name": "Redwire Corp",
       "allocation": 2.06,
       "instrument_type": "Stocks",
-      "net_profit": 35.05,
+      "net_profit": 34.82,
       "avg_open_rate": 8.28,
-      "current_rate": 11.18
+      "current_rate": 11.16
     },
     {
       "symbol": "GEV",
       "name": "GE Vernova LLC",
       "allocation": 1.97,
       "instrument_type": "Stocks",
-      "net_profit": 9.61,
+      "net_profit": 9.39,
       "avg_open_rate": 868.57,
-      "current_rate": 952.0
+      "current_rate": 950.1
     },
     {
       "symbol": "ANET",
@@ -242,9 +242,9 @@
       "name": "Intel",
       "allocation": 1.43,
       "instrument_type": "Stocks",
-      "net_profit": 3.9,
+      "net_profit": 3.97,
       "avg_open_rate": 86.92,
-      "current_rate": 90.3
+      "current_rate": 90.38
     },
     {
       "symbol": "ENERGY",
@@ -269,7 +269,7 @@
       "name": "Seagate Technology PLC",
       "allocation": 1.32,
       "instrument_type": "Stocks",
-      "net_profit": 15.79,
+      "net_profit": 16.49,
       "avg_open_rate": 717.68,
       "current_rate": 836.0
     },
@@ -278,18 +278,18 @@
       "name": "Crowdstrike Holdings",
       "allocation": 1.25,
       "instrument_type": "Stocks",
-      "net_profit": 161.01,
+      "net_profit": 160.15,
       "avg_open_rate": 87.26,
-      "current_rate": 227.75
+      "current_rate": 227.0
     },
     {
       "symbol": "BTC",
       "name": "Bitcoin",
       "allocation": 1.2,
       "instrument_type": "Stocks",
-      "net_profit": 33.63,
+      "net_profit": 33.51,
       "avg_open_rate": 59432.6,
-      "current_rate": 79420.15
+      "current_rate": 79349.9
     },
     {
       "symbol": "SLV",
@@ -305,9 +305,9 @@
       "name": "Coherent Corp",
       "allocation": 1.16,
       "instrument_type": "Stocks",
-      "net_profit": 27.72,
+      "net_profit": 27.41,
       "avg_open_rate": 227.84,
-      "current_rate": 291.0
+      "current_rate": 290.31
     },
     {
       "symbol": "ACHR",
@@ -323,18 +323,18 @@
       "name": "Lumentum Holdings Inc",
       "allocation": 1.07,
       "instrument_type": "Stocks",
-      "net_profit": 53.12,
+      "net_profit": 52.72,
       "avg_open_rate": 614.9,
-      "current_rate": 941.55
+      "current_rate": 939.1
     },
     {
       "symbol": "CRDO",
       "name": "Credo Technology Group Holding Ltd",
       "allocation": 1.0,
       "instrument_type": "Stocks",
-      "net_profit": 128.53,
+      "net_profit": 127.42,
       "avg_open_rate": 103.71,
-      "current_rate": 237.03
+      "current_rate": 235.88
     },
     {
       "symbol": "SE",
@@ -373,7 +373,9 @@
     "created_at": "2026-08-21T14:23:13.853Z",
     "created_at_formatted": "2026/08/21 22:23",
     "relative_time": "6 天前",
-    "content": "買進 $KTOS",
+    "raw_content": "買進 $KTOS",
+    "content": "買進 $KTOS (Kratos Defense & Security Solutions Inc)",
+    "content_html": "買進 <span class=\"text-emerald-400 font-semibold\">$KTOS (Kratos Defense & Security Solutions Inc)</span>",
     "likes_count": 2,
     "comments_count": 0,
     "shares_count": 0,
@@ -422,7 +424,7 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 650.61,
-        "current_rate": 720.38,
+        "current_rate": 720.46,
         "net_profit": 10.72,
         "is_active": true
       },
@@ -439,8 +441,8 @@
         "status_color": "text-amber-400 bg-amber-950/60 border-amber-500/30",
         "status_icon": "🔴",
         "avg_open_rate": 282.72,
-        "current_rate": 572.63,
-        "net_profit": 102.55,
+        "current_rate": 572.6,
+        "net_profit": 102.53,
         "is_active": true
       },
       {
@@ -456,8 +458,8 @@
         "status_color": "text-amber-400 bg-amber-950/60 border-amber-500/30",
         "status_icon": "🔴",
         "avg_open_rate": 122.04,
-        "current_rate": 257.43,
-        "net_profit": 110.94,
+        "current_rate": 257.35,
+        "net_profit": 110.87,
         "is_active": true
       },
       {
@@ -473,8 +475,8 @@
         "status_color": "text-green-400 bg-green-950/60 border-green-500/30",
         "status_icon": "🟢",
         "avg_open_rate": 160.85,
-        "current_rate": 338.38,
-        "net_profit": 110.37,
+        "current_rate": 338.31,
+        "net_profit": 110.32,
         "is_active": true
       },
       {
@@ -507,8 +509,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 207.78,
-        "current_rate": 505.86,
-        "net_profit": 143.47,
+        "current_rate": 505.1,
+        "net_profit": 143.1,
         "is_active": true
       },
       {
@@ -524,8 +526,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 164.64,
-        "current_rate": 315.78,
-        "net_profit": 91.81,
+        "current_rate": 315.99,
+        "net_profit": 91.93,
         "is_active": true
       },
       {
@@ -541,8 +543,8 @@
         "status_color": "text-green-400 bg-green-950/60 border-green-500/30",
         "status_icon": "🟢",
         "avg_open_rate": 114.27,
-        "current_rate": 140.1,
-        "net_profit": 22.6,
+        "current_rate": 140.05,
+        "net_profit": 22.53,
         "is_active": true
       },
       {
@@ -575,8 +577,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 153.09,
-        "current_rate": 426.71,
-        "net_profit": 178.75,
+        "current_rate": 426.63,
+        "net_profit": 178.69,
         "is_active": true
       },
       {
@@ -592,8 +594,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 311.47,
-        "current_rate": 384.06,
-        "net_profit": 23.31,
+        "current_rate": 382.45,
+        "net_profit": 22.79,
         "is_active": true
       },
       {
@@ -609,8 +611,8 @@
         "status_color": "text-green-400 bg-green-950/60 border-green-500/30",
         "status_icon": "🟢",
         "avg_open_rate": 540.47,
-        "current_rate": 921.6,
-        "net_profit": 70.52,
+        "current_rate": 923.0,
+        "net_profit": 70.78,
         "is_active": true
       },
       {
@@ -626,8 +628,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 227.9,
-        "current_rate": 267.0,
-        "net_profit": 17.16,
+        "current_rate": 267.1,
+        "net_profit": 17.2,
         "is_active": true
       },
       {
@@ -643,8 +645,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 66.87,
-        "current_rate": 80.15,
-        "net_profit": 19.86,
+        "current_rate": 80.03,
+        "net_profit": 19.68,
         "is_active": true
       },
       {
@@ -660,8 +662,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 149.1,
-        "current_rate": 355.84,
-        "net_profit": 138.59,
+        "current_rate": 355.75,
+        "net_profit": 138.61,
         "is_active": true
       },
       {
@@ -711,8 +713,8 @@
         "status_color": "text-amber-400 bg-amber-950/60 border-amber-500/30",
         "status_icon": "🔴",
         "avg_open_rate": 69.35,
-        "current_rate": 228.02,
-        "net_profit": 228.81,
+        "current_rate": 228.55,
+        "net_profit": 229.57,
         "is_active": true
       },
       {
@@ -728,8 +730,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 54.42,
-        "current_rate": 185.0,
-        "net_profit": 239.95,
+        "current_rate": 184.9,
+        "net_profit": 239.77,
         "is_active": true
       },
       {
@@ -745,8 +747,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 272.8,
-        "current_rate": 375.03,
-        "net_profit": 37.48,
+        "current_rate": 375.0,
+        "net_profit": 37.46,
         "is_active": true
       },
       {
@@ -779,8 +781,8 @@
         "status_color": "text-amber-400 bg-amber-950/60 border-amber-500/30",
         "status_icon": "🔴",
         "avg_open_rate": 8.28,
-        "current_rate": 11.18,
-        "net_profit": 35.05,
+        "current_rate": 11.16,
+        "net_profit": 34.82,
         "is_active": true
       },
       {
@@ -796,8 +798,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 868.57,
-        "current_rate": 952.0,
-        "net_profit": 9.61,
+        "current_rate": 950.1,
+        "net_profit": 9.39,
         "is_active": true
       },
       {
@@ -847,8 +849,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 86.92,
-        "current_rate": 90.3,
-        "net_profit": 3.9,
+        "current_rate": 90.38,
+        "net_profit": 3.97,
         "is_active": true
       },
       {
@@ -899,7 +901,7 @@
         "status_icon": "⚪",
         "avg_open_rate": 717.68,
         "current_rate": 836.0,
-        "net_profit": 15.79,
+        "net_profit": 16.49,
         "is_active": true
       },
       {
@@ -915,8 +917,8 @@
         "status_color": "text-amber-400 bg-amber-950/60 border-amber-500/30",
         "status_icon": "🔴",
         "avg_open_rate": 87.26,
-        "current_rate": 227.75,
-        "net_profit": 161.01,
+        "current_rate": 227.0,
+        "net_profit": 160.15,
         "is_active": true
       },
       {
@@ -932,8 +934,8 @@
         "status_color": "text-amber-400 bg-amber-950/60 border-amber-500/30",
         "status_icon": "🔴",
         "avg_open_rate": 59432.6,
-        "current_rate": 79420.15,
-        "net_profit": 33.63,
+        "current_rate": 79349.9,
+        "net_profit": 33.51,
         "is_active": true
       },
       {
@@ -966,8 +968,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 227.84,
-        "current_rate": 291.0,
-        "net_profit": 27.72,
+        "current_rate": 290.31,
+        "net_profit": 27.41,
         "is_active": true
       },
       {
@@ -1000,8 +1002,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 614.9,
-        "current_rate": 941.55,
-        "net_profit": 53.12,
+        "current_rate": 939.1,
+        "net_profit": 52.72,
         "is_active": true
       },
       {
@@ -1017,8 +1019,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 103.71,
-        "current_rate": 237.03,
-        "net_profit": 128.53,
+        "current_rate": 235.88,
+        "net_profit": 127.42,
         "is_active": true
       },
       {
@@ -1081,34 +1083,34 @@
         "instrument_type": "Stocks",
         "net_profit": 10.72,
         "avg_open_rate": 650.61,
-        "current_rate": 720.38
+        "current_rate": 720.46
       },
       {
         "symbol": "META",
         "name": "Meta Platforms Inc",
         "allocation": 3.53,
         "instrument_type": "Stocks",
-        "net_profit": 102.55,
+        "net_profit": 102.53,
         "avg_open_rate": 282.72,
-        "current_rate": 572.63
+        "current_rate": 572.6
       },
       {
         "symbol": "AMZN",
         "name": "Amazon.com Inc",
         "allocation": 3.33,
         "instrument_type": "Stocks",
-        "net_profit": 110.94,
+        "net_profit": 110.87,
         "avg_open_rate": 122.04,
-        "current_rate": 257.43
+        "current_rate": 257.35
       },
       {
         "symbol": "GOOG",
         "name": "Alphabet",
         "allocation": 3.32,
         "instrument_type": "Stocks",
-        "net_profit": 110.37,
+        "net_profit": 110.32,
         "avg_open_rate": 160.85,
-        "current_rate": 338.38
+        "current_rate": 338.31
       },
       {
         "symbol": "COPX",
@@ -1124,27 +1126,27 @@
         "name": "Microsoft",
         "allocation": 3.04,
         "instrument_type": "Stocks",
-        "net_profit": 143.47,
+        "net_profit": 143.1,
         "avg_open_rate": 207.78,
-        "current_rate": 505.86
+        "current_rate": 505.1
       },
       {
         "symbol": "AAPL",
         "name": "Apple",
         "allocation": 2.96,
         "instrument_type": "Stocks",
-        "net_profit": 91.81,
+        "net_profit": 91.93,
         "avg_open_rate": 164.64,
-        "current_rate": 315.78
+        "current_rate": 315.99
       },
       {
         "symbol": "SPACEX",
         "name": "Space Exploration Technologies Corp",
         "allocation": 2.78,
         "instrument_type": "Stocks",
-        "net_profit": 22.6,
+        "net_profit": 22.53,
         "avg_open_rate": 114.27,
-        "current_rate": 140.1
+        "current_rate": 140.05
       },
       {
         "symbol": "XLV",
@@ -1160,54 +1162,54 @@
         "name": "Taiwan Semiconductor Manufacturing Co Ltd - ADR",
         "allocation": 2.61,
         "instrument_type": "Stocks",
-        "net_profit": 178.75,
+        "net_profit": 178.69,
         "avg_open_rate": 153.09,
-        "current_rate": 426.71
+        "current_rate": 426.63
       },
       {
         "symbol": "PANW",
         "name": "Palo Alto Networks",
         "allocation": 2.52,
         "instrument_type": "Stocks",
-        "net_profit": 23.31,
+        "net_profit": 22.79,
         "avg_open_rate": 311.47,
-        "current_rate": 384.06
+        "current_rate": 382.45
       },
       {
         "symbol": "MU",
         "name": "Micron Technology, Inc.",
         "allocation": 2.49,
         "instrument_type": "Stocks",
-        "net_profit": 70.52,
+        "net_profit": 70.78,
         "avg_open_rate": 540.47,
-        "current_rate": 921.6
+        "current_rate": 923.0
       },
       {
         "symbol": "VRT",
         "name": "Vertiv Holdings Co",
         "allocation": 2.48,
         "instrument_type": "Stocks",
-        "net_profit": 17.16,
+        "net_profit": 17.2,
         "avg_open_rate": 227.9,
-        "current_rate": 267.0
-      },
-      {
-        "symbol": "NFLX",
-        "name": "Netflix, Inc.",
-        "allocation": 2.46,
-        "instrument_type": "Stocks",
-        "net_profit": 19.86,
-        "avg_open_rate": 66.87,
-        "current_rate": 80.15
+        "current_rate": 267.1
       },
       {
         "symbol": "TSLA",
         "name": "Tesla Motors, Inc.",
         "allocation": 2.46,
         "instrument_type": "Stocks",
-        "net_profit": 138.59,
+        "net_profit": 138.61,
         "avg_open_rate": 149.1,
-        "current_rate": 355.84
+        "current_rate": 355.75
+      },
+      {
+        "symbol": "NFLX",
+        "name": "Netflix, Inc.",
+        "allocation": 2.46,
+        "instrument_type": "Stocks",
+        "net_profit": 19.68,
+        "avg_open_rate": 66.87,
+        "current_rate": 80.03
       },
       {
         "symbol": "SKHYNIX",
@@ -1232,27 +1234,27 @@
         "name": "NVIDIA Corporation",
         "allocation": 2.27,
         "instrument_type": "Stocks",
-        "net_profit": 228.81,
+        "net_profit": 229.57,
         "avg_open_rate": 69.35,
-        "current_rate": 228.02
+        "current_rate": 228.55
       },
       {
         "symbol": "PLTR",
         "name": "Palantir Technologies Inc.",
         "allocation": 2.26,
         "instrument_type": "Stocks",
-        "net_profit": 239.95,
+        "net_profit": 239.77,
         "avg_open_rate": 54.42,
-        "current_rate": 185.0
+        "current_rate": 184.9
       },
       {
         "symbol": "AVGO",
         "name": "Broadcom Inc",
         "allocation": 2.12,
         "instrument_type": "Stocks",
-        "net_profit": 37.48,
+        "net_profit": 37.46,
         "avg_open_rate": 272.8,
-        "current_rate": 375.03
+        "current_rate": 375.0
       },
       {
         "symbol": "MP",
@@ -1268,18 +1270,18 @@
         "name": "Redwire Corp",
         "allocation": 2.06,
         "instrument_type": "Stocks",
-        "net_profit": 35.05,
+        "net_profit": 34.82,
         "avg_open_rate": 8.28,
-        "current_rate": 11.18
+        "current_rate": 11.16
       },
       {
         "symbol": "GEV",
         "name": "GE Vernova LLC",
         "allocation": 1.97,
         "instrument_type": "Stocks",
-        "net_profit": 9.61,
+        "net_profit": 9.39,
         "avg_open_rate": 868.57,
-        "current_rate": 952.0
+        "current_rate": 950.1
       },
       {
         "symbol": "ANET",
@@ -1304,9 +1306,9 @@
         "name": "Intel",
         "allocation": 1.43,
         "instrument_type": "Stocks",
-        "net_profit": 3.9,
+        "net_profit": 3.97,
         "avg_open_rate": 86.92,
-        "current_rate": 90.3
+        "current_rate": 90.38
       },
       {
         "symbol": "ENERGY",
@@ -1331,7 +1333,7 @@
         "name": "Seagate Technology PLC",
         "allocation": 1.32,
         "instrument_type": "Stocks",
-        "net_profit": 15.79,
+        "net_profit": 16.49,
         "avg_open_rate": 717.68,
         "current_rate": 836.0
       },
@@ -1340,18 +1342,18 @@
         "name": "Crowdstrike Holdings",
         "allocation": 1.25,
         "instrument_type": "Stocks",
-        "net_profit": 161.01,
+        "net_profit": 160.15,
         "avg_open_rate": 87.26,
-        "current_rate": 227.75
+        "current_rate": 227.0
       },
       {
         "symbol": "BTC",
         "name": "Bitcoin",
         "allocation": 1.2,
         "instrument_type": "Stocks",
-        "net_profit": 33.63,
+        "net_profit": 33.51,
         "avg_open_rate": 59432.6,
-        "current_rate": 79420.15
+        "current_rate": 79349.9
       },
       {
         "symbol": "SLV",
@@ -1367,9 +1369,9 @@
         "name": "Coherent Corp",
         "allocation": 1.16,
         "instrument_type": "Stocks",
-        "net_profit": 27.72,
+        "net_profit": 27.41,
         "avg_open_rate": 227.84,
-        "current_rate": 291.0
+        "current_rate": 290.31
       },
       {
         "symbol": "ACHR",
@@ -1385,18 +1387,18 @@
         "name": "Lumentum Holdings Inc",
         "allocation": 1.07,
         "instrument_type": "Stocks",
-        "net_profit": 53.12,
+        "net_profit": 52.72,
         "avg_open_rate": 614.9,
-        "current_rate": 941.55
+        "current_rate": 939.1
       },
       {
         "symbol": "CRDO",
         "name": "Credo Technology Group Holding Ltd",
         "allocation": 1.0,
         "instrument_type": "Stocks",
-        "net_profit": 128.53,
+        "net_profit": 127.42,
         "avg_open_rate": 103.71,
-        "current_rate": 237.03
+        "current_rate": 235.88
       },
       {
         "symbol": "SE",
