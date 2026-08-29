@@ -3638,7 +3638,7 @@
     "notified": true
   },
   "2026-08-29": {
-    "update_time": "2026-08-29 11:43:56",
+    "update_time": "2026-08-29 12:10:09",
     "cash_balance": {
       "available_cash_pct": 18.34,
       "total_invested_pct": 81.66,
@@ -3915,9 +3915,9 @@
         "name": "Bitcoin",
         "allocation": 1.2,
         "instrument_type": "Stocks",
-        "net_profit": 30.84,
+        "net_profit": 30.53,
         "avg_open_rate": 59432.6,
-        "current_rate": 77762.1
+        "current_rate": 77574.39
       },
       {
         "symbol": "ACHR",
