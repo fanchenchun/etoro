@@ -41,7 +41,7 @@ logger = logging.getLogger(__name__)
 class NotificationDispatcher:
     def __init__(self, username: str = "miulatw", pages_url: Optional[str] = None):
         self.username = username
-        self.pages_url = pages_url or os.getenv("PAGES_URL", "https://fanchenchun.github.io/etoro/")
+        self.pages_url = pages_url or os.getenv("PAGES_URL") or "https://fanchenchun.github.io/etoro/"
 
     def build_message_text(
         self,
@@ -321,13 +321,15 @@ class NotificationDispatcher:
         return False
 
     def send_email(self, subject: str, text_body: str, html_body: str) -> bool:
-        host = os.getenv("SMTP_HOST", "smtp.gmail.com").strip()
-        port_str = os.getenv("SMTP_PORT", "587").strip()
+        host = (os.getenv("SMTP_HOST") or "smtp.gmail.com").strip()
+        if not host:
+            host = "smtp.gmail.com"
+        port_str = (os.getenv("SMTP_PORT") or "587").strip()
         port = int(port_str) if port_str.isdigit() else 587
-        user = os.getenv("SMTP_USER", "").strip()
+        user = (os.getenv("SMTP_USER") or "").strip()
         # 自動清理密碼中的空格與換行 (避免從 Google 複製出來時帶有空格)
-        password = os.getenv("SMTP_PASS", "").strip().replace(" ", "").replace("\r", "").replace("\n", "")
-        recipient_raw = (os.getenv("NOTIFICATION_EMAIL") or user).strip()
+        password = (os.getenv("SMTP_PASS") or "").strip().replace(" ", "").replace("\r", "").replace("\n", "")
+        recipient_raw = (os.getenv("NOTIFICATION_EMAIL") or user or "").strip()
 
         if not user or not password or not recipient_raw:
             logger.info("Email 設定未完整 (缺少 SMTP_USER, SMTP_PASS 或 NOTIFICATION_EMAIL)，跳過發送。")

@@ -286,13 +286,13 @@ def run_tracker(
 
 def main():
     parser = argparse.ArgumentParser(description="eToro Portfolio Daily Tracker")
-    parser.add_argument("--username", default=os.getenv("TARGET_USERNAME", "miulatw"), help="eToro 追蹤用戶名")
+    parser.add_argument("--username", default=os.getenv("TARGET_USERNAME") or "miulatw", help="eToro 追蹤用戶名")
     parser.add_argument("--mock", action="store_true", help="使用 Mock 測試數據")
     parser.add_argument("--no-headless", action="store_true", help="顯示瀏覽器視窗")
     parser.add_argument("--dry-run", action="store_true", help="試運行不儲存歷史資料")
     parser.add_argument("--no-notify", action="store_true", help="跳過發送推播通知")
     parser.add_argument("--force-notify", action="store_true", help="強制重新發送推播通知 (忽略今日已通知標記)")
-    parser.add_argument("--pages-url", default=os.getenv("PAGES_URL"), help="GitHub Pages 網址")
+    parser.add_argument("--pages-url", default=os.getenv("PAGES_URL") or "https://fanchenchun.github.io/etoro/", help="GitHub Pages 網址")
 
     args = parser.parse_args()
 
