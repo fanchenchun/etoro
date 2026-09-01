@@ -69,9 +69,9 @@ def generate_fallback_summary(analysis_result: Dict[str, Any], username: str = "
 
 def _call_gemini_rest_api(prompt: str, api_key: str) -> Optional[str]:
     """
-    直接透過 Google Gemini 官方 REST API 呼叫 Gemini 1.5 Flash
+    直接透過 Google Gemini 官方 REST API 呼叫 Gemini Flash 模型 (具備多版本模型輪替容錯)
     """
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
+    models_to_try = ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-2.5-flash", "gemini-1.5-pro"]
     headers = {"Content-Type": "application/json"}
     payload = {
         "contents": [
@@ -87,20 +87,22 @@ def _call_gemini_rest_api(prompt: str, api_key: str) -> Optional[str]:
         }
     }
 
-    try:
-        res = requests.post(url, headers=headers, json=payload, timeout=20)
-        if res.status_code == 200:
-            data = res.json()
-            candidates = data.get("candidates", [])
-            if candidates:
-                content = candidates[0].get("content", {})
-                parts = content.get("parts", [])
-                if parts and "text" in parts[0]:
-                    return parts[0]["text"].strip()
-        else:
-            logger.warning(f"Gemini REST API 回應狀態碼 {res.status_code}: {res.text[:200]}")
-    except Exception as e:
-        logger.warning(f"Gemini REST API 請求例外: {e}")
+    for model_name in models_to_try:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={api_key}"
+        try:
+            res = requests.post(url, headers=headers, json=payload, timeout=20)
+            if res.status_code == 200:
+                data = res.json()
+                candidates = data.get("candidates", [])
+                if candidates:
+                    content = candidates[0].get("content", {})
+                    parts = content.get("parts", [])
+                    if parts and "text" in parts[0]:
+                        return parts[0]["text"].strip()
+            else:
+                logger.warning(f"Gemini REST API ({model_name}) 回應狀態碼 {res.status_code}: {res.text[:160]}")
+        except Exception as e:
+            logger.warning(f"Gemini REST API ({model_name}) 請求例外: {e}")
 
     return None
 

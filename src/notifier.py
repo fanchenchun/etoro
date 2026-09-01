@@ -15,6 +15,8 @@ import logging
 import requests
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.header import Header
+from email.utils import formataddr
 from typing import Dict, Any, Optional
 from datetime import datetime, timezone, timedelta
 
@@ -340,8 +342,8 @@ class NotificationDispatcher:
 
         try:
             msg = MIMEMultipart("alternative")
-            msg["Subject"] = subject
-            msg["From"] = f"eToro Tracker <{user}>"
+            msg["Subject"] = Header(subject, "utf-8")
+            msg["From"] = formataddr((str(Header("eToro Tracker", "utf-8")), user))
             msg["To"] = ", ".join(recipients)
 
             part1 = MIMEText(text_body, "plain", "utf-8")
@@ -349,25 +351,42 @@ class NotificationDispatcher:
             msg.attach(part1)
             msg.attach(part2)
 
-            if port == 465:
-                # SSL 連線 (Port 465)
-                with smtplib.SMTP_SSL(host, port, timeout=20) as server:
-                    server.login(user, password)
-                    server.sendmail(user, recipients, msg.as_string())
-            else:
-                # STARTTLS 連線 (Port 587 或其他)
-                with smtplib.SMTP(host, port, timeout=20) as server:
-                    server.starttls()
-                    server.login(user, password)
-                    server.sendmail(user, recipients, msg.as_string())
+            msg_str = msg.as_string()
 
-            logger.info(f"Email 通知發送成功 -> {', '.join(recipients)}")
-            return True
-        except smtplib.SMTPAuthenticationError as e:
-            logger.error(f"Email SMTP 身份驗證失敗 (請確認 Gmail 應用程式密碼正確且無空格): {e}")
+            # 嘗試發送（支援主要 Port 與備用 Port 自動切換）
+            ports_to_try = [port]
+            if port == 587 and 465 not in ports_to_try:
+                ports_to_try.append(465)
+            elif port == 465 and 587 not in ports_to_try:
+                ports_to_try.append(587)
+
+            last_error = None
+            for p in ports_to_try:
+                try:
+                    logger.info(f"嘗試透過 SMTP 連線 {host}:{p} 發送 Email...")
+                    if p == 465:
+                        with smtplib.SMTP_SSL(host, p, timeout=25) as server:
+                            server.login(user, password)
+                            server.sendmail(user, recipients, msg_str)
+                    else:
+                        with smtplib.SMTP(host, p, timeout=25) as server:
+                            server.starttls()
+                            server.login(user, password)
+                            server.sendmail(user, recipients, msg_str)
+                    logger.info(f"✅ Email 通知發送成功 (Port {p}) -> {', '.join(recipients)}")
+                    return True
+                except smtplib.SMTPAuthenticationError as e:
+                    logger.error(f"❌ Email SMTP 身份驗證失敗 (請確認 Gmail 應用程式密碼正確且無空格): {e}")
+                    return False
+                except Exception as e:
+                    last_error = e
+                    logger.warning(f"透過 Port {p} 發送失敗 ({e})，嘗試切換備援埠...")
+
+            if last_error:
+                logger.error(f"❌ Email SMTP 所有通訊埠皆發送失敗: {last_error}")
             return False
         except Exception as e:
-            logger.error(f"Email SMTP 發送失敗: {e}")
+            logger.error(f"❌ Email 建構或發送過程發生未預期例外: {e}")
             return False
 
     def send_discord(self, message: str) -> bool:

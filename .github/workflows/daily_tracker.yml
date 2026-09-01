@@ -2,9 +2,11 @@ name: eToro Portfolio Daily Tracker
 
 on:
   schedule:
-    # 每日定時執行 (UTC 22:17 與 23:17 = 台灣時間 UTC+8 每日清晨 06:17 與 07:17 雙重保險，自動防重複發信)
+    # 每日定時執行 (UTC 22:17, 23:17, 00:17, 01:17 = 台灣時間 UTC+8 每日清晨 06:17, 07:17, 08:17, 09:17 多重保險，自動防重複發信)
     - cron: '17 22 * * *'
     - cron: '17 23 * * *'
+    - cron: '17 0 * * *'
+    - cron: '17 1 * * *'
   workflow_dispatch: # 支援在 GitHub 網頁上手動觸發執行
     inputs:
       force_notify:
@@ -75,7 +77,7 @@ jobs:
           if [ -n "$(git status --porcelain data/ index.html)" ]; then
             git add data/latest.json data/history.json index.html
             git commit -m "chore(data): auto-update etoro portfolio & dashboard [$(date +'%Y-%m-%d')]"
-            git pull --rebase origin main || true
+            git pull --rebase --autostash origin main || true
             git push origin main
             echo "✅ 成功更新資料與 index.html 並推送到儲存庫！"
           else

@@ -136,13 +136,25 @@ def get_mock_portfolio_data() -> List[Dict[str, Any]]:
     ]
 
 
-def expand_tags_and_format(raw_text: str, tags: list) -> tuple[str, str]:
+def safe_float(val: Any, default: Optional[float] = None) -> Optional[float]:
+    """安全轉換浮點數，遇 None 或格式錯誤時返回 default"""
+    if val is None:
+        return default
+    try:
+        return round(float(val), 2)
+    except (ValueError, TypeError):
+        return default
+
+
+def expand_tags_and_format(raw_text: str, tags: Optional[list]) -> tuple[str, str]:
     """
     將 eToro 原始貼文中的標籤符號 (例如 $KTOS) 展開為完整名稱 (例如 $KTOS (Kratos Defense & Security Solutions Inc))
     並生成高亮綠色標籤的 HTML 格式
     """
     if not raw_text:
         return "", ""
+    if not tags or not isinstance(tags, list):
+        return raw_text, raw_text
         
     expanded_text = raw_text
     html_text = raw_text
@@ -150,8 +162,10 @@ def expand_tags_and_format(raw_text: str, tags: list) -> tuple[str, str]:
     # 建立 symbol -> displayName 的對應
     tag_map = {}
     for t in tags:
-        m = t.get("market", {})
-        if m:
+        if not isinstance(t, dict):
+            continue
+        m = t.get("market") or {}
+        if isinstance(m, dict):
             sym = m.get("symbolName", "").strip()
             disp = m.get("displayName", "").strip()
             if sym and disp:
@@ -272,31 +286,38 @@ class EToroScraper:
                         return None
 
                     # 取出最新一則 discussion
-                    top_disc = discussions[0]
-                    post = top_disc.get("post", {})
-                    owner = post.get("owner", {})
-                    tags = post.get("tags", [])
+                    top_disc = discussions[0] if isinstance(discussions, list) and len(discussions) > 0 else {}
+                    if not isinstance(top_disc, dict):
+                        return None
+                    post = top_disc.get("post") or {}
+                    owner = post.get("owner") or {}
+                    tags = post.get("tags") or []
 
-                    likes = top_disc.get("emotionsData", {}).get("like", {}).get("paging", {}).get("totalCount", 0)
+                    emotions = top_disc.get("emotionsData") or {}
+                    likes = 0
+                    if isinstance(emotions, dict):
+                        likes = (emotions.get("like") or {}).get("paging", {}).get("totalCount", 0)
                     if not likes:
-                        likes = top_disc.get("reactions", {}).get("totalReactionsCount", 0)
+                        likes = (top_disc.get("reactions") or {}).get("totalReactionsCount", 0)
 
-                    comments_count = top_disc.get("summary", {}).get("totalCommentsAndReplies", 0)
+                    summary_obj = top_disc.get("summary") or {}
+                    comments_count = summary_obj.get("totalCommentsAndReplies", 0) if isinstance(summary_obj, dict) else 0
                     if not comments_count:
                         comments_count = top_disc.get("commentsCount", 0)
 
-                    shares_count = top_disc.get("summary", {}).get("sharedCount", 0)
+                    shares_count = summary_obj.get("sharedCount", 0) if isinstance(summary_obj, dict) else 0
                     if not shares_count:
                         shares_count = top_disc.get("sharesCount", 0)
 
                     created_at = post.get("created", "")
-                    raw_content = post.get("message", {}).get("text", "").strip()
+                    message_obj = post.get("message") or {}
+                    raw_content = message_obj.get("text", "").strip() if isinstance(message_obj, dict) else ""
 
                     # 展開標的名稱與生成高亮 HTML
                     expanded_content, content_html = expand_tags_and_format(raw_content, tags)
 
                     author_name = f"{owner.get('firstName', '')} {owner.get('lastName', '')}".strip() or self.username
-                    avatar = owner.get("avatar", {}).get("medium") or owner.get("avatar", {}).get("small") or "https://etoro-cdn.etorostatic.com/avatars/50X50/8220524/1.jpg"
+                    avatar = (owner.get("avatar") or {}).get("medium") or (owner.get("avatar") or {}).get("small") or "https://etoro-cdn.etorostatic.com/avatars/50X50/8220524/1.jpg"
 
                     country_code = owner.get("countryCode")
                     country_name = "臺灣" if country_code == 199 else "全球"
@@ -441,12 +462,14 @@ class EToroScraper:
                     if res.status_code == 200:
                         data = res.json()
                         avg_open = data.get("AverageOpen")
-                        pub_pos = data.get("PublicPositions", [])
-                        cur_rate = pub_pos[0].get("CurrentRate") if (pub_pos and isinstance(pub_pos, list)) else None
+                        pub_pos = data.get("PublicPositions") or []
+                        cur_rate = None
+                        if isinstance(pub_pos, list) and len(pub_pos) > 0 and isinstance(pub_pos[0], dict):
+                            cur_rate = pub_pos[0].get("CurrentRate")
                         
                         return iid, {
-                            "avg_open_rate": round(float(avg_open), 2) if avg_open is not None else None,
-                            "current_rate": round(float(cur_rate), 2) if cur_rate is not None else None
+                            "avg_open_rate": safe_float(avg_open),
+                            "current_rate": safe_float(cur_rate)
                         }
                 except Exception as e:
                     logger.debug(f"獲取 InstrumentID {iid} 價格資訊失敗: {e}")
