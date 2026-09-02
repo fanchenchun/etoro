@@ -5225,7 +5225,7 @@
     "notified": true
   },
   "2026-09-02": {
-    "update_time": "2026-09-02 08:33:52",
+    "update_time": "2026-09-02 09:02:28",
     "cash_balance": {
       "available_cash_pct": 18.32,
       "total_invested_pct": 81.68,
@@ -5241,9 +5241,9 @@
         "name": "Invesco QQQ",
         "allocation": 6.47,
         "instrument_type": "Stocks",
-        "net_profit": 6.75,
+        "net_profit": 6.65,
         "avg_open_rate": 663.13,
-        "current_rate": 707.91
+        "current_rate": 707.24
       },
       {
         "symbol": "META",
@@ -5259,18 +5259,18 @@
         "name": "Alphabet",
         "allocation": 3.45,
         "instrument_type": "Stocks",
-        "net_profit": 103.68,
+        "net_profit": 103.36,
         "avg_open_rate": 164.07,
-        "current_rate": 334.1
+        "current_rate": 333.65
       },
       {
         "symbol": "AMZN",
         "name": "Amazon.com Inc",
         "allocation": 3.4,
         "instrument_type": "Stocks",
-        "net_profit": 106.25,
+        "net_profit": 106.13,
         "avg_open_rate": 123.43,
-        "current_rate": 254.56
+        "current_rate": 254.42
       },
       {
         "symbol": "COPX",
@@ -5286,27 +5286,27 @@
         "name": "Microsoft",
         "allocation": 2.93,
         "instrument_type": "Stocks",
-        "net_profit": 144.46,
+        "net_profit": 144.39,
         "avg_open_rate": 204.68,
-        "current_rate": 500.36
+        "current_rate": 500.22
       },
       {
         "symbol": "AAPL",
         "name": "Apple",
         "allocation": 2.86,
         "instrument_type": "Stocks",
-        "net_profit": 100.25,
+        "net_profit": 100.42,
         "avg_open_rate": 162.04,
-        "current_rate": 324.47
+        "current_rate": 324.75
       },
       {
         "symbol": "SPACEX",
         "name": "Space Exploration Technologies Corp",
         "allocation": 2.85,
         "instrument_type": "Stocks",
-        "net_profit": 23.6,
+        "net_profit": 23.71,
         "avg_open_rate": 114.88,
-        "current_rate": 142.0
+        "current_rate": 142.13
       },
       {
         "symbol": "XLV",
@@ -5322,18 +5322,18 @@
         "name": "Taiwan Semiconductor Manufacturing Co Ltd - ADR",
         "allocation": 2.61,
         "instrument_type": "Stocks",
-        "net_profit": 170.85,
+        "net_profit": 170.47,
         "avg_open_rate": 153.09,
-        "current_rate": 414.62
+        "current_rate": 414.05
       },
       {
         "symbol": "MU",
         "name": "Micron Technology, Inc.",
         "allocation": 2.48,
         "instrument_type": "Stocks",
-        "net_profit": 72.52,
+        "net_profit": 72.09,
         "avg_open_rate": 540.47,
-        "current_rate": 932.57
+        "current_rate": 930.11
       },
       {
         "symbol": "VRT",
@@ -5349,27 +5349,27 @@
         "name": "Palo Alto Networks",
         "allocation": 2.44,
         "instrument_type": "Stocks",
-        "net_profit": 14.94,
+        "net_profit": 14.88,
         "avg_open_rate": 309.89,
-        "current_rate": 356.2
+        "current_rate": 356.0
       },
       {
         "symbol": "NFLX",
         "name": "Netflix, Inc.",
         "allocation": 2.4,
         "instrument_type": "Stocks",
-        "net_profit": 20.34,
+        "net_profit": 20.31,
         "avg_open_rate": 66.87,
-        "current_rate": 80.47
+        "current_rate": 80.45
       },
       {
         "symbol": "TSLA",
         "name": "Tesla Motors, Inc.",
         "allocation": 2.39,
         "instrument_type": "Stocks",
-        "net_profit": 142.0,
+        "net_profit": 141.78,
         "avg_open_rate": 147.18,
-        "current_rate": 356.17
+        "current_rate": 355.85
       },
       {
         "symbol": "ROK",
@@ -5394,36 +5394,36 @@
         "name": "NVIDIA Corporation",
         "allocation": 2.27,
         "instrument_type": "Stocks",
-        "net_profit": 213.87,
+        "net_profit": 213.51,
         "avg_open_rate": 69.35,
-        "current_rate": 217.66
+        "current_rate": 217.42
       },
       {
         "symbol": "RDW",
         "name": "Redwire Corp",
         "allocation": 2.22,
         "instrument_type": "Stocks",
-        "net_profit": 22.63,
+        "net_profit": 22.51,
         "avg_open_rate": 8.32,
-        "current_rate": 10.2
+        "current_rate": 10.19
       },
       {
         "symbol": "AVGO",
         "name": "Broadcom Inc",
         "allocation": 2.11,
         "instrument_type": "Stocks",
-        "net_profit": 36.14,
+        "net_profit": 35.83,
         "avg_open_rate": 272.8,
-        "current_rate": 371.4
+        "current_rate": 370.55
       },
       {
         "symbol": "PLTR",
         "name": "Palantir Technologies Inc.",
         "allocation": 2.1,
         "instrument_type": "Stocks",
-        "net_profit": 240.0,
+        "net_profit": 239.53,
         "avg_open_rate": 52.77,
-        "current_rate": 179.42
+        "current_rate": 179.17
       },
       {
         "symbol": "MP",
@@ -5457,18 +5457,18 @@
         "name": "Arista Networks Inc",
         "allocation": 1.76,
         "instrument_type": "Stocks",
-        "net_profit": 58.77,
+        "net_profit": 57.63,
         "avg_open_rate": 119.22,
-        "current_rate": 189.28
+        "current_rate": 187.93
       },
       {
         "symbol": "INTC",
         "name": "Intel",
         "allocation": 1.43,
         "instrument_type": "Stocks",
-        "net_profit": 2.42,
+        "net_profit": 2.23,
         "avg_open_rate": 86.92,
-        "current_rate": 89.03
+        "current_rate": 88.86
       },
       {
         "symbol": "KTOS",
@@ -5484,27 +5484,27 @@
         "name": "Seagate Technology PLC",
         "allocation": 1.31,
         "instrument_type": "Stocks",
-        "net_profit": 13.28,
+        "net_profit": 13.14,
         "avg_open_rate": 717.68,
-        "current_rate": 813.0
+        "current_rate": 812.0
       },
       {
         "symbol": "COHR",
         "name": "Coherent Corp",
         "allocation": 1.23,
         "instrument_type": "Stocks",
-        "net_profit": 17.17,
+        "net_profit": 16.99,
         "avg_open_rate": 229.99,
-        "current_rate": 269.61
+        "current_rate": 269.12
       },
       {
         "symbol": "CRWD",
         "name": "Crowdstrike Holdings",
         "allocation": 1.22,
         "instrument_type": "Stocks",
-        "net_profit": 145.53,
+        "net_profit": 145.14,
         "avg_open_rate": 87.26,
-        "current_rate": 214.24
+        "current_rate": 213.9
       },
       {
         "symbol": "SLV",
@@ -5520,9 +5520,9 @@
         "name": "Bitcoin",
         "allocation": 1.2,
         "instrument_type": "Stocks",
-        "net_profit": 29.99,
+        "net_profit": 29.86,
         "avg_open_rate": 59432.6,
-        "current_rate": 77255.0
+        "current_rate": 77180.04
       },
       {
         "symbol": "ACHR",
@@ -5538,9 +5538,9 @@
         "name": "Credo Technology Group Holding Ltd",
         "allocation": 1.07,
         "instrument_type": "Stocks",
-        "net_profit": 74.53,
+        "net_profit": 73.42,
         "avg_open_rate": 107.54,
-        "current_rate": 187.7
+        "current_rate": 186.5
       },
       {
         "symbol": "SE",
@@ -5556,18 +5556,18 @@
         "name": "Lumentum Holdings Inc",
         "allocation": 1.0,
         "instrument_type": "Stocks",
-        "net_profit": 43.83,
+        "net_profit": 42.79,
         "avg_open_rate": 603.74,
-        "current_rate": 868.32
+        "current_rate": 862.32
       },
       {
         "symbol": "TER",
         "name": "Teradyne Inc",
         "allocation": 0.86,
         "instrument_type": "Stocks",
-        "net_profit": 139.83,
+        "net_profit": 138.29,
         "avg_open_rate": 138.42,
-        "current_rate": 332.0
+        "current_rate": 329.87
       },
       {
         "symbol": "NET",
