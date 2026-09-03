@@ -114,7 +114,7 @@
                     </div>
 
                     <!-- AI Summary Text -->
-                    <div class="text-gray-200 text-sm sm:text-base leading-relaxed bg-gray-900/50 p-4 rounded-xl border border-gray-800/80">
+                    <div class="text-gray-200 text-sm sm:text-base leading-relaxed bg-gray-900/50 p-4 rounded-xl border border-gray-800/80 whitespace-pre-line">
                         {{ ai_summary }}
                     </div>
 
@@ -128,37 +128,29 @@
                                 👑 最大持倉：{{ changes[0].symbol }} ({{ changes[0].today_alloc }}%)
                             </span>
                         {% else %}
-                            {% if stats.new_symbols %}
-                                {% for sym in stats.new_symbols %}
+                            {% for c in changes if c.status == 'NEW' %}
                                 <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-emerald-950/70 text-emerald-300 border border-emerald-500/30">
-                                    🆕 新開倉 {{ sym }}
+                                    🆕 新開倉 {{ c.symbol }} ({{ c.today_alloc }}%)
                                 </span>
-                                {% endfor %}
-                            {% endif %}
+                            {% endfor %}
 
-                            {% if stats.closed_symbols %}
-                                {% for sym in stats.closed_symbols %}
+                            {% for c in changes if c.status == 'CLOSED' %}
                                 <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-rose-950/70 text-rose-300 border border-rose-500/30">
-                                    ❌ 已清倉 {{ sym }}
+                                    ❌ 已清倉 {{ c.symbol }} (原 {{ c.yesterday_alloc }}%)
                                 </span>
-                                {% endfor %}
-                            {% endif %}
+                            {% endfor %}
 
-                            {% if stats.increased_symbols %}
-                                {% for sym in stats.increased_symbols %}
+                            {% for c in changes if c.status == 'INCREASED' %}
                                 <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-green-950/70 text-green-300 border border-green-500/30">
-                                    🟢 加碼 {{ sym }}
+                                    🟢 加碼 {{ c.symbol }} (+{{ c.diff }}%)
                                 </span>
-                                {% endfor %}
-                            {% endif %}
+                            {% endfor %}
 
-                            {% if stats.decreased_symbols %}
-                                {% for sym in stats.decreased_symbols %}
+                            {% for c in changes if c.status == 'DECREASED' %}
                                 <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-amber-950/70 text-amber-300 border border-amber-500/30">
-                                    🔴 減碼 {{ sym }}
+                                    🔴 減碼 {{ c.symbol }} ({{ c.diff }}%)
                                 </span>
-                                {% endfor %}
-                            {% endif %}
+                            {% endfor %}
 
                             {% if not stats.has_significant_changes %}
                                 <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-gray-800/80 text-gray-400 border border-gray-700">

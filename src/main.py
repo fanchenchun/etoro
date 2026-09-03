@@ -187,8 +187,8 @@ def run_tracker(
     logger.info(f"比對完成: (基準日 {yesterday_date_fmt} vs 今日 {today_date_fmt}) 新開倉 {analysis_result['stats']['new_count']} 檔, 平倉 {analysis_result['stats']['closed_count']} 檔, 加碼 {analysis_result['stats']['increased_count']} 檔, 減碼 {analysis_result['stats']['decreased_count']} 檔 | 可用現金變動: {diff_avail}%")
 
     # 4. AI 智能摘要生成
-    logger.info("生成 Gemini 1.5 Flash 繁體中文調倉總結...")
-    ai_summary_text = generate_ai_summary(analysis_result, username=username)
+    logger.info("生成繁體中文深度調倉總結 (Gemini / 規則引擎)...")
+    ai_summary_text = generate_ai_summary(analysis_result, username=username, cash_balance=enhanced_cash_balance)
     logger.info(f"AI 摘要:\n{ai_summary_text}")
 
     # 檢查今日是否已成功發送過通知 (防重複通知機制)
