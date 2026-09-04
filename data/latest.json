@@ -1,7 +1,7 @@
 {
   "username": "miulatw",
   "date": "2026-09-05",
-  "update_time": "2026-09-05 07:03:38",
+  "update_time": "2026-09-05 07:21:23",
   "cash_balance": {
     "available_cash_pct": 18.31,
     "total_invested_pct": 81.69,
@@ -27,8 +27,8 @@
       "allocation": 3.45,
       "instrument_type": "Stocks",
       "net_profit": 104.31,
-      "avg_open_rate": 164.07,
-      "current_rate": 335.2
+      "avg_open_rate": null,
+      "current_rate": null
     },
     {
       "symbol": "AMZN",
@@ -36,8 +36,8 @@
       "allocation": 3.4,
       "instrument_type": "Stocks",
       "net_profit": 109.29,
-      "avg_open_rate": 123.43,
-      "current_rate": 258.32
+      "avg_open_rate": null,
+      "current_rate": null
     },
     {
       "symbol": "META",
@@ -99,8 +99,8 @@
       "allocation": 2.61,
       "instrument_type": "Stocks",
       "net_profit": 179.64,
-      "avg_open_rate": 153.09,
-      "current_rate": 428.09
+      "avg_open_rate": null,
+      "current_rate": null
     },
     {
       "symbol": "PANW",
@@ -153,8 +153,8 @@
       "allocation": 2.33,
       "instrument_type": "Stocks",
       "net_profit": 143.42,
-      "avg_open_rate": 145.33,
-      "current_rate": 353.76
+      "avg_open_rate": null,
+      "current_rate": null
     },
     {
       "symbol": "SKHYNIX",
@@ -305,9 +305,9 @@
       "name": "Bitcoin",
       "allocation": 1.2,
       "instrument_type": "Stocks",
-      "net_profit": 34.01,
+      "net_profit": 34.08,
       "avg_open_rate": 59432.6,
-      "current_rate": 79642.5
+      "current_rate": 79681.41
     },
     {
       "symbol": "ACHR",
@@ -420,8 +420,8 @@
         "status_badge": "⚪ 持平",
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
-        "avg_open_rate": 164.07,
-        "current_rate": 335.2,
+        "avg_open_rate": null,
+        "current_rate": null,
         "net_profit": 104.31,
         "is_active": true
       },
@@ -437,8 +437,8 @@
         "status_badge": "⚪ 持平",
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
-        "avg_open_rate": 123.43,
-        "current_rate": 258.32,
+        "avg_open_rate": null,
+        "current_rate": null,
         "net_profit": 109.29,
         "is_active": true
       },
@@ -556,8 +556,8 @@
         "status_badge": "⚪ 持平",
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
-        "avg_open_rate": 153.09,
-        "current_rate": 428.09,
+        "avg_open_rate": null,
+        "current_rate": null,
         "net_profit": 179.64,
         "is_active": true
       },
@@ -658,8 +658,8 @@
         "status_badge": "⚪ 持平",
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
-        "avg_open_rate": 145.33,
-        "current_rate": 353.76,
+        "avg_open_rate": null,
+        "current_rate": null,
         "net_profit": 143.42,
         "is_active": true
       },
@@ -965,8 +965,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 59432.6,
-        "current_rate": 79642.5,
-        "net_profit": 34.01,
+        "current_rate": 79681.41,
+        "net_profit": 34.08,
         "is_active": true
       },
       {
@@ -1054,8 +1054,8 @@
         "allocation": 3.45,
         "instrument_type": "Stocks",
         "net_profit": 104.31,
-        "avg_open_rate": 164.07,
-        "current_rate": 335.2
+        "avg_open_rate": null,
+        "current_rate": null
       },
       {
         "symbol": "AMZN",
@@ -1063,8 +1063,8 @@
         "allocation": 3.4,
         "instrument_type": "Stocks",
         "net_profit": 109.29,
-        "avg_open_rate": 123.43,
-        "current_rate": 258.32
+        "avg_open_rate": null,
+        "current_rate": null
       },
       {
         "symbol": "META",
@@ -1126,8 +1126,8 @@
         "allocation": 2.61,
         "instrument_type": "Stocks",
         "net_profit": 179.64,
-        "avg_open_rate": 153.09,
-        "current_rate": 428.09
+        "avg_open_rate": null,
+        "current_rate": null
       },
       {
         "symbol": "PANW",
@@ -1180,8 +1180,8 @@
         "allocation": 2.33,
         "instrument_type": "Stocks",
         "net_profit": 143.42,
-        "avg_open_rate": 145.33,
-        "current_rate": 353.76
+        "avg_open_rate": null,
+        "current_rate": null
       },
       {
         "symbol": "SKHYNIX",
@@ -1332,9 +1332,9 @@
         "name": "Bitcoin",
         "allocation": 1.2,
         "instrument_type": "Stocks",
-        "net_profit": 34.01,
+        "net_profit": 34.08,
         "avg_open_rate": 59432.6,
-        "current_rate": 79642.5
+        "current_rate": 79681.41
       },
       {
         "symbol": "ACHR",
