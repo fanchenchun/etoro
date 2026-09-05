@@ -120,19 +120,19 @@ def format_iso_to_taipei(iso_str: str) -> str:
 
 def get_mock_portfolio_data() -> List[Dict[str, Any]]:
     """
-    提供標準結構的模擬資料 (以 miulatw 典型持倉為基準)
+    提供標準結構的模擬資料 (以 miulatw 典型持倉為基準，包含投資佔比與淨值佔比)
     """
     return [
-        {"symbol": "QQQ", "name": "Invesco QQQ", "allocation": 5.65, "instrument_type": "ETF", "avg_open_rate": 480.20, "current_rate": 505.30, "net_profit": 10.55},
-        {"symbol": "META", "name": "Meta Platforms Inc", "allocation": 3.70, "instrument_type": "Stocks", "avg_open_rate": 287.98, "current_rate": 549.78, "net_profit": 89.69},
-        {"symbol": "GOOG", "name": "Alphabet", "allocation": 3.55, "instrument_type": "Stocks", "avg_open_rate": 162.54, "current_rate": 341.52, "net_profit": 103.89},
-        {"symbol": "COPX", "name": "Global X Copper Miners Etf", "allocation": 3.52, "instrument_type": "ETF", "avg_open_rate": 42.10, "current_rate": 54.40, "net_profit": 29.25},
-        {"symbol": "AMZN", "name": "Amazon.com Inc", "allocation": 3.47, "instrument_type": "Stocks", "avg_open_rate": 122.04, "current_rate": 258.37, "net_profit": 109.75},
-        {"symbol": "MSFT", "name": "Microsoft", "allocation": 3.29, "instrument_type": "Stocks", "avg_open_rate": 209.34, "current_rate": 483.18, "net_profit": 124.75},
-        {"symbol": "AAPL", "name": "Apple", "allocation": 3.05, "instrument_type": "Stocks", "avg_open_rate": 166.44, "current_rate": 309.80, "net_profit": 87.26},
-        {"symbol": "XLV", "name": "State Street Health Care Select Sector SPDR ETF", "allocation": 2.82, "instrument_type": "ETF", "avg_open_rate": 140.50, "current_rate": 152.80, "net_profit": 8.71},
-        {"symbol": "ETOR", "name": "eToro Group LTD", "allocation": 2.81, "instrument_type": "Stocks", "avg_open_rate": 26.50, "current_rate": 28.54, "net_profit": 7.71},
-        {"symbol": "TSLA", "name": "Tesla Motors, Inc.", "allocation": 2.73, "instrument_type": "Stocks", "avg_open_rate": 150.99, "current_rate": 362.43, "net_profit": 121.45},
+        {"symbol": "QQQ", "name": "Invesco QQQ", "allocation": 5.65, "invest_alloc": 5.65, "value_alloc": 6.32, "instrument_type": "ETF", "avg_open_rate": 480.20, "current_rate": 505.30, "net_profit": 10.55},
+        {"symbol": "META", "name": "Meta Platforms Inc", "allocation": 3.70, "invest_alloc": 3.70, "value_alloc": 4.15, "instrument_type": "Stocks", "avg_open_rate": 287.98, "current_rate": 549.78, "net_profit": 89.69},
+        {"symbol": "GOOG", "name": "Alphabet", "allocation": 3.55, "invest_alloc": 3.55, "value_alloc": 3.88, "instrument_type": "Stocks", "avg_open_rate": 162.54, "current_rate": 341.52, "net_profit": 103.89},
+        {"symbol": "COPX", "name": "Global X Copper Miners Etf", "allocation": 3.52, "invest_alloc": 3.52, "value_alloc": 3.65, "instrument_type": "ETF", "avg_open_rate": 42.10, "current_rate": 54.40, "net_profit": 29.25},
+        {"symbol": "AMZN", "name": "Amazon.com Inc", "allocation": 3.47, "invest_alloc": 3.47, "value_alloc": 3.75, "instrument_type": "Stocks", "avg_open_rate": 122.04, "current_rate": 258.37, "net_profit": 109.75},
+        {"symbol": "MSFT", "name": "Microsoft", "allocation": 3.29, "invest_alloc": 3.29, "value_alloc": 3.42, "instrument_type": "Stocks", "avg_open_rate": 209.34, "current_rate": 483.18, "net_profit": 124.75},
+        {"symbol": "AAPL", "name": "Apple", "allocation": 3.05, "invest_alloc": 3.05, "value_alloc": 3.20, "instrument_type": "Stocks", "avg_open_rate": 166.44, "current_rate": 309.80, "net_profit": 87.26},
+        {"symbol": "XLV", "name": "State Street Health Care Select Sector SPDR ETF", "allocation": 2.82, "invest_alloc": 2.82, "value_alloc": 2.95, "instrument_type": "ETF", "avg_open_rate": 140.50, "current_rate": 152.80, "net_profit": 8.71},
+        {"symbol": "ETOR", "name": "eToro Group LTD", "allocation": 2.81, "invest_alloc": 2.81, "value_alloc": 2.85, "instrument_type": "Stocks", "avg_open_rate": 26.50, "current_rate": 28.54, "net_profit": 7.71},
+        {"symbol": "TSLA", "name": "Tesla Motors, Inc.", "allocation": 2.73, "invest_alloc": 2.73, "value_alloc": 3.10, "instrument_type": "Stocks", "avg_open_rate": 150.99, "current_rate": 362.43, "net_profit": 121.45},
     ]
 
 
@@ -421,6 +421,7 @@ class EToroScraper:
             })
             
             invested_alloc = round(float(p.get("Invested", 0.0)), 2)
+            value_alloc = round(float(p.get("Value", 0.0)), 2)
 
             symbol = KNOWN_INSTRUMENT_SYMBOLS.get(iid, meta["symbol"])
             if str(symbol).isdigit() and int(symbol) in KNOWN_INSTRUMENT_SYMBOLS:
@@ -434,6 +435,8 @@ class EToroScraper:
                 "symbol": symbol,
                 "name": meta["name"],
                 "allocation": invested_alloc,
+                "invest_alloc": invested_alloc,
+                "value_alloc": value_alloc,
                 "instrument_type": "Stocks",
                 "net_profit": round(float(p.get("NetProfit", 0.0)), 2),
                 "avg_open_rate": avg_open_rate,
@@ -602,8 +605,8 @@ class EToroScraper:
         return self._clean_and_sort(data)
 
     def _clean_and_sort(self, data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """清洗數據並依佔比由大到小排序"""
-        cleaned = sorted(data, key=lambda x: float(x.get("allocation", 0.0)), reverse=True)
+        """清洗數據並依投資佔比由大到小排序"""
+        cleaned = sorted(data, key=lambda x: float(x.get("invest_alloc", x.get("allocation", 0.0))), reverse=True)
         return cleaned
 
 

@@ -54,6 +54,23 @@ class PageBuilder:
 
         portfolio = analysis_result.get("today_portfolio", [])
         changes = analysis_result.get("changes", [])
+        # 兼容性補全：確保舊版 changes 數據能順利渲染新版 12 欄位
+        for c in changes:
+            if "today_invest_alloc" not in c:
+                c["yesterday_invest_alloc"] = c.get("yesterday_alloc", 0.0)
+                c["today_invest_alloc"] = c.get("today_alloc", 0.0)
+                c["invest_diff"] = c.get("diff", 0.0)
+                c["invest_status"] = c.get("status", "UNCHANGED")
+                c["invest_status_badge"] = c.get("status_badge", "")
+                c["invest_status_color"] = c.get("status_color", "")
+            if "today_value_alloc" not in c:
+                c["today_value_alloc"] = c.get("today_alloc", 0.0)
+                c["yesterday_value_alloc"] = c.get("yesterday_value_alloc")
+                c["value_diff"] = c.get("value_diff")
+                c["value_status"] = c.get("value_status", "INITIAL")
+                c["value_status_badge"] = c.get("value_status_badge", "📌 基準持倉")
+                c["value_status_color"] = c.get("value_status_color", "text-slate-300 bg-slate-800/60 border-slate-600/30")
+
         stats = analysis_result.get("stats", {})
         cash = cash_balance or {
             "available_cash_pct": 18.46,

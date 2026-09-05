@@ -27,6 +27,15 @@ STATUS_CONFIG = {
     "INITIAL": {"label": "基準持倉", "badge": "📌 基準持倉", "color": "text-slate-300 bg-slate-800/60 border-slate-600/30", "icon": "📌"},
 }
 
+VALUE_STATUS_CONFIG = {
+    "NEW": {"label": "新增", "badge": "🆕 新增", "color": "text-emerald-400 bg-emerald-950/60 border-emerald-500/30", "icon": "🆕"},
+    "CLOSED": {"label": "移除", "badge": "❌ 移除", "color": "text-rose-400 bg-rose-950/60 border-rose-500/30", "icon": "❌"},
+    "INCREASED": {"label": "增加", "badge": "🟢 增加", "color": "text-green-400 bg-green-950/60 border-green-500/30", "icon": "🟢"},
+    "DECREASED": {"label": "減少", "badge": "🔴 減少", "color": "text-amber-400 bg-amber-950/60 border-amber-500/30", "icon": "🔴"},
+    "UNCHANGED": {"label": "持平", "badge": "⚪ 持平", "color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "icon": "⚪"},
+    "INITIAL": {"label": "基準持倉", "badge": "📌 基準持倉", "color": "text-slate-300 bg-slate-800/60 border-slate-600/30", "icon": "📌"},
+}
+
 
 class PortfolioAnalyzer:
     @staticmethod
@@ -53,36 +62,68 @@ class PortfolioAnalyzer:
             in_today = sym in today_map
             in_yesterday = sym in yesterday_map
 
-            today_alloc = float(today_map[sym]["allocation"]) if in_today else 0.0
+            # 1. 投資佔比分析
+            today_invest_alloc = float(today_map[sym].get("invest_alloc", today_map[sym].get("allocation", 0.0))) if in_today else 0.0
             
             if is_first_day:
-                yesterday_alloc = today_alloc
-                diff = 0.0
-                status = "UNCHANGED"
+                yesterday_invest_alloc = today_invest_alloc
+                invest_diff = 0.0
+                invest_status = "UNCHANGED"
                 unchanged_items.append(sym)
             else:
-                yesterday_alloc = float(yesterday_map[sym]["allocation"]) if in_yesterday else 0.0
-                diff = round(today_alloc - yesterday_alloc, 2)
+                yesterday_invest_alloc = float(yesterday_map[sym].get("invest_alloc", yesterday_map[sym].get("allocation", 0.0))) if in_yesterday else 0.0
+                invest_diff = round(today_invest_alloc - yesterday_invest_alloc, 2)
 
                 if in_today and not in_yesterday:
-                    status = "NEW"
+                    invest_status = "NEW"
                     new_items.append(sym)
                 elif not in_today and in_yesterday:
-                    status = "CLOSED"
+                    invest_status = "CLOSED"
                     closed_items.append(sym)
-                elif diff > 0.0:
-                    status = "INCREASED"
+                elif invest_diff > 0.0:
+                    invest_status = "INCREASED"
                     increased_items.append(sym)
-                elif diff < 0.0:
-                    status = "DECREASED"
+                elif invest_diff < 0.0:
+                    invest_status = "DECREASED"
                     decreased_items.append(sym)
                 else:
-                    status = "UNCHANGED"
+                    invest_status = "UNCHANGED"
                     unchanged_items.append(sym)
+
+            invest_cfg = STATUS_CONFIG.get(invest_status, STATUS_CONFIG["UNCHANGED"])
+
+            # 2. 淨值佔比分析
+            today_value_alloc = float(today_map[sym].get("value_alloc", today_map[sym].get("allocation", 0.0))) if in_today else 0.0
+            has_yesterday_value = in_yesterday and ("value_alloc" in yesterday_map[sym])
+
+            if is_first_day:
+                yesterday_value_alloc = today_value_alloc
+                value_diff = 0.0
+                value_status = "UNCHANGED"
+            elif not has_yesterday_value:
+                # 昨日歷史若無淨值欄位紀錄
+                yesterday_value_alloc = None
+                value_diff = None
+                value_status = "NEW" if in_today and not in_yesterday else "INITIAL"
+            else:
+                yesterday_value_alloc = float(yesterday_map[sym].get("value_alloc", 0.0))
+                value_diff = round(today_value_alloc - yesterday_value_alloc, 2)
+
+                if in_today and not in_yesterday:
+                    value_status = "NEW"
+                elif not in_today and in_yesterday:
+                    value_status = "CLOSED"
+                elif value_diff > 0.0:
+                    value_status = "INCREASED"
+                elif value_diff < 0.0:
+                    value_status = "DECREASED"
+                else:
+                    value_status = "UNCHANGED"
+
+            value_cfg = VALUE_STATUS_CONFIG.get(value_status, VALUE_STATUS_CONFIG["UNCHANGED"])
 
             name = today_map[sym]["name"] if in_today else yesterday_map[sym].get("name", sym)
             instrument_type = today_map[sym].get("instrument_type", "Stocks") if in_today else yesterday_map[sym].get("instrument_type", "Stocks")
-            cfg = STATUS_CONFIG.get(status, STATUS_CONFIG["UNCHANGED"])
 
             avg_open_rate = today_map[sym].get("avg_open_rate") if in_today else yesterday_map[sym].get("avg_open_rate")
             current_rate = today_map[sym].get("current_rate") if in_today else yesterday_map[sym].get("current_rate")
@@ -92,26 +133,46 @@ class PortfolioAnalyzer:
                 "symbol": sym,
                 "name": name,
                 "instrument_type": instrument_type,
-                "yesterday_alloc": yesterday_alloc,
-                "today_alloc": today_alloc,
-                "diff": diff,
-                "status": status,
-                "status_label": cfg["label"],
-                "status_badge": cfg["badge"],
-                "status_color": cfg["color"],
-                "status_icon": cfg["icon"],
+                # 投資佔比 (Invested %)
+                "yesterday_invest_alloc": yesterday_invest_alloc,
+                "today_invest_alloc": today_invest_alloc,
+                "invest_diff": invest_diff,
+                "invest_status": invest_status,
+                "invest_status_label": invest_cfg["label"],
+                "invest_status_badge": invest_cfg["badge"],
+                "invest_status_color": invest_cfg["color"],
+                "invest_status_icon": invest_cfg["icon"],
+                # 淨值佔比 (Value %)
+                "yesterday_value_alloc": yesterday_value_alloc,
+                "today_value_alloc": today_value_alloc,
+                "value_diff": value_diff,
+                "value_status": value_status,
+                "value_status_label": value_cfg["label"],
+                "value_status_badge": value_cfg["badge"],
+                "value_status_color": value_cfg["color"],
+                "value_status_icon": value_cfg["icon"],
+                # 向後相容既有欄位
+                "yesterday_alloc": yesterday_invest_alloc,
+                "today_alloc": today_invest_alloc,
+                "diff": invest_diff,
+                "status": invest_status,
+                "status_label": invest_cfg["label"],
+                "status_badge": invest_cfg["badge"],
+                "status_color": invest_cfg["color"],
+                "status_icon": invest_cfg["icon"],
+                # 價格與狀態
                 "avg_open_rate": avg_open_rate,
                 "current_rate": current_rate,
                 "net_profit": net_profit,
                 "is_active": in_today
             })
 
-        # 排序邏輯：今日持倉依「今日佔比 (today_alloc)」由大到小降冪排序；已平倉標的排在最下方
+        # 排序邏輯：今日持倉依「今日投資佔比 (today_invest_alloc)」由大到小降冪排序；已平倉標的排在最下方
         def sort_priority(item):
             return (
                 0 if item["is_active"] else 1,
-                -item["today_alloc"],
-                -item["yesterday_alloc"]
+                -item["today_invest_alloc"],
+                -item["yesterday_invest_alloc"]
             )
 
         sorted_changes = sorted(changes, key=sort_priority)
