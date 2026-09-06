@@ -6987,7 +6987,7 @@
     "notified": true
   },
   "2026-09-06": {
-    "update_time": "2026-09-06 09:21:14",
+    "update_time": "2026-09-06 12:41:36",
     "cash_balance": {
       "available_cash_pct": 18.31,
       "total_invested_pct": 81.69,
@@ -7357,9 +7357,9 @@
         "invest_alloc": 1.2,
         "value_alloc": 1.03,
         "instrument_type": "Stocks",
-        "net_profit": 34.47,
+        "net_profit": 34.46,
         "avg_open_rate": 59432.6,
-        "current_rate": 79923.14
+        "current_rate": 79909.6
       },
       {
         "symbol": "ACHR",
