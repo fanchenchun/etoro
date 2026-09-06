@@ -1,7 +1,7 @@
 {
   "username": "miulatw",
-  "date": "2026-09-06",
-  "update_time": "2026-09-06 13:06:41",
+  "date": "2026-09-07",
+  "update_time": "2026-09-07 06:54:25",
   "cash_balance": {
     "available_cash_pct": 18.31,
     "total_invested_pct": 81.69,
@@ -371,9 +371,9 @@
       "invest_alloc": 1.2,
       "value_alloc": 1.03,
       "instrument_type": "Stocks",
-      "net_profit": 34.38,
+      "net_profit": 34.64,
       "avg_open_rate": 59432.6,
-      "current_rate": 79863.9
+      "current_rate": 80018.6
     },
     {
       "symbol": "ACHR",
@@ -439,7 +439,7 @@
     "country": "臺灣",
     "created_at": "2026-08-21T14:23:13.853Z",
     "created_at_formatted": "2026/08/21 22:23",
-    "relative_time": "15 天前",
+    "relative_time": "16 天前",
     "raw_content": "買進 $KTOS",
     "content": "買進 $KTOS (Kratos Defense & Security Solutions Inc)",
     "content_html": "買進 <span class=\"text-emerald-400 font-semibold\">$KTOS (Kratos Defense & Security Solutions Inc)</span>",
@@ -1568,14 +1568,14 @@
         "invest_status_badge": "⚪ 持平",
         "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "invest_status_icon": "⚪",
-        "yesterday_value_alloc": 1.02,
+        "yesterday_value_alloc": 1.03,
         "today_value_alloc": 1.03,
-        "value_diff": 0.01,
-        "value_status": "INCREASED",
-        "value_status_label": "增加",
-        "value_status_badge": "🟢 增加",
-        "value_status_color": "text-green-400 bg-green-950/60 border-green-500/30",
-        "value_status_icon": "🟢",
+        "value_diff": 0.0,
+        "value_status": "UNCHANGED",
+        "value_status_label": "持平",
+        "value_status_badge": "⚪ 持平",
+        "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
+        "value_status_icon": "⚪",
         "yesterday_alloc": 1.2,
         "today_alloc": 1.2,
         "diff": 0.0,
@@ -1585,8 +1585,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 59432.6,
-        "current_rate": 79863.9,
-        "net_profit": 34.38,
+        "current_rate": 80018.6,
+        "net_profit": 34.64,
         "is_active": true
       },
       {
@@ -2082,9 +2082,9 @@
         "invest_alloc": 1.2,
         "value_alloc": 1.03,
         "instrument_type": "Stocks",
-        "net_profit": 34.38,
+        "net_profit": 34.64,
         "avg_open_rate": 59432.6,
-        "current_rate": 79863.9
+        "current_rate": 80018.6
       },
       {
         "symbol": "ACHR",
@@ -2500,11 +2500,11 @@
         "name": "Bitcoin",
         "allocation": 1.2,
         "invest_alloc": 1.2,
-        "value_alloc": 1.02,
+        "value_alloc": 1.03,
         "instrument_type": "Stocks",
-        "net_profit": 33.86,
+        "net_profit": 34.38,
         "avg_open_rate": 59432.6,
-        "current_rate": 79555.3
+        "current_rate": 79863.9
       },
       {
         "symbol": "ACHR",
@@ -2562,8 +2562,8 @@
         "current_rate": 278.66
       }
     ],
-    "today_date": "2026/09/06",
-    "yesterday_date": "2026/09/05"
+    "today_date": "2026/09/07",
+    "yesterday_date": "2026/09/06"
   },
   "notified": true
 }
