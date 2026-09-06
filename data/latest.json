@@ -1,7 +1,7 @@
 {
   "username": "miulatw",
   "date": "2026-09-06",
-  "update_time": "2026-09-06 09:00:30",
+  "update_time": "2026-09-06 09:21:14",
   "cash_balance": {
     "available_cash_pct": 18.31,
     "total_invested_pct": 81.69,
@@ -371,9 +371,9 @@
       "invest_alloc": 1.2,
       "value_alloc": 1.03,
       "instrument_type": "Stocks",
-      "net_profit": 34.46,
+      "net_profit": 34.47,
       "avg_open_rate": 59432.6,
-      "current_rate": 79919.82
+      "current_rate": 79923.14
     },
     {
       "symbol": "ACHR",
@@ -1585,8 +1585,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 59432.6,
-        "current_rate": 79919.82,
-        "net_profit": 34.46,
+        "current_rate": 79923.14,
+        "net_profit": 34.47,
         "is_active": true
       },
       {
@@ -2082,9 +2082,9 @@
         "invest_alloc": 1.2,
         "value_alloc": 1.03,
         "instrument_type": "Stocks",
-        "net_profit": 34.46,
+        "net_profit": 34.47,
         "avg_open_rate": 59432.6,
-        "current_rate": 79919.82
+        "current_rate": 79923.14
       },
       {
         "symbol": "ACHR",
