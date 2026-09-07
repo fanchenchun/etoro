@@ -2,7 +2,7 @@
   "username": "jeppekirkbonde",
   "display_name": "Jeppe Kirk Bonde",
   "date": "2026-09-08",
-  "update_time": "2026-09-08 07:31:42",
+  "update_time": "2026-09-08 07:47:11",
   "cash_balance": {
     "available_cash_pct": 0.02,
     "total_invested_pct": 99.98,
@@ -163,7 +163,7 @@
       "invest_alloc": 2.37,
       "value_alloc": 2.68,
       "instrument_type": "Stocks",
-      "net_profit": 103.28,
+      "net_profit": 103.29,
       "avg_open_rate": 42.36,
       "current_rate": 79.0
     },
@@ -201,17 +201,6 @@
       "current_rate": 155.58
     },
     {
-      "symbol": "VRTX",
-      "name": "Vertex Pharmaceuticals Incorporated",
-      "allocation": 1.89,
-      "invest_alloc": 1.89,
-      "value_alloc": 2.06,
-      "instrument_type": "Stocks",
-      "net_profit": 96.03,
-      "avg_open_rate": 278.61,
-      "current_rate": 546.14
-    },
-    {
       "symbol": "D",
       "name": "Dominion Energy Inc",
       "allocation": 1.89,
@@ -223,13 +212,24 @@
       "current_rate": 65.78
     },
     {
+      "symbol": "VRTX",
+      "name": "Vertex Pharmaceuticals Incorporated",
+      "allocation": 1.89,
+      "invest_alloc": 1.89,
+      "value_alloc": 2.06,
+      "instrument_type": "Stocks",
+      "net_profit": 96.03,
+      "avg_open_rate": 278.61,
+      "current_rate": 546.14
+    },
+    {
       "symbol": "NOVO",
       "name": "Novo Nordisk B A/S",
       "allocation": 1.82,
       "invest_alloc": 1.82,
       "value_alloc": 0.52,
       "instrument_type": "Stocks",
-      "net_profit": -48.83,
+      "net_profit": -48.84,
       "avg_open_rate": 649.27,
       "current_rate": 298.25
     },
@@ -284,7 +284,7 @@
       "invest_alloc": 1.63,
       "value_alloc": 1.62,
       "instrument_type": "Stocks",
-      "net_profit": 80.12,
+      "net_profit": 80.14,
       "avg_open_rate": 316.36,
       "current_rate": 550.4
     },
@@ -322,17 +322,6 @@
       "current_rate": 144.54
     },
     {
-      "symbol": "ISHARES",
-      "name": "iShares MSCI India ETF",
-      "allocation": 1.46,
-      "invest_alloc": 1.46,
-      "value_alloc": 1.23,
-      "instrument_type": "Stocks",
-      "net_profit": 50.72,
-      "avg_open_rate": 33.1,
-      "current_rate": 49.89
-    },
-    {
       "symbol": "AMZN",
       "name": "Amazon.com Inc",
       "allocation": 1.46,
@@ -342,6 +331,17 @@
       "net_profit": 63.53,
       "avg_open_rate": 157.97,
       "current_rate": 258.32
+    },
+    {
+      "symbol": "ISHARES",
+      "name": "iShares MSCI India ETF",
+      "allocation": 1.46,
+      "invest_alloc": 1.46,
+      "value_alloc": 1.23,
+      "instrument_type": "Stocks",
+      "net_profit": 50.72,
+      "avg_open_rate": 33.1,
+      "current_rate": 49.89
     },
     {
       "symbol": "THALES",
@@ -355,17 +355,6 @@
       "current_rate": 231.4
     },
     {
-      "symbol": "WALT",
-      "name": "Walt Disney",
-      "allocation": 1.26,
-      "invest_alloc": 1.26,
-      "value_alloc": 0.69,
-      "instrument_type": "Stocks",
-      "net_profit": -1.05,
-      "avg_open_rate": 106.42,
-      "current_rate": 105.3
-    },
-    {
       "symbol": "FSLR",
       "name": "First Solar, Inc.",
       "allocation": 1.26,
@@ -377,13 +366,24 @@
       "current_rate": 204.5
     },
     {
+      "symbol": "WALT",
+      "name": "Walt Disney",
+      "allocation": 1.26,
+      "invest_alloc": 1.26,
+      "value_alloc": 0.69,
+      "instrument_type": "Stocks",
+      "net_profit": -1.05,
+      "avg_open_rate": 106.42,
+      "current_rate": 105.3
+    },
+    {
       "symbol": "ANTO.L",
       "name": "Antofagasta",
       "allocation": 1.2,
       "invest_alloc": 1.2,
       "value_alloc": 0.72,
       "instrument_type": "Stocks",
-      "net_profit": 7.01,
+      "net_profit": 7.02,
       "avg_open_rate": 3632.33,
       "current_rate": 3900.0
     },
@@ -427,7 +427,7 @@
       "invest_alloc": 0.91,
       "value_alloc": 2.23,
       "instrument_type": "Stocks",
-      "net_profit": 338.35,
+      "net_profit": 338.36,
       "avg_open_rate": 11.01,
       "current_rate": 44.37
     },
@@ -482,7 +482,7 @@
       "invest_alloc": 0.8,
       "value_alloc": 0.59,
       "instrument_type": "Stocks",
-      "net_profit": 31.86,
+      "net_profit": 31.87,
       "avg_open_rate": 72.75,
       "current_rate": 94.5
     },
@@ -509,17 +509,6 @@
       "current_rate": 358.34
     },
     {
-      "symbol": "SAMSUNG",
-      "name": "Samsung Electronics Co Ltd - GDR",
-      "allocation": 0.69,
-      "invest_alloc": 0.69,
-      "value_alloc": 1.35,
-      "instrument_type": "Stocks",
-      "net_profit": 250.44,
-      "avg_open_rate": 1439.62,
-      "current_rate": 5045.0
-    },
-    {
       "symbol": "NOC",
       "name": "Northrop Grumman Corp",
       "allocation": 0.69,
@@ -529,6 +518,17 @@
       "net_profit": 32.48,
       "avg_open_rate": 388.1,
       "current_rate": 514.15
+    },
+    {
+      "symbol": "SAMSUNG",
+      "name": "Samsung Electronics Co Ltd - GDR",
+      "allocation": 0.69,
+      "invest_alloc": 0.69,
+      "value_alloc": 1.35,
+      "instrument_type": "Stocks",
+      "net_profit": 250.44,
+      "avg_open_rate": 1439.62,
+      "current_rate": 5045.0
     },
     {
       "symbol": "PROGYNY",
@@ -586,17 +586,6 @@
       "current_rate": 2.78
     },
     {
-      "symbol": "RIOT",
-      "name": "Riot Platforms Inc",
-      "allocation": 0.57,
-      "invest_alloc": 0.57,
-      "value_alloc": 0.99,
-      "instrument_type": "Stocks",
-      "net_profit": 214.88,
-      "avg_open_rate": 6.92,
-      "current_rate": 21.79
-    },
-    {
       "symbol": "HAS",
       "name": "Hasbro Inc",
       "allocation": 0.57,
@@ -606,6 +595,17 @@
       "net_profit": 14.57,
       "avg_open_rate": 80.73,
       "current_rate": 92.49
+    },
+    {
+      "symbol": "RIOT",
+      "name": "Riot Platforms Inc",
+      "allocation": 0.57,
+      "invest_alloc": 0.57,
+      "value_alloc": 0.99,
+      "instrument_type": "Stocks",
+      "net_profit": 214.88,
+      "avg_open_rate": 6.92,
+      "current_rate": 21.79
     },
     {
       "symbol": "FORTUM",
@@ -619,6 +619,17 @@
       "current_rate": 21.28
     },
     {
+      "symbol": "ORKLA",
+      "name": "Orkla",
+      "allocation": 0.5,
+      "invest_alloc": 0.5,
+      "value_alloc": 0.38,
+      "instrument_type": "Stocks",
+      "net_profit": 34.79,
+      "avg_open_rate": 79.27,
+      "current_rate": 92.45
+    },
+    {
       "symbol": "RALPH",
       "name": "Ralph Lauren Corp",
       "allocation": 0.5,
@@ -628,17 +639,6 @@
       "net_profit": -1.22,
       "avg_open_rate": 355.01,
       "current_rate": 350.69
-    },
-    {
-      "symbol": "ORKLA",
-      "name": "Orkla",
-      "allocation": 0.5,
-      "invest_alloc": 0.5,
-      "value_alloc": 0.38,
-      "instrument_type": "Stocks",
-      "net_profit": 34.77,
-      "avg_open_rate": 79.27,
-      "current_rate": 92.45
     },
     {
       "symbol": "EMAAR",
@@ -1213,7 +1213,7 @@
         "status_icon": "⚪",
         "avg_open_rate": 42.36,
         "current_rate": 79.0,
-        "net_profit": 103.28,
+        "net_profit": 103.29,
         "is_active": true
       },
       {
@@ -1378,7 +1378,7 @@
         "status_icon": "⚪",
         "avg_open_rate": 649.27,
         "current_rate": 298.25,
-        "net_profit": -48.83,
+        "net_profit": -48.84,
         "is_active": true
       },
       {
@@ -1543,7 +1543,7 @@
         "status_icon": "⚪",
         "avg_open_rate": 316.36,
         "current_rate": 550.4,
-        "net_profit": 80.12,
+        "net_profit": 80.14,
         "is_active": true
       },
       {
@@ -1807,7 +1807,7 @@
         "status_icon": "⚪",
         "avg_open_rate": 3632.33,
         "current_rate": 3900.0,
-        "net_profit": 7.01,
+        "net_profit": 7.02,
         "is_active": true
       },
       {
@@ -1972,7 +1972,7 @@
         "status_icon": "⚪",
         "avg_open_rate": 11.01,
         "current_rate": 44.37,
-        "net_profit": 338.35,
+        "net_profit": 338.36,
         "is_active": true
       },
       {
@@ -2104,7 +2104,7 @@
         "status_icon": "⚪",
         "avg_open_rate": 72.75,
         "current_rate": 94.5,
-        "net_profit": 31.86,
+        "net_profit": 31.87,
         "is_active": true
       },
       {
@@ -2533,7 +2533,7 @@
         "status_icon": "⚪",
         "avg_open_rate": 79.27,
         "current_rate": 92.45,
-        "net_profit": 34.77,
+        "net_profit": 34.79,
         "is_active": true
       },
       {
@@ -3051,7 +3051,7 @@
         "invest_alloc": 2.37,
         "value_alloc": 2.68,
         "instrument_type": "Stocks",
-        "net_profit": 103.28,
+        "net_profit": 103.29,
         "avg_open_rate": 42.36,
         "current_rate": 79.0
       },
@@ -3089,17 +3089,6 @@
         "current_rate": 155.58
       },
       {
-        "symbol": "VRTX",
-        "name": "Vertex Pharmaceuticals Incorporated",
-        "allocation": 1.89,
-        "invest_alloc": 1.89,
-        "value_alloc": 2.06,
-        "instrument_type": "Stocks",
-        "net_profit": 96.03,
-        "avg_open_rate": 278.61,
-        "current_rate": 546.14
-      },
-      {
         "symbol": "D",
         "name": "Dominion Energy Inc",
         "allocation": 1.89,
@@ -3111,13 +3100,24 @@
         "current_rate": 65.78
       },
       {
+        "symbol": "VRTX",
+        "name": "Vertex Pharmaceuticals Incorporated",
+        "allocation": 1.89,
+        "invest_alloc": 1.89,
+        "value_alloc": 2.06,
+        "instrument_type": "Stocks",
+        "net_profit": 96.03,
+        "avg_open_rate": 278.61,
+        "current_rate": 546.14
+      },
+      {
         "symbol": "NOVO",
         "name": "Novo Nordisk B A/S",
         "allocation": 1.82,
         "invest_alloc": 1.82,
         "value_alloc": 0.52,
         "instrument_type": "Stocks",
-        "net_profit": -48.83,
+        "net_profit": -48.84,
         "avg_open_rate": 649.27,
         "current_rate": 298.25
       },
@@ -3172,7 +3172,7 @@
         "invest_alloc": 1.63,
         "value_alloc": 1.62,
         "instrument_type": "Stocks",
-        "net_profit": 80.12,
+        "net_profit": 80.14,
         "avg_open_rate": 316.36,
         "current_rate": 550.4
       },
@@ -3210,17 +3210,6 @@
         "current_rate": 144.54
       },
       {
-        "symbol": "ISHARES",
-        "name": "iShares MSCI India ETF",
-        "allocation": 1.46,
-        "invest_alloc": 1.46,
-        "value_alloc": 1.23,
-        "instrument_type": "Stocks",
-        "net_profit": 50.72,
-        "avg_open_rate": 33.1,
-        "current_rate": 49.89
-      },
-      {
         "symbol": "AMZN",
         "name": "Amazon.com Inc",
         "allocation": 1.46,
@@ -3230,6 +3219,17 @@
         "net_profit": 63.53,
         "avg_open_rate": 157.97,
         "current_rate": 258.32
+      },
+      {
+        "symbol": "ISHARES",
+        "name": "iShares MSCI India ETF",
+        "allocation": 1.46,
+        "invest_alloc": 1.46,
+        "value_alloc": 1.23,
+        "instrument_type": "Stocks",
+        "net_profit": 50.72,
+        "avg_open_rate": 33.1,
+        "current_rate": 49.89
       },
       {
         "symbol": "THALES",
@@ -3243,17 +3243,6 @@
         "current_rate": 231.4
       },
       {
-        "symbol": "WALT",
-        "name": "Walt Disney",
-        "allocation": 1.26,
-        "invest_alloc": 1.26,
-        "value_alloc": 0.69,
-        "instrument_type": "Stocks",
-        "net_profit": -1.05,
-        "avg_open_rate": 106.42,
-        "current_rate": 105.3
-      },
-      {
         "symbol": "FSLR",
         "name": "First Solar, Inc.",
         "allocation": 1.26,
@@ -3265,13 +3254,24 @@
         "current_rate": 204.5
       },
       {
+        "symbol": "WALT",
+        "name": "Walt Disney",
+        "allocation": 1.26,
+        "invest_alloc": 1.26,
+        "value_alloc": 0.69,
+        "instrument_type": "Stocks",
+        "net_profit": -1.05,
+        "avg_open_rate": 106.42,
+        "current_rate": 105.3
+      },
+      {
         "symbol": "ANTO.L",
         "name": "Antofagasta",
         "allocation": 1.2,
         "invest_alloc": 1.2,
         "value_alloc": 0.72,
         "instrument_type": "Stocks",
-        "net_profit": 7.01,
+        "net_profit": 7.02,
         "avg_open_rate": 3632.33,
         "current_rate": 3900.0
       },
@@ -3315,7 +3315,7 @@
         "invest_alloc": 0.91,
         "value_alloc": 2.23,
         "instrument_type": "Stocks",
-        "net_profit": 338.35,
+        "net_profit": 338.36,
         "avg_open_rate": 11.01,
         "current_rate": 44.37
       },
@@ -3370,7 +3370,7 @@
         "invest_alloc": 0.8,
         "value_alloc": 0.59,
         "instrument_type": "Stocks",
-        "net_profit": 31.86,
+        "net_profit": 31.87,
         "avg_open_rate": 72.75,
         "current_rate": 94.5
       },
@@ -3397,17 +3397,6 @@
         "current_rate": 358.34
       },
       {
-        "symbol": "SAMSUNG",
-        "name": "Samsung Electronics Co Ltd - GDR",
-        "allocation": 0.69,
-        "invest_alloc": 0.69,
-        "value_alloc": 1.35,
-        "instrument_type": "Stocks",
-        "net_profit": 250.44,
-        "avg_open_rate": 1439.62,
-        "current_rate": 5045.0
-      },
-      {
         "symbol": "NOC",
         "name": "Northrop Grumman Corp",
         "allocation": 0.69,
@@ -3417,6 +3406,17 @@
         "net_profit": 32.48,
         "avg_open_rate": 388.1,
         "current_rate": 514.15
+      },
+      {
+        "symbol": "SAMSUNG",
+        "name": "Samsung Electronics Co Ltd - GDR",
+        "allocation": 0.69,
+        "invest_alloc": 0.69,
+        "value_alloc": 1.35,
+        "instrument_type": "Stocks",
+        "net_profit": 250.44,
+        "avg_open_rate": 1439.62,
+        "current_rate": 5045.0
       },
       {
         "symbol": "PROGYNY",
@@ -3474,17 +3474,6 @@
         "current_rate": 2.78
       },
       {
-        "symbol": "RIOT",
-        "name": "Riot Platforms Inc",
-        "allocation": 0.57,
-        "invest_alloc": 0.57,
-        "value_alloc": 0.99,
-        "instrument_type": "Stocks",
-        "net_profit": 214.88,
-        "avg_open_rate": 6.92,
-        "current_rate": 21.79
-      },
-      {
         "symbol": "HAS",
         "name": "Hasbro Inc",
         "allocation": 0.57,
@@ -3494,6 +3483,17 @@
         "net_profit": 14.57,
         "avg_open_rate": 80.73,
         "current_rate": 92.49
+      },
+      {
+        "symbol": "RIOT",
+        "name": "Riot Platforms Inc",
+        "allocation": 0.57,
+        "invest_alloc": 0.57,
+        "value_alloc": 0.99,
+        "instrument_type": "Stocks",
+        "net_profit": 214.88,
+        "avg_open_rate": 6.92,
+        "current_rate": 21.79
       },
       {
         "symbol": "FORTUM",
@@ -3507,6 +3507,17 @@
         "current_rate": 21.28
       },
       {
+        "symbol": "ORKLA",
+        "name": "Orkla",
+        "allocation": 0.5,
+        "invest_alloc": 0.5,
+        "value_alloc": 0.38,
+        "instrument_type": "Stocks",
+        "net_profit": 34.79,
+        "avg_open_rate": 79.27,
+        "current_rate": 92.45
+      },
+      {
         "symbol": "RALPH",
         "name": "Ralph Lauren Corp",
         "allocation": 0.5,
@@ -3516,17 +3527,6 @@
         "net_profit": -1.22,
         "avg_open_rate": 355.01,
         "current_rate": 350.69
-      },
-      {
-        "symbol": "ORKLA",
-        "name": "Orkla",
-        "allocation": 0.5,
-        "invest_alloc": 0.5,
-        "value_alloc": 0.38,
-        "instrument_type": "Stocks",
-        "net_profit": 34.77,
-        "avg_open_rate": 79.27,
-        "current_rate": 92.45
       },
       {
         "symbol": "EMAAR",

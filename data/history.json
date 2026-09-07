@@ -7454,7 +7454,7 @@
     "notified": false
   },
   "2026-09-08": {
-    "update_time": "2026-09-08 07:31:36",
+    "update_time": "2026-09-08 07:47:08",
     "cash_balance": {
       "available_cash_pct": 18.31,
       "total_invested_pct": 81.69,
@@ -7818,17 +7818,6 @@
         "current_rate": 59.82
       },
       {
-        "symbol": "BTC",
-        "name": "Bitcoin",
-        "allocation": 1.2,
-        "invest_alloc": 1.2,
-        "value_alloc": 1.01,
-        "instrument_type": "Stocks",
-        "net_profit": 32.9,
-        "avg_open_rate": 59432.6,
-        "current_rate": 78981.99
-      },
-      {
         "symbol": "ACHR",
         "name": "Archer Aviation Inc",
         "allocation": 1.2,
@@ -7838,6 +7827,17 @@
         "net_profit": 22.69,
         "avg_open_rate": 4.65,
         "current_rate": 5.71
+      },
+      {
+        "symbol": "BTC",
+        "name": "Bitcoin",
+        "allocation": 1.2,
+        "invest_alloc": 1.2,
+        "value_alloc": 1.02,
+        "instrument_type": "Stocks",
+        "net_profit": 33.1,
+        "avg_open_rate": 59432.6,
+        "current_rate": 79106.3
       },
       {
         "symbol": "SE",
@@ -7918,6 +7918,6 @@
       "has_significant_changes": false
     },
     "ai_summary": "【今日持倉持穩】miulatw 今日投資組合維持穩定，各主要美股持倉比重未見顯著增減，整體維持原有之科技巨頭與主題成長股長期配置架構。目前前三大核心配置為：QQQ (6.32%)、GOOG (3.45%)、AMZN (3.4%)。",
-    "notified": false
+    "notified": true
   }
 }

@@ -2,7 +2,7 @@
   "username": "miulatw",
   "display_name": "Miula",
   "date": "2026-09-08",
-  "update_time": "2026-09-08 07:31:36",
+  "update_time": "2026-09-08 07:47:08",
   "cash_balance": {
     "available_cash_pct": 18.31,
     "total_invested_pct": 81.69,
@@ -366,17 +366,6 @@
       "current_rate": 59.82
     },
     {
-      "symbol": "BTC",
-      "name": "Bitcoin",
-      "allocation": 1.2,
-      "invest_alloc": 1.2,
-      "value_alloc": 1.01,
-      "instrument_type": "Stocks",
-      "net_profit": 32.9,
-      "avg_open_rate": 59432.6,
-      "current_rate": 78981.99
-    },
-    {
       "symbol": "ACHR",
       "name": "Archer Aviation Inc",
       "allocation": 1.2,
@@ -386,6 +375,17 @@
       "net_profit": 22.69,
       "avg_open_rate": 4.65,
       "current_rate": 5.71
+    },
+    {
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "allocation": 1.2,
+      "invest_alloc": 1.2,
+      "value_alloc": 1.02,
+      "instrument_type": "Stocks",
+      "net_profit": 33.1,
+      "avg_open_rate": 59432.6,
+      "current_rate": 79106.3
     },
     {
       "symbol": "SE",
@@ -1570,8 +1570,8 @@
         "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "invest_status_icon": "⚪",
         "yesterday_value_alloc": 1.03,
-        "today_value_alloc": 1.01,
-        "value_diff": -0.02,
+        "today_value_alloc": 1.02,
+        "value_diff": -0.01,
         "value_status": "DECREASED",
         "value_status_label": "減少",
         "value_status_badge": "🔴 減少",
@@ -1586,8 +1586,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 59432.6,
-        "current_rate": 78981.99,
-        "net_profit": 32.9,
+        "current_rate": 79106.3,
+        "net_profit": 33.1,
         "is_active": true
       },
       {
@@ -2077,17 +2077,6 @@
         "current_rate": 59.82
       },
       {
-        "symbol": "BTC",
-        "name": "Bitcoin",
-        "allocation": 1.2,
-        "invest_alloc": 1.2,
-        "value_alloc": 1.01,
-        "instrument_type": "Stocks",
-        "net_profit": 32.9,
-        "avg_open_rate": 59432.6,
-        "current_rate": 78981.99
-      },
-      {
         "symbol": "ACHR",
         "name": "Archer Aviation Inc",
         "allocation": 1.2,
@@ -2097,6 +2086,17 @@
         "net_profit": 22.69,
         "avg_open_rate": 4.65,
         "current_rate": 5.71
+      },
+      {
+        "symbol": "BTC",
+        "name": "Bitcoin",
+        "allocation": 1.2,
+        "invest_alloc": 1.2,
+        "value_alloc": 1.02,
+        "instrument_type": "Stocks",
+        "net_profit": 33.1,
+        "avg_open_rate": 59432.6,
+        "current_rate": 79106.3
       },
       {
         "symbol": "SE",
@@ -2566,5 +2566,5 @@
     "today_date": "2026/09/08",
     "yesterday_date": "2026/09/07"
   },
-  "notified": false
+  "notified": true
 }
