@@ -1,7 +1,7 @@
 {
   "username": "miulatw",
   "date": "2026-09-07",
-  "update_time": "2026-09-07 09:19:10",
+  "update_time": "2026-09-07 12:44:12",
   "cash_balance": {
     "available_cash_pct": 18.31,
     "total_invested_pct": 81.69,
@@ -369,11 +369,11 @@
       "name": "Bitcoin",
       "allocation": 1.2,
       "invest_alloc": 1.2,
-      "value_alloc": 1.03,
+      "value_alloc": 1.02,
       "instrument_type": "Stocks",
-      "net_profit": 34.55,
+      "net_profit": 34.03,
       "avg_open_rate": 59432.6,
-      "current_rate": 79956.06
+      "current_rate": 79660.35
     },
     {
       "symbol": "ACHR",
@@ -1569,13 +1569,13 @@
         "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "invest_status_icon": "⚪",
         "yesterday_value_alloc": 1.03,
-        "today_value_alloc": 1.03,
-        "value_diff": 0.0,
-        "value_status": "UNCHANGED",
-        "value_status_label": "持平",
-        "value_status_badge": "⚪ 持平",
-        "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
-        "value_status_icon": "⚪",
+        "today_value_alloc": 1.02,
+        "value_diff": -0.01,
+        "value_status": "DECREASED",
+        "value_status_label": "減少",
+        "value_status_badge": "🔴 減少",
+        "value_status_color": "text-amber-400 bg-amber-950/60 border-amber-500/30",
+        "value_status_icon": "🔴",
         "yesterday_alloc": 1.2,
         "today_alloc": 1.2,
         "diff": 0.0,
@@ -1585,8 +1585,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 59432.6,
-        "current_rate": 79956.06,
-        "net_profit": 34.55,
+        "current_rate": 79660.35,
+        "net_profit": 34.03,
         "is_active": true
       },
       {
@@ -2080,11 +2080,11 @@
         "name": "Bitcoin",
         "allocation": 1.2,
         "invest_alloc": 1.2,
-        "value_alloc": 1.03,
+        "value_alloc": 1.02,
         "instrument_type": "Stocks",
-        "net_profit": 34.55,
+        "net_profit": 34.03,
         "avg_open_rate": 59432.6,
-        "current_rate": 79956.06
+        "current_rate": 79660.35
       },
       {
         "symbol": "ACHR",
