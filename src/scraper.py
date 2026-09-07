@@ -212,6 +212,14 @@ def get_mock_comment_data() -> Dict[str, Any]:
     }
 
 
+# eToro 已知用戶 GCID 與 RealCID 對應表 (加速 API 調用)
+KNOWN_USER_IDS = {
+    "miulatw": {"gcid": 8506401, "real_cid": 8220524},
+    "jeppekirkbonde": {"gcid": 3247295, "real_cid": 2988943},
+    "cphequities": {"gcid": 6502229, "real_cid": 6216244},
+}
+
+
 class EToroScraper:
     def __init__(self, username: str = "miulatw", headless: bool = True, timeout: int = 35000):
         self.username = username
@@ -220,8 +228,9 @@ class EToroScraper:
         self.headless = headless
         self.timeout = timeout
         self.intercepted_data: Optional[List[Dict[str, Any]]] = None
-        self.gcid: Optional[int] = 8506401 if username.lower() == "miulatw" else None
-        self.real_cid: Optional[int] = 8220524 if username.lower() == "miulatw" else None
+        known = KNOWN_USER_IDS.get(username.lower(), {})
+        self.gcid: Optional[int] = known.get("gcid")
+        self.real_cid: Optional[int] = known.get("real_cid")
         self.cash_balance: Dict[str, float] = {
             "available_cash_pct": 18.46,
             "total_invested_pct": 81.54
@@ -365,7 +374,7 @@ class EToroScraper:
         if not self.real_cid:
             self.fetch_user_info()
 
-        cid = self.real_cid or (8220524 if self.username.lower() == "miulatw" else None)
+        cid = self.real_cid or KNOWN_USER_IDS.get(self.username.lower(), {}).get("real_cid")
         if not cid:
             logger.warning(f"未能獲取用戶 {self.username} 的 Customer ID")
             return None

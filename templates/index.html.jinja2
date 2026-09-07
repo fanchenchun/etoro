@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>eToro 投資組合追蹤儀表板 - {{ username }}</title>
+    <title>eToro 投資組合追蹤儀表板 - {{ display_name or username }} (@{{ username }})</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -61,9 +61,9 @@
 <body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500/30 selection:text-emerald-300">
 
     <!-- Top Navigation Header -->
-    <header class="sticky top-0 z-50 backdrop-blur-xl bg-[#090d16]/80 border-b border-gray-800/80">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
+    <header class="sticky top-0 z-50 backdrop-blur-xl bg-[#090d16]/90 border-b border-gray-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
+            <div class="flex items-center space-x-3 shrink-0">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
                     <i data-lucide="trending-up" class="w-5 h-5 text-gray-950 font-bold"></i>
                 </div>
@@ -72,22 +72,52 @@
                         <span class="font-bold text-lg text-white tracking-tight">eToro Tracker</span>
                         <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Live</span>
                     </div>
-                    <p class="text-xs text-gray-400">追蹤對象：<span class="text-gray-200 font-medium">@{{ username }}</span> (eToro 明星投資者)</p>
+                    <p class="text-xs text-gray-400">追蹤對象：<span class="text-gray-200 font-medium">{{ display_name or username }}</span> (@{{ username }})</p>
                 </div>
             </div>
 
-            <div class="flex items-center space-x-3">
-                <div class="hidden sm:flex items-center text-xs text-gray-400 bg-gray-900/90 px-3 py-1.5 rounded-lg border border-gray-800">
+            <!-- Desktop Investor Switcher Tabs -->
+            {% if investors and investors|length > 1 %}
+            <nav class="hidden md:flex items-center space-x-1.5 bg-gray-900/90 p-1.5 rounded-xl border border-gray-800/90 shadow-inner">
+                {% for inv in investors %}
+                {% set is_active = (inv.username|lower == username|lower) %}
+                <a href="{{ inv.html_file }}" 
+                   class="px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 flex items-center space-x-1.5 {% if is_active %}bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 text-emerald-300 border border-emerald-500/50 shadow-sm shadow-emerald-500/20{% else %}text-gray-400 hover:text-gray-200 hover:bg-gray-800/70 border border-transparent{% endif %}">
+                    <i data-lucide="user" class="w-3.5 h-3.5 {% if is_active %}text-emerald-400{% else %}text-gray-500{% endif %}"></i>
+                    <span>{{ inv.display_name }}</span>
+                </a>
+                {% endfor %}
+            </nav>
+            {% endif %}
+
+            <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
+                <div class="hidden xl:flex items-center text-xs text-gray-400 bg-gray-900/90 px-3 py-1.5 rounded-lg border border-gray-800">
                     <i data-lucide="clock" class="w-3.5 h-3.5 mr-1.5 text-cyan-400"></i>
                     最後更新：<span class="text-gray-200 font-mono ml-1">{{ update_time }}</span>
                 </div>
                 <a href="https://www.etoro.com/zh-tw/people/{{ username }}/portfolio" target="_blank" rel="noopener noreferrer" 
-                   class="inline-flex items-center px-3.5 py-1.5 text-xs font-medium rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 hover:border-gray-600 transition duration-150">
+                   class="inline-flex items-center px-3.5 py-1.5 text-xs font-medium rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 hover:border-gray-600 transition duration-150 shadow-sm">
                     <span>eToro 個人頁</span>
                     <i data-lucide="external-link" class="w-3.5 h-3.5 ml-1.5 text-gray-400"></i>
                 </a>
             </div>
         </div>
+
+        <!-- Mobile Investor Switcher Sub-bar -->
+        {% if investors and investors|length > 1 %}
+        <div class="md:hidden border-t border-gray-800/80 bg-gray-950/90 px-4 py-2 overflow-x-auto custom-scrollbar flex items-center space-x-2">
+            <span class="text-[11px] text-gray-400 shrink-0 font-medium mr-1 flex items-center">
+                <i data-lucide="users" class="w-3 h-3 mr-1 text-emerald-400"></i> 投資人：
+            </span>
+            {% for inv in investors %}
+            {% set is_active = (inv.username|lower == username|lower) %}
+            <a href="{{ inv.html_file }}" 
+               class="px-3 py-1 rounded-lg text-xs font-medium shrink-0 transition-all duration-150 flex items-center space-x-1.5 {% if is_active %}bg-emerald-500/20 text-emerald-300 border border-emerald-500/50 shadow-sm{% else %}text-gray-400 hover:text-gray-200 bg-gray-900/90 border border-gray-800{% endif %}">
+                <span>{{ inv.display_name }}</span>
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
     </header>
 
     <!-- Main Content Container -->

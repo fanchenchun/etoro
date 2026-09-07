@@ -6,27 +6,25 @@
 ![Gemini 1.5 Flash](https://img.shields.io/badge/AI-Gemini%201.5%20Flash-4285F4?style=for-the-badge&logo=google&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
 
-每日美股收盤後自動追蹤 eToro 明星投資者（預設 **`miulatw`**）的投資組合部位變動，比對昨日與今日持股佔比，結合 **Google Gemini 1.5 Flash** 產出繁體中文調倉總結，並透過「**多管道即時推播**」與「**GitHub Pages 現代深色儀表板**」雙軌呈現。
+每日美股收盤後自動追蹤 eToro 明星投資者（包含 **`miulatw` (Miula)**、**`jeppekirkbonde` (Jeppe Kirk Bonde)**、**`cphequities` (CPH Equities)** 等）的投資組合部位變動，比對昨日與今日持股佔比，結合 **Google Gemini 1.5 Flash** 產出繁體中文調倉總結，並透過「**多管道即時推播**」與「**GitHub Pages 多人物無縫切換深色儀表板**」雙軌呈現。
 
 ---
 
 ## ✨ 核心特色
 
-- 🎯 **自動追蹤與數據攔截**：使用 **Playwright** 模擬無頭瀏覽器，優先攔截 eToro 內部 API 封包，並具備 DOM Fallback 與 Mock 容錯機制。
+- 🎯 **多投資明星批次追蹤**：支援設定清單同時追蹤多位熱門投資者，資料與網頁完全隔離互不干擾。
+- 🧭 **多頁面無縫聯動切換**：桌面與手機端均內建人物切換導覽列，一鍵無縫跳轉不同明星專屬儀表板。
+- ⚡ **自動追蹤與 SAPI 極速攔截**：優先使用 eToro 官方 SAPI 獲取毫秒級真實部位，並具備 Playwright、DOM Fallback 與 Mock 容錯機制。
 - 🔍 **精準調倉比對引擎**：自動計算持股佔比增減量 (Δ%)，精準標記：
   - 🆕 **新開倉 (New Position)**：昨日無、今日新增之標的
   - ❌ **全數平倉 (Liquidated/Closed)**：昨日有、今日已全數出清之標的
   - 🟢 **加碼 (Increased)** / 🔴 **減碼 (Decreased)** / ⚪ **持平 (Unchanged)**
 - 🤖 **Gemini 1.5 Flash 智能摘要**：傳入調倉變動明細，自動產出 100~150 字精闢的繁體中文調倉解讀與板塊觀察。
-- 📲 **多管道通知分發**：
-  - **Telegram Bot**（Markdown 格式與連結）
-  - **LINE Notify**（圖文摘要格式）
-  - **Email (SMTP)**（深色質感 HTML 表格郵件）
-  - **Discord Webhook**（Rich Embed 訊息）
+- 📲 **多管道通知分發**：附帶各明星專屬儀表板連結 (Telegram Bot / LINE Bot / Email / Discord Webhook)。
 - 📊 **現代科技感 GitHub Pages 儀表板**：
   - **Tailwind CSS (Dark Mode)** + **Chart.js** 互動式資產佔比甜甜圈圖與變動幅度長條圖。
   - 具備即時搜尋與狀態標籤篩選功能的持股明細對照表。
-- ⚙️ **完全零維護雲端運作**：透過 **GitHub Actions** 於美股收盤後 (台灣時間 05:30) 定時執行並自動 Commit & Push 部署。
+- ⚙️ **完全零維護雲端運作**：透過 **GitHub Actions** 定時自動執行並自動 Commit & Push 部署。
 
 ---
 
@@ -36,23 +34,35 @@
 etoro/
 ├── .github/
 │   └── workflows/
-│       └── daily_tracker.yml      # GitHub Actions 每日美股收盤排程與自動部署
-├── data/
-│   ├── history.json               # 歷日歷史持股快照
-│   └── latest.json                # 最新一日持股、變動與 AI 摘要
+│       └── daily_tracker.yml      # GitHub Actions 定時自動執行與全檔案部署
+├── data/                          # 資料儲存區 (分人物獨立存放)
+│   ├── miulatw/
+│   │   ├── history.json           # Miula 歷日歷史持股快照
+│   │   └── latest.json            # Miula 最新一日數據
+│   ├── jeppekirkbonde/
+│   │   ├── history.json           # Jeppe 歷日歷史持股快照
+│   │   └── latest.json            # Jeppe 最新一日數據
+│   ├── cphequities/
+│   │   ├── history.json           # CPH Equities 歷日歷史持股快照
+│   │   └── latest.json            # CPH Equities 最新一日數據
+│   ├── history.json               # 向後相容 Miula 鏡像
+│   └── latest.json                # 向後相容 Miula 鏡像
 ├── src/
 │   ├── __init__.py
-│   ├── scraper.py                 # Playwright 爬蟲與 API 攔截器
+│   ├── config.py                  # 追蹤名單與人物網頁配置模組 (INVESTORS)
+│   ├── scraper.py                 # SAPI 與 Playwright 數據爬蟲模組
 │   ├── analyzer.py                # 持股佔比增減/新開倉/平倉比對邏輯
 │   ├── ai_summary.py              # Gemini 1.5 Flash 繁中摘要生成模組
 │   ├── notifier.py                # 多管道推播模組 (LINE/TG/Email/Discord)
-│   ├── build_page.py              # index.html 靜態網頁渲染器
-│   └── main.py                    # 執行總入口主程式
+│   ├── build_page.py              # 靜態網頁渲染器 (支援多人物批次生成)
+│   └── main.py                    # 執行總入口主程式 (支援批次/個別追蹤)
 ├── templates/
-│   └── index.html.jinja2          # 視覺化儀表板 Jinja2 模板
+│   └── index.html.jinja2          # 視覺化儀表板 Jinja2 模板 (含人物切換選單)
+├── index.html                     # Miula 專屬儀表板 (首頁)
+├── jeppekirkbonde.html            # Jeppe Kirk Bonde 專屬儀表板
+├── cphequities.html               # CPH Equities 專屬儀表板
 ├── .env.example                   # 本地環境變數範例檔
 ├── requirements.txt               # 相依套件清單
-├── index.html                     # 現代科技感的 GitHub Pages 儀表板
 └── README.md                      # 專案說明與設定指南
 ```
 

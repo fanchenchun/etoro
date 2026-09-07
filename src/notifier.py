@@ -39,8 +39,9 @@ logger = logging.getLogger(__name__)
 
 
 class NotificationDispatcher:
-    def __init__(self, username: str = "miulatw", pages_url: Optional[str] = None):
+    def __init__(self, username: str = "miulatw", pages_url: Optional[str] = None, display_name: Optional[str] = None):
         self.username = username
+        self.display_name = display_name or username
         self.pages_url = pages_url or os.getenv("PAGES_URL") or "https://fanchenchun.github.io/etoro/"
 
     def build_message_text(
@@ -59,7 +60,7 @@ class NotificationDispatcher:
         cash = cash_balance or {"available_cash_pct": 18.46, "total_invested_pct": 81.54}
 
         lines = [
-            f"🚀 【eToro 每日調倉日報 - @{self.username}】",
+            f"🚀 【eToro 每日調倉日報 - {self.display_name} (@{self.username})】",
             f"📅 更新時間：{now_str}",
             "",
             "🤖 【AI 每日調倉洞察總結】",
@@ -69,10 +70,11 @@ class NotificationDispatcher:
 
         # 若有最新動態留言
         if latest_comment and latest_comment.get("content"):
+            author = latest_comment.get("author_name") or self.display_name
             if latest_comment.get("is_new"):
-                lines.append("🔔 【Miula 最新動態更新 (NEW)】")
+                lines.append(f"🔔 【{author} 最新動態更新 (NEW)】")
             else:
-                lines.append("💬 【Miula 最新動態留言】")
+                lines.append(f"💬 【{author} 最新動態留言】")
             lines.append(f"「{latest_comment.get('content')}」")
             lines.append(f"🕒 發布時間：{latest_comment.get('relative_time')} ({latest_comment.get('created_at_formatted')})")
             lines.append(f"👍 讚數: {latest_comment.get('likes_count', 0)} | 💬 留言: {latest_comment.get('comments_count', 0)}")
@@ -161,8 +163,8 @@ class NotificationDispatcher:
                     <div style="display: flex; align-items: center;">
                         <img src="{latest_comment.get('avatar_url', '')}" style="width: 38px; height: 38px; border-radius: 8px; margin-right: 10px;" alt="Avatar">
                         <div>
-                            <strong style="color: #f8fafc; font-size: 14px;">{latest_comment.get('author_name', 'Miula')}</strong>
-                            <div style="color: #94a3b8; font-size: 11px;">{latest_comment.get('country', '臺灣')} • <span style="color: #38bdf8;">{latest_comment.get('relative_time', '')}</span> ({latest_comment.get('created_at_formatted', '')})</div>
+                            <strong style="color: #f8fafc; font-size: 14px;">{latest_comment.get('author_name', self.display_name)}</strong>
+                            <div style="color: #94a3b8; font-size: 11px;">{latest_comment.get('country', '全球')} • <span style="color: #38bdf8;">{latest_comment.get('relative_time', '')}</span> ({latest_comment.get('created_at_formatted', '')})</div>
                         </div>
                     </div>
                     <span style="background-color: {badge_bg}; color: {badge_color}; font-size: 11px; padding: 3px 8px; border-radius: 9999px; font-weight: bold;">{badge_text}</span>
@@ -197,7 +199,7 @@ class NotificationDispatcher:
         html = f"""
         <div style="background-color: #090d16; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 24px; border-radius: 12px; max-width: 650px; margin: auto; border: 1px solid #1f2937;">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1f2937; padding-bottom: 12px; margin-bottom: 16px;">
-                <h2 style="color: #38bdf8; margin: 0; font-size: 20px;">🚀 eToro 調倉日報 - @{self.username}</h2>
+                <h2 style="color: #38bdf8; margin: 0; font-size: 20px;">🚀 eToro 調倉日報 - {self.display_name} (@{self.username})</h2>
                 <span style="color: #94a3b8; font-size: 12px;">{now_str}</span>
             </div>
 
@@ -419,7 +421,7 @@ class NotificationDispatcher:
         text_msg = self.build_message_text(analysis_result, ai_summary, cash_balance, latest_comment)
         html_msg = self.build_html_report(analysis_result, ai_summary, cash_balance, latest_comment)
         date_str = get_taipei_now().strftime('%m/%d')
-        subject = f"📊 【eToro 調倉日報】@{self.username} - {date_str}"
+        subject = f"📊 【eToro 調倉日報】{self.display_name} (@{self.username}) - {date_str}"
 
         results = {
             "line_bot": self.send_line_bot_message(text_msg),

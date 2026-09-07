@@ -1,0 +1,2235 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eToro 投資組合追蹤儀表板 - CPH Equities (@cphequities)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            500: '#10b981',
+                            600: '#059669',
+                            dark: '#0a0f1d',
+                            card: '#111827',
+                            border: '#1f2937'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #090d16;
+            color: #e2e8f0;
+        }
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .glow-border {
+            box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.15), 0 0 10px -5px rgba(56, 189, 248, 0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #111827;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #4b5563;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500/30 selection:text-emerald-300">
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-50 backdrop-blur-xl bg-[#090d16]/90 border-b border-gray-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
+            <div class="flex items-center space-x-3 shrink-0">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                    <i data-lucide="trending-up" class="w-5 h-5 text-gray-950 font-bold"></i>
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="font-bold text-lg text-white tracking-tight">eToro Tracker</span>
+                        <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Live</span>
+                    </div>
+                    <p class="text-xs text-gray-400">追蹤對象：<span class="text-gray-200 font-medium">CPH Equities</span> (@cphequities)</p>
+                </div>
+            </div>
+
+            <!-- Desktop Investor Switcher Tabs -->
+            
+            <nav class="hidden md:flex items-center space-x-1.5 bg-gray-900/90 p-1.5 rounded-xl border border-gray-800/90 shadow-inner">
+                
+                
+                <a href="index.html" 
+                   class="px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 flex items-center space-x-1.5 text-gray-400 hover:text-gray-200 hover:bg-gray-800/70 border border-transparent">
+                    <i data-lucide="user" class="w-3.5 h-3.5 text-gray-500"></i>
+                    <span>Miula</span>
+                </a>
+                
+                
+                <a href="jeppekirkbonde.html" 
+                   class="px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 flex items-center space-x-1.5 text-gray-400 hover:text-gray-200 hover:bg-gray-800/70 border border-transparent">
+                    <i data-lucide="user" class="w-3.5 h-3.5 text-gray-500"></i>
+                    <span>Jeppe Kirk Bonde</span>
+                </a>
+                
+                
+                <a href="cphequities.html" 
+                   class="px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 flex items-center space-x-1.5 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 text-emerald-300 border border-emerald-500/50 shadow-sm shadow-emerald-500/20">
+                    <i data-lucide="user" class="w-3.5 h-3.5 text-emerald-400"></i>
+                    <span>CPH Equities</span>
+                </a>
+                
+            </nav>
+            
+
+            <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
+                <div class="hidden xl:flex items-center text-xs text-gray-400 bg-gray-900/90 px-3 py-1.5 rounded-lg border border-gray-800">
+                    <i data-lucide="clock" class="w-3.5 h-3.5 mr-1.5 text-cyan-400"></i>
+                    最後更新：<span class="text-gray-200 font-mono ml-1">2026-09-07 13:25:36</span>
+                </div>
+                <a href="https://www.etoro.com/zh-tw/people/cphequities/portfolio" target="_blank" rel="noopener noreferrer" 
+                   class="inline-flex items-center px-3.5 py-1.5 text-xs font-medium rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 hover:border-gray-600 transition duration-150 shadow-sm">
+                    <span>eToro 個人頁</span>
+                    <i data-lucide="external-link" class="w-3.5 h-3.5 ml-1.5 text-gray-400"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Mobile Investor Switcher Sub-bar -->
+        
+        <div class="md:hidden border-t border-gray-800/80 bg-gray-950/90 px-4 py-2 overflow-x-auto custom-scrollbar flex items-center space-x-2">
+            <span class="text-[11px] text-gray-400 shrink-0 font-medium mr-1 flex items-center">
+                <i data-lucide="users" class="w-3 h-3 mr-1 text-emerald-400"></i> 投資人：
+            </span>
+            
+            
+            <a href="index.html" 
+               class="px-3 py-1 rounded-lg text-xs font-medium shrink-0 transition-all duration-150 flex items-center space-x-1.5 text-gray-400 hover:text-gray-200 bg-gray-900/90 border border-gray-800">
+                <span>Miula</span>
+            </a>
+            
+            
+            <a href="jeppekirkbonde.html" 
+               class="px-3 py-1 rounded-lg text-xs font-medium shrink-0 transition-all duration-150 flex items-center space-x-1.5 text-gray-400 hover:text-gray-200 bg-gray-900/90 border border-gray-800">
+                <span>Jeppe Kirk Bonde</span>
+            </a>
+            
+            
+            <a href="cphequities.html" 
+               class="px-3 py-1 rounded-lg text-xs font-medium shrink-0 transition-all duration-150 flex items-center space-x-1.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/50 shadow-sm">
+                <span>CPH Equities</span>
+            </a>
+            
+        </div>
+        
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- AI Summary Card -->
+        <section class="relative rounded-2xl bg-gradient-to-b from-gray-900/90 to-gray-950/90 border border-gray-800 p-6 sm:p-8 glow-border overflow-hidden">
+            <div class="absolute -top-24 -right-24 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative flex flex-col md:flex-row md:items-start justify-between gap-6">
+                <div class="space-y-4 flex-1">
+                    <div class="flex items-center space-x-3">
+                        <div class="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+                            <i data-lucide="sparkles" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                                AI 每日調倉洞察總結
+                                <span class="text-xs font-normal px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">Gemini 1.5 Flash</span>
+                            </h2>
+                            <p class="text-xs text-gray-400">自動比對今日與前一交易日持股權重變動</p>
+                        </div>
+                    </div>
+
+                    <!-- AI Summary Text -->
+                    <div class="text-gray-200 text-sm sm:text-base leading-relaxed bg-gray-900/50 p-4 rounded-xl border border-gray-800/80 whitespace-pre-line">
+                        【建立持倉基準】cphequities 目前投資組合共持有 30 檔美股與 ETF 標的。
+前五大核心重倉依序為：XOM(5.7%)、JNJ(5.65%)、WISDOMTREE(5.24%)、PANW(5.15%)、MRK(5.03%)。
+系統已建立今日歷史基準快照，自下一個交易日起將每日自動追蹤比對調倉增減與新開平倉動作。
+                    </div>
+
+                    <!-- Change Highlights Tags -->
+                    <div class="flex flex-wrap gap-2 pt-1">
+                        
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-emerald-950/70 text-emerald-300 border border-emerald-500/30">
+                                📌 基準建立：共 30 檔標的
+                            </span>
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-cyan-950/70 text-cyan-300 border border-cyan-500/30">
+                                👑 最大持倉：XOM (5.7%)
+                            </span>
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Miula Latest Comment Section (eToro Feed Post) -->
+        <section class="relative rounded-2xl bg-gradient-to-b from-gray-900/90 to-gray-950/90 border border-gray-800 p-6 sm:p-7 overflow-hidden transition-all duration-300">
+            <div class="flex flex-col space-y-4">
+                <!-- Top Header Row: Author Info + Badges -->
+                <div class="flex items-start justify-between flex-wrap gap-3">
+                    <div class="flex items-center space-x-3.5">
+                        <!-- Avatar with Popular Investor Badge -->
+                        <div class="relative shrink-0">
+                            <img src="https://etoro-cdn.etorostatic.com/avatars/50X50/6216244/9.jpg" alt="Blue Screen Media ApS" class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl object-cover border border-gray-700 shadow-md bg-black" onerror="this.src='https://etoro-cdn.etorostatic.com/avatars/50X50/8220524/1.jpg'">
+                            <!-- Popular Investor Star Badge -->
+                            <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#d6453d] border-2 border-[#090d16] flex items-center justify-center shadow-sm" title="eToro 明星投資者 (Popular Investor)">
+                                <svg class="w-2.5 h-2.5 text-white fill-current" viewBox="0 0 24 24">
+                                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Name, Country, Time -->
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <h3 class="text-base sm:text-lg font-bold text-white tracking-tight">Blue Screen Media ApS</h3>
+                                <span class="text-xs text-gray-400 font-mono">@CPHequities</span>
+                            </div>
+                            <div class="flex items-center space-x-2 text-xs text-gray-400 mt-0.5">
+                                <span>全球</span>
+                                <span>•</span>
+                                <span class="text-cyan-400 font-medium">19 天前</span>
+                                
+                                <span class="hidden sm:inline text-gray-500 font-mono">(2026/08/18 20:39)</span>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Status / Notification Badge -->
+                    <div class="flex items-center space-x-2">
+                        
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-800/80 text-gray-400 border border-gray-700/80">
+                            <i data-lucide="message-square" class="w-3.5 h-3.5 mr-1 text-emerald-400"></i>
+                            最新留言紀錄
+                        </span>
+                        
+                    </div>
+                </div>
+
+                <!-- Comment Content -->
+                <div class="pt-1">
+                    <div class="text-white text-base sm:text-lg font-medium leading-relaxed tracking-wide bg-gray-950/50 p-4 sm:p-5 rounded-xl border border-gray-800/80 whitespace-pre-line">
+                        𝗚𝗢𝗜𝗡𝗚 𝗔𝗟𝗟-𝗜𝗡 𝗢𝗡 𝗔𝗜? 𝗧𝗛𝗘 𝗠𝗔𝗧𝗛 𝗦𝗔𝗬𝗦 "𝗡𝗢"
+
+After my post about Leopold Aschenbrenner a few weeks ago, I was asked a fair question: If I believe strongly in AI infrastructure, why not go all-in? Why worry about volatility at all, when my time horizon is long?
+
+It turns out there is a mathematical answer to this question. And it was discovered almost 70 years ago by a chain-smoking physicist from Texas.
+
+John Kelly was a WWII pilot who earned a PhD in physics and later worked at the legendary Bell Labs in the 1950s, alongside Claude Shannon, the father of information theory. In 1956, Kelly published a paper that answered a deceptively simple question: 
+
+If you have an edge in a bet, 𝗵𝗼𝘄 𝗺𝘂𝗰𝗵 𝗼𝗳 𝘆𝗼𝘂𝗿 𝗺𝗼𝗻𝗲𝘆 𝘀𝗵𝗼𝘂𝗹𝗱 𝘆𝗼𝘂 𝗽𝘂𝘁 𝗼𝗻 𝗶𝘁?
+
+His formula became known as the Kelly criterion. It has been used by professional gamblers and by the mathematician Ed Thorp to beat both blackjack and Wall Street.
+
+Here is the idea, in its simplest form.
+
+Imagine a coin that lands your way 60% of the time. When you win, you double your bet. When you lose, your bet is gone. This is a fantastic game – you have a clear edge, and over time you should make good money.
+
+Now, imagine going all-in on every flip.
+
+You win the first flip and double your money. You win the second and double again. But at some point, the coin lands against you. And when it does, you lose everything. 
+
+The edge was real, but the ruin was guaranteed anyway.
+
+Kelly's formula tells you the optimal amount to bet in this game: 20% of your money on each flip. Bet less, and you leave returns on the table. Bet more, and the swings become so violent that they destroy your compounding – even though you keep having the edge.
+
+This is the part most investors never truly understand. 𝗕𝗲𝘁𝘁𝗶𝗻𝗴 𝘁𝗼𝗼 𝗺𝘂𝗰𝗵 𝗼𝗻 𝗮 𝘄𝗶𝗻𝗻𝗶𝗻𝗴 𝗯𝗲𝘁 𝗰𝗮𝗻 𝗹𝗼𝘀𝗲 𝘆𝗼𝘂 𝗺𝗼𝗻𝗲𝘆. If your portfolio drops 50%, you need a 100% gain just to get back to where you started. Volatility is not just an uncomfortable feeling on red days. It is a tax on your compounding.
+
+This is why the answer to "why not go all-in" is not about nerves or caution.
+
+It is about mathematics.
+
+And there is one more thing. Kelly's formula assumes you know your odds precisely. In a casino, you do. In the stock market, you never do – you only have estimates, and estimates can be wrong. This is why professional investors who use Kelly typically bet half of what the formula suggests, or even less. The more uncertain your edge, the smaller your bet should be.
+
+Aschenbrenner had a real edge. His AI thesis was correct. But with leverage of nearly 400%, he was betting multiples of what Kelly would ever allow, and the mathematics caught up with him in a few brutal weeks in July.
+
+My own portfolio reflects the same conviction he had. AI infrastructure is my biggest theme, with positions like <span class="text-emerald-400 font-semibold">$MU (Micron Technology, Inc.)</span>, <span class="text-emerald-400 font-semibold">$LRCX (Lam Research Corp)</span>, and <span class="text-emerald-400 font-semibold">$TSM (Taiwan Semiconductor Manufacturing Co Ltd - ADR)</span>. The position is large because my conviction is high – that is Kelly thinking.
+
+But it is not all-in.
+
+The healthcare and defensive positions with low correlation to the AI trade are not a lack of conviction. They are what keeps the swings small enough that the compounding survives, and 𝘁𝗵𝗲𝘆 𝗯𝘂𝘆 𝗺𝗲 𝘁𝗵𝗲 𝘁𝗶𝗺𝗲 𝘁𝗼 𝗯𝗲 𝗽𝗿𝗼𝘃𝗲𝗻 𝗿𝗶𝗴𝗵𝘁.
+
+Kelly, by the way, never used his own formula in the markets. He died of a stroke at just 41, before seeing how much his little paper would shape modern investing.
+
+But the formula lived on. And its message is timeless: Being right is not enough. You also have to survive long enough to be proven right.
+
+Thanks for copying and following 🙏
+
+Here is the first post about Aschenbrenner: https://shorturl.at/PHiBC
+
+<span class="text-emerald-400 font-semibold">$NSDQ100 (NASDAQ100 Index (Non Expiry))</span> <span class="text-emerald-400 font-semibold">$QQQ (Invesco QQQ)</span> 
+𝘊𝘰𝘱𝘺 𝘛𝘳𝘢𝘥𝘪𝘯𝘨 𝘥𝘰𝘦𝘴 𝘯𝘰𝘵 𝘢𝘮𝘰𝘶𝘯𝘵 𝘵𝘰 𝘪𝘯𝘷𝘦𝘴𝘵𝘮𝘦𝘯𝘵 𝘢𝘥𝘷𝘪𝘤𝘦. 𝘠𝘰𝘶𝘳 𝘪𝘯𝘷𝘦𝘴𝘵𝘮𝘦𝘯𝘵 𝘷𝘢𝘭𝘶𝘦 𝘮𝘢𝘺 𝘨𝘰 𝘶𝘱 𝘰𝘳 𝘥𝘰𝘸𝘯. 𝘠𝘰𝘶𝘳 𝘤𝘢𝘱𝘪𝘵𝘢𝘭 𝘪𝘴 𝘢𝘵 𝘳𝘪𝘴𝘬
+                    </div>
+                </div>
+
+                <!-- Disclaimer Text (Exact match from eToro) -->
+                <p class="text-xs text-gray-400 select-none">
+                    不構成投資建議。作者可能在所提及的金融工具中具有財務利益。
+                </p>
+
+                <!-- Action / Reactions Bar (Thumbs up, comment, share, link) -->
+                <div class="flex items-center justify-between pt-2 border-t border-gray-800/60 text-gray-400 text-xs sm:text-sm">
+                    <div class="flex items-center space-x-6 select-none">
+                        <!-- Likes -->
+                        <div class="flex items-center space-x-1.5 hover:text-white transition cursor-default">
+                            <i data-lucide="thumbs-up" class="w-4 h-4 text-gray-400"></i>
+                            <span class="font-mono text-gray-300 font-semibold">122</span>
+                        </div>
+                        <!-- Comments -->
+                        <div class="flex items-center space-x-1.5 hover:text-white transition cursor-default">
+                            <i data-lucide="message-circle" class="w-4 h-4 text-gray-400"></i>
+                            <span class="font-mono text-gray-300 font-semibold">34</span>
+                        </div>
+                        <!-- Shares -->
+                        <div class="flex items-center space-x-1.5 hover:text-white transition cursor-default">
+                            <i data-lucide="share-2" class="w-4 h-4 text-gray-400"></i>
+                            <span class="font-mono text-gray-300 font-semibold">4</span>
+                        </div>
+                    </div>
+
+                    <!-- Link to eToro post -->
+                    <a href="https://www.etoro.com/zh-tw/people/cphequities" target="_blank" rel="noopener noreferrer" 
+                       class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-gray-800/90 hover:bg-gray-700 text-gray-200 border border-gray-700 hover:border-gray-600 transition">
+                        <span>查看 eToro 原文</span>
+                        <i data-lucide="external-link" class="w-3.5 h-3.5 text-gray-400"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- KPI Summary Cards (5-Column Layout with Cash Balance on the Right) -->
+        <section class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <!-- 1. Total Holdings -->
+            <div class="rounded-xl bg-gray-900/70 border border-gray-800 p-4 flex flex-col justify-between hover:border-gray-700 transition">
+                <div class="flex items-center justify-between text-gray-400 text-xs">
+                    <span>當前持股檔數</span>
+                    <i data-lucide="layers" class="w-4 h-4 text-emerald-400"></i>
+                </div>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span class="text-2xl sm:text-3xl font-bold text-white mono">30</span>
+                    <span class="text-xs text-gray-400">基準日</span>
+                </div>
+            </div>
+
+            <!-- 2. New Positions -->
+            <div class="rounded-xl bg-gray-900/70 border border-gray-800 p-4 flex flex-col justify-between hover:border-emerald-500/30 transition">
+                <div class="flex items-center justify-between text-emerald-400 text-xs">
+                    <span>🆕 今日新開倉</span>
+                    <i data-lucide="plus-circle" class="w-4 h-4 text-emerald-400"></i>
+                </div>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span class="text-2xl sm:text-3xl font-bold text-emerald-400 mono">0</span>
+                    <span class="text-xs text-gray-400 truncate max-w-[80px]">首日基準</span>
+                </div>
+            </div>
+
+            <!-- 3. Closed Positions -->
+            <div class="rounded-xl bg-gray-900/70 border border-gray-800 p-4 flex flex-col justify-between hover:border-rose-500/30 transition">
+                <div class="flex items-center justify-between text-rose-400 text-xs">
+                    <span>❌ 今日已清倉</span>
+                    <i data-lucide="minus-circle" class="w-4 h-4 text-rose-400"></i>
+                </div>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span class="text-2xl sm:text-3xl font-bold text-rose-400 mono">0</span>
+                    <span class="text-xs text-gray-400 truncate max-w-[80px]">首日基準</span>
+                </div>
+            </div>
+
+            <!-- 4. Reallocated Assets -->
+            <div class="rounded-xl bg-gray-900/70 border border-gray-800 p-4 flex flex-col justify-between hover:border-cyan-500/30 transition">
+                <div class="flex items-center justify-between text-cyan-400 text-xs">
+                    <span>⚡ 權重增減標的</span>
+                    <i data-lucide="refresh-cw" class="w-4 h-4 text-cyan-400"></i>
+                </div>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span class="text-2xl sm:text-3xl font-bold text-cyan-400 mono">0</span>
+                    <span class="text-xs text-gray-400">首日基準</span>
+                </div>
+            </div>
+
+            <!-- 5. Cash Balance (Available Cash & Investment Equity) -->
+            <div class="rounded-xl bg-gradient-to-br from-gray-900/90 to-slate-900/90 border border-indigo-500/30 p-4 flex flex-col justify-between hover:border-indigo-500/60 shadow-lg shadow-indigo-500/5 transition">
+                <div class="flex items-center justify-between text-indigo-300 text-xs">
+                    <span class="font-medium">💰 未投資可用餘額</span>
+                    <i data-lucide="wallet" class="w-4 h-4 text-indigo-400"></i>
+                </div>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span class="text-2xl sm:text-3xl font-bold text-indigo-300 mono">0.0%</span>
+                    <div class="text-right flex flex-col items-end">
+                        <div class="text-xs font-mono font-medium flex items-center gap-1">
+                            
+                                <span class="text-gray-400">基準日</span>
+                            
+                        </div>
+                        <span class="text-xs text-slate-400 font-sans mt-0.5">已投資 100.0%</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Donut Chart: Portfolio Allocation -->
+            <div class="lg:col-span-6 rounded-2xl bg-gray-900/70 border border-gray-800 p-6 flex flex-col">
+                <div class="flex items-center justify-between pb-4 border-b border-gray-800">
+                    <div>
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            <i data-lucide="pie-chart" class="w-4 h-4 text-emerald-400"></i>
+                            資產配置佔比 (Portfolio Allocation)
+                        </h3>
+                        <p class="text-xs text-gray-400">當前持股佔比分佈 (Top Holdings)</p>
+                    </div>
+                </div>
+                <div class="relative flex-1 flex items-center justify-center p-4 min-h-[300px]">
+                    <canvas id="allocationDonutChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Bar Chart: Top Holdings / Changes -->
+            <div class="lg:col-span-6 rounded-2xl bg-gray-900/70 border border-gray-800 p-6 flex flex-col">
+                <div class="flex items-center justify-between pb-4 border-b border-gray-800">
+                    <div>
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            <i data-lucide="bar-chart-2" class="w-4 h-4 text-cyan-400"></i>
+                            前十大持股佔比排行
+                        </h3>
+                        <p class="text-xs text-gray-400">依投資佔比由高到低排序</p>
+                    </div>
+                </div>
+                <div class="relative flex-1 flex items-center justify-center p-4 min-h-[300px]">
+                    <canvas id="changesBarChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Positions & Changes Table Section -->
+        <section class="rounded-2xl bg-gray-900/70 border border-gray-800 overflow-hidden">
+            <div class="p-6 border-b border-gray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-base font-bold text-white flex items-center gap-2">
+                        <i data-lucide="list-filter" class="w-4 h-4 text-emerald-400"></i>
+                        持股部位明細對照表
+                    </h3>
+                    <p class="text-xs text-gray-400">完整依投資佔比由高到低排序，包含標的名稱、佔比與變動狀態</p>
+                </div>
+
+                <!-- Table Filter & Search Controls -->
+                <div class="flex flex-wrap items-center gap-3">
+                    <!-- Status Filter Tabs -->
+                    <div class="flex rounded-lg bg-gray-950 p-1 border border-gray-800 text-xs">
+                        <button onclick="filterTable('ALL')" class="filter-btn active px-3 py-1 rounded-md text-white bg-gray-800 font-medium transition" data-filter="ALL">全部 (30)</button>
+                        
+                    </div>
+
+                    <!-- Search Input -->
+                    <div class="relative">
+                        <i data-lucide="search" class="w-3.5 h-3.5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+                        <input type="text" id="tableSearchInput" onkeyup="searchTable()" placeholder="搜尋代號或名稱..." 
+                               class="pl-9 pr-3 py-1.5 rounded-lg bg-gray-950 border border-gray-800 text-xs text-gray-200 placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Responsive Container -->
+            <div class="overflow-x-auto custom-scrollbar">
+                <table class="w-full text-left text-xs" id="holdingsTable">
+                    <thead class="bg-gray-950/90 text-gray-400 uppercase tracking-wider text-[11px] border-b border-gray-800">
+                        <!-- 第一層：分組總覽 -->
+                        <tr class="border-b border-gray-800/80 text-[10px] sm:text-[11px]">
+                            <th colspan="4" class="py-1.5 px-3 text-gray-400 font-semibold tracking-wider">資產基本資訊</th>
+                            <th colspan="4" class="py-1.5 px-2 text-center font-bold bg-emerald-950/40 text-emerald-300 border-x border-emerald-800/40">
+                                <div class="flex items-center justify-center space-x-1">
+                                    <i data-lucide="wallet" class="w-3 h-3 text-emerald-400"></i>
+                                    <span>投資佔比 (Invested %)</span>
+                                </div>
+                            </th>
+                            <th colspan="4" class="py-1.5 px-2 text-center font-bold bg-indigo-950/40 text-indigo-300 border-r border-indigo-800/40">
+                                <div class="flex items-center justify-center space-x-1">
+                                    <i data-lucide="pie-chart" class="w-3 h-3 text-indigo-400"></i>
+                                    <span>淨值佔比 (Value %)</span>
+                                </div>
+                            </th>
+                        </tr>
+                        <!-- 第二層：具體欄位標籤 (日期垂直換列) -->
+                        <tr>
+                            <th scope="col" class="py-2.5 px-2.5 font-semibold whitespace-nowrap">代號 (Symbol)</th>
+                            <th scope="col" class="py-2.5 px-2 font-semibold whitespace-nowrap">資產名稱 (Name)</th>
+                            <th scope="col" class="py-2.5 px-2 font-semibold text-right text-indigo-300 whitespace-nowrap">平均開倉價</th>
+                            <th scope="col" class="py-2.5 px-2 font-semibold text-right text-cyan-300 whitespace-nowrap">當前現價</th>
+                            
+                            <!-- 投資佔比欄位 (4欄) -->
+                            <th scope="col" class="py-2 px-2 font-semibold text-right bg-emerald-950/20 text-gray-300 border-l border-emerald-800/30 whitespace-nowrap">
+                                <div class="flex flex-col items-end leading-tight">
+                                    <span>投資昨日佔比</span>
+                                    
+                                </div>
+                            </th>
+                            <th scope="col" class="py-2 px-2 font-semibold text-right bg-emerald-950/20 text-gray-300 whitespace-nowrap">
+                                <div class="flex flex-col items-end leading-tight">
+                                    <span>投資今日佔比</span>
+                                    <span class="text-[10px] font-normal text-emerald-400 font-mono mt-0.5">(2026/09/07)</span>
+                                </div>
+                            </th>
+                            <th scope="col" class="py-2 px-2 font-semibold text-right bg-emerald-950/20 text-gray-300 whitespace-nowrap">變動量</th>
+                            <th scope="col" class="py-2 px-2 font-semibold text-center bg-emerald-950/20 text-gray-300 whitespace-nowrap border-r border-emerald-800/30">狀態標籤</th>
+
+                            <!-- 淨值佔比欄位 (4欄) -->
+                            <th scope="col" class="py-2 px-2 font-semibold text-right bg-indigo-950/20 text-gray-300 whitespace-nowrap">
+                                <div class="flex flex-col items-end leading-tight">
+                                    <span>淨值昨日佔比</span>
+                                    
+                                </div>
+                            </th>
+                            <th scope="col" class="py-2 px-2 font-semibold text-right bg-indigo-950/20 text-gray-300 whitespace-nowrap">
+                                <div class="flex flex-col items-end leading-tight">
+                                    <span>淨值今日佔比</span>
+                                    <span class="text-[10px] font-normal text-indigo-400 font-mono mt-0.5">(2026/09/07)</span>
+                                </div>
+                            </th>
+                            <th scope="col" class="py-2 px-2 font-semibold text-right bg-indigo-950/20 text-gray-300 whitespace-nowrap">變動量</th>
+                            <th scope="col" class="py-2 px-2 font-semibold text-center bg-indigo-950/20 text-gray-300 whitespace-nowrap border-r border-indigo-800/30">狀態標籤</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-800/60 font-mono text-xs">
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="XOM" data-name="ExxonMobil Holdings Corp">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">XOM</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="ExxonMobil Holdings Corp">ExxonMobil Holdings Corp</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $156.41
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $159.37
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                5.7%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                4.87%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="JNJ" data-name="Johnson &amp; Johnson">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">JNJ</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="Johnson &amp; Johnson">Johnson &amp; Johnson</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $251.65
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $275.14
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                5.65%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                5.18%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="WISDOMTREE" data-name="WisdomTree Europe Defence UCITS ETF">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">WISDOMTREE</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="WisdomTree Europe Defence UCITS ETF">WisdomTree Europe Defence UCITS ETF</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $33.62
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $31.14
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                5.24%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                4.03%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="PANW" data-name="Palo Alto Networks">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">PANW</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="Palo Alto Networks">Palo Alto Networks</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $339.44
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $333.18
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                5.15%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                4.24%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="MRK" data-name="Merck &amp; Co.">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">MRK</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="Merck &amp; Co.">Merck &amp; Co.</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $128.70
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $150.33
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                5.03%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                4.93%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="G.MI" data-name="Assicurazioni Generali SpA">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">G.MI</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="Assicurazioni Generali SpA">Assicurazioni Generali SpA</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $44.81
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $44.82
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                4.77%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                4.02%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="ALL" data-name="Allstate Corp">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">ALL</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="Allstate Corp">Allstate Corp</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $270.58
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $259.52
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                4.75%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                3.82%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="MCK" data-name="McKesson Corp">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">MCK</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="McKesson Corp">McKesson Corp</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $899.68
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $906.69
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                4.69%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                3.96%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="THE" data-name="The Bank of Nova Scotia">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">THE</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="The Bank of Nova Scotia">The Bank of Nova Scotia</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $84.57
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $93.78
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                4.54%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                4.22%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="MERCURY" data-name="Mercury General Corporation">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">MERCURY</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="Mercury General Corporation">Mercury General Corporation</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $110.89
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $104.41
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                4.47%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                3.53%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="INTC" data-name="Intel">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">INTC</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="Intel">Intel</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $92.17
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $95.80
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                4.2%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                3.66%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="LRCX" data-name="Lam Research Corp">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">LRCX</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="Lam Research Corp">Lam Research Corp</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $239.05
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $307.67
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                4.15%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                4.48%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="ING" data-name="ING Groep NV">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">ING</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="ING Groep NV">ING Groep NV</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $25.87
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $31.98
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                4.06%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                4.22%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="ROYALTY" data-name="Royalty Pharma PLC">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">ROYALTY</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="Royalty Pharma PLC">Royalty Pharma PLC</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $50.79
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $63.96
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                4.06%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                4.29%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="NKT" data-name="Nkt A/S">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">NKT</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="Nkt A/S">Nkt A/S</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $872.45
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $938.50
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                3.97%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                3.57%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="CABK.MC" data-name="Caixabank">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">CABK.MC</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="Caixabank">Caixabank</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $12.39
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $13.53
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                3.85%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                3.59%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="LLY" data-name="Eli Lilly &amp; Co">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">LLY</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="Eli Lilly &amp; Co">Eli Lilly &amp; Co</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $1,173.63
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $1,148.48
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                3.39%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                2.78%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="AMERICAN" data-name="American Healthcare REIT Inc">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">AMERICAN</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="American Healthcare REIT Inc">American Healthcare REIT Inc</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $56.68
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $54.70
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                2.96%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                2.4%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="MU" data-name="Micron Technology, Inc.">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">MU</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="Micron Technology, Inc.">Micron Technology, Inc.</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $377.30
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $1,015.95
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                2.71%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                6.11%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="NESTE" data-name="Neste Oyj">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">NESTE</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="Neste Oyj">Neste Oyj</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $26.65
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $31.89
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                2.65%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                2.67%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="LITE" data-name="Lumentum Holdings Inc">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">LITE</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="Lumentum Holdings Inc">Lumentum Holdings Inc</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $889.56
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $881.67
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                2.3%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                1.91%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="TSM" data-name="Taiwan Semiconductor Manufacturing Co Ltd - ADR">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">TSM</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="Taiwan Semiconductor Manufacturing Co Ltd - ADR">Taiwan Semiconductor Manufacturing Co Ltd - ADR</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $167.14
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $428.09
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                2.08%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                4.47%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="GOOG" data-name="Alphabet">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">GOOG</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="Alphabet">Alphabet</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $164.68
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $335.20
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                1.71%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                2.91%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="CELESTICA" data-name="Celestica Inc">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">CELESTICA</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="Celestica Inc">Celestica Inc</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $377.44
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $312.26
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                1.37%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                0.95%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="AMD" data-name="Advanced Micro Devices Inc">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">AMD</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="Advanced Micro Devices Inc">Advanced Micro Devices Inc</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $353.76
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $477.34
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                1.35%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                1.53%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="AMZN" data-name="Amazon.com Inc">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">AMZN</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="Amazon.com Inc">Amazon.com Inc</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $136.09
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $258.32
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                1.22%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                1.94%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="AAPL" data-name="Apple">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">AAPL</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="Apple">Apple</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $197.07
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $319.77
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                1.07%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                1.46%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="STERLING" data-name="Sterling Infrastructure Inc">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">STERLING</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="Sterling Infrastructure Inc">Sterling Infrastructure Inc</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $430.62
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $486.04
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                1.05%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                1.0%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="MSFT" data-name="Microsoft">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">MSFT</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="Microsoft">Microsoft</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $277.66
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $499.62
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                1.01%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                1.52%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="table-row hover:bg-gray-800/40 transition duration-150" data-status="UNCHANGED" data-symbol="CRDO" data-name="Credo Technology Group Holding Ltd">
+                            <!-- 基本資訊 -->
+                            <td class="py-2 px-2.5 font-bold text-white flex items-center space-x-1.5 whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                <span class="text-xs font-bold text-gray-100">CRDO</span>
+                            </td>
+                            <td class="py-2 px-2 font-sans text-gray-300 max-w-[105px] sm:max-w-[130px] xl:max-w-[160px] truncate" title="Credo Technology Group Holding Ltd">Credo Technology Group Holding Ltd</td>
+                            <td class="py-2 px-2 text-right font-mono text-indigo-300 font-semibold whitespace-nowrap">
+                                
+                                    $70.27
+                                
+                            </td>
+                            <td class="py-2 px-2 text-right font-mono text-cyan-300 font-semibold whitespace-nowrap">
+                                
+                                    $170.52
+                                
+                            </td>
+
+                            <!-- 投資佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-emerald-950/10 border-l border-emerald-800/20 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-white whitespace-nowrap">
+                                0.85%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-emerald-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-emerald-950/10 border-r border-emerald-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+
+                            <!-- 淨值佔比 4 欄 -->
+                            <td class="py-2 px-2 text-right text-gray-400 bg-indigo-950/10 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-white whitespace-nowrap">
+                                1.72%
+                            </td>
+                            <td class="py-2 px-2 text-right font-bold bg-indigo-950/10 text-gray-500 whitespace-nowrap">
+                                -
+                            </td>
+                            <td class="py-2 px-1.5 text-center bg-indigo-950/10 border-r border-indigo-800/20 whitespace-nowrap">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[11px] font-sans font-medium border text-slate-300 bg-slate-800/60 border-slate-600/30">
+                                    📌 基準持倉
+                                </span>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800/80 bg-[#090d16] py-6 mt-12 text-center text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <p>本專案由 GitHub Actions 每日美股收盤後自動排程更新 | 數據源自 eToro 公開個人投資組合</p>
+            <p class="text-gray-600">免責聲明：本網站所有數據與 AI 分析僅供量化研究與個人追蹤記錄使用，不構成任何形式之投資建議。</p>
+        </div>
+    </footer>
+
+    <!-- Initialize Charts & Client-side Filter Script -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Data from Server Template
+        const portfolioData = [{"symbol": "XOM", "name": "ExxonMobil Holdings Corp", "allocation": 5.7, "invest_alloc": 5.7, "value_alloc": 4.87, "instrument_type": "Stocks", "net_profit": 1.9, "avg_open_rate": 156.41, "current_rate": 159.37}, {"symbol": "JNJ", "name": "Johnson & Johnson", "allocation": 5.65, "invest_alloc": 5.65, "value_alloc": 5.18, "instrument_type": "Stocks", "net_profit": 9.33, "avg_open_rate": 251.65, "current_rate": 275.14}, {"symbol": "WISDOMTREE", "name": "WisdomTree Europe Defence UCITS ETF", "allocation": 5.24, "invest_alloc": 5.24, "value_alloc": 4.03, "instrument_type": "Stocks", "net_profit": -8.24, "avg_open_rate": 33.62, "current_rate": 31.14}, {"symbol": "PANW", "name": "Palo Alto Networks", "allocation": 5.15, "invest_alloc": 5.15, "value_alloc": 4.24, "instrument_type": "Stocks", "net_profit": -1.84, "avg_open_rate": 339.44, "current_rate": 333.18}, {"symbol": "MRK", "name": "Merck & Co.", "allocation": 5.03, "invest_alloc": 5.03, "value_alloc": 4.93, "instrument_type": "Stocks", "net_profit": 16.81, "avg_open_rate": 128.7, "current_rate": 150.33}, {"symbol": "G.MI", "name": "Assicurazioni Generali SpA", "allocation": 4.77, "invest_alloc": 4.77, "value_alloc": 4.02, "instrument_type": "Stocks", "net_profit": 0.46, "avg_open_rate": 44.81, "current_rate": 44.82}, {"symbol": "ALL", "name": "Allstate Corp", "allocation": 4.75, "invest_alloc": 4.75, "value_alloc": 3.82, "instrument_type": "Stocks", "net_profit": -4.09, "avg_open_rate": 270.58, "current_rate": 259.52}, {"symbol": "MCK", "name": "McKesson Corp", "allocation": 4.69, "invest_alloc": 4.69, "value_alloc": 3.96, "instrument_type": "Stocks", "net_profit": 0.78, "avg_open_rate": 899.68, "current_rate": 906.69}, {"symbol": "THE", "name": "The Bank of Nova Scotia", "allocation": 4.54, "invest_alloc": 4.54, "value_alloc": 4.22, "instrument_type": "Stocks", "net_profit": 10.89, "avg_open_rate": 84.57, "current_rate": 93.78}, {"symbol": "MERCURY", "name": "Mercury General Corporation", "allocation": 4.47, "invest_alloc": 4.47, "value_alloc": 3.53, "instrument_type": "Stocks", "net_profit": -5.84, "avg_open_rate": 110.89, "current_rate": 104.41}, {"symbol": "INTC", "name": "Intel", "allocation": 4.2, "invest_alloc": 4.2, "value_alloc": 3.66, "instrument_type": "Stocks", "net_profit": 3.94, "avg_open_rate": 92.17, "current_rate": 95.8}, {"symbol": "LRCX", "name": "Lam Research Corp", "allocation": 4.15, "invest_alloc": 4.15, "value_alloc": 4.48, "instrument_type": "Stocks", "net_profit": 28.71, "avg_open_rate": 239.05, "current_rate": 307.67}, {"symbol": "ROYALTY", "name": "Royalty Pharma PLC", "allocation": 4.06, "invest_alloc": 4.06, "value_alloc": 4.29, "instrument_type": "Stocks", "net_profit": 25.92, "avg_open_rate": 50.79, "current_rate": 63.96}, {"symbol": "ING", "name": "ING Groep NV", "allocation": 4.06, "invest_alloc": 4.06, "value_alloc": 4.22, "instrument_type": "Stocks", "net_profit": 23.97, "avg_open_rate": 25.87, "current_rate": 31.98}, {"symbol": "NKT", "name": "Nkt A/S", "allocation": 3.97, "invest_alloc": 3.97, "value_alloc": 3.57, "instrument_type": "Stocks", "net_profit": 7.25, "avg_open_rate": 872.45, "current_rate": 938.5}, {"symbol": "CABK.MC", "name": "Caixabank", "allocation": 3.85, "invest_alloc": 3.85, "value_alloc": 3.59, "instrument_type": "Stocks", "net_profit": 10.98, "avg_open_rate": 12.39, "current_rate": 13.53}, {"symbol": "LLY", "name": "Eli Lilly & Co", "allocation": 3.39, "invest_alloc": 3.39, "value_alloc": 2.78, "instrument_type": "Stocks", "net_profit": -2.14, "avg_open_rate": 1173.63, "current_rate": 1148.48}, {"symbol": "AMERICAN", "name": "American Healthcare REIT Inc", "allocation": 2.96, "invest_alloc": 2.96, "value_alloc": 2.4, "instrument_type": "Stocks", "net_profit": -3.5, "avg_open_rate": 56.68, "current_rate": 54.7}, {"symbol": "MU", "name": "Micron Technology, Inc.", "allocation": 2.71, "invest_alloc": 2.71, "value_alloc": 6.11, "instrument_type": "Stocks", "net_profit": 169.27, "avg_open_rate": 377.3, "current_rate": 1015.95}, {"symbol": "NESTE", "name": "Neste Oyj", "allocation": 2.65, "invest_alloc": 2.65, "value_alloc": 2.67, "instrument_type": "Stocks", "net_profit": 20.08, "avg_open_rate": 26.65, "current_rate": 31.89}, {"symbol": "LITE", "name": "Lumentum Holdings Inc", "allocation": 2.3, "invest_alloc": 2.3, "value_alloc": 1.91, "instrument_type": "Stocks", "net_profit": -0.89, "avg_open_rate": 889.56, "current_rate": 881.67}, {"symbol": "TSM", "name": "Taiwan Semiconductor Manufacturing Co Ltd - ADR", "allocation": 2.08, "invest_alloc": 2.08, "value_alloc": 4.47, "instrument_type": "Stocks", "net_profit": 156.13, "avg_open_rate": 167.14, "current_rate": 428.09}, {"symbol": "GOOG", "name": "Alphabet", "allocation": 1.71, "invest_alloc": 1.71, "value_alloc": 2.91, "instrument_type": "Stocks", "net_profit": 103.56, "avg_open_rate": 164.68, "current_rate": 335.2}, {"symbol": "CELESTICA", "name": "Celestica Inc", "allocation": 1.37, "invest_alloc": 1.37, "value_alloc": 0.95, "instrument_type": "Stocks", "net_profit": -17.27, "avg_open_rate": 377.44, "current_rate": 312.26}, {"symbol": "AMD", "name": "Advanced Micro Devices Inc", "allocation": 1.35, "invest_alloc": 1.35, "value_alloc": 1.53, "instrument_type": "Stocks", "net_profit": 34.93, "avg_open_rate": 353.76, "current_rate": 477.34}, {"symbol": "AMZN", "name": "Amazon.com Inc", "allocation": 1.22, "invest_alloc": 1.22, "value_alloc": 1.94, "instrument_type": "Stocks", "net_profit": 89.85, "avg_open_rate": 136.09, "current_rate": 258.32}, {"symbol": "AAPL", "name": "Apple", "allocation": 1.07, "invest_alloc": 1.07, "value_alloc": 1.46, "instrument_type": "Stocks", "net_profit": 62.26, "avg_open_rate": 197.07, "current_rate": 319.77}, {"symbol": "STERLING", "name": "Sterling Infrastructure Inc", "allocation": 1.05, "invest_alloc": 1.05, "value_alloc": 1.0, "instrument_type": "Stocks", "net_profit": 12.87, "avg_open_rate": 430.62, "current_rate": 486.04}, {"symbol": "MSFT", "name": "Microsoft", "allocation": 1.01, "invest_alloc": 1.01, "value_alloc": 1.52, "instrument_type": "Stocks", "net_profit": 79.94, "avg_open_rate": 277.66, "current_rate": 499.62}, {"symbol": "CRDO", "name": "Credo Technology Group Holding Ltd", "allocation": 0.85, "invest_alloc": 0.85, "value_alloc": 1.72, "instrument_type": "Stocks", "net_profit": 142.66, "avg_open_rate": 70.27, "current_rate": 170.52}];
+        const changesData = [{"symbol": "XOM", "name": "ExxonMobil Holdings Corp", "instrument_type": "Stocks", "yesterday_invest_alloc": 5.7, "today_invest_alloc": 5.7, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 4.87, "today_value_alloc": 4.87, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 5.7, "today_alloc": 5.7, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 156.41, "current_rate": 159.37, "net_profit": 1.9, "is_active": true}, {"symbol": "JNJ", "name": "Johnson & Johnson", "instrument_type": "Stocks", "yesterday_invest_alloc": 5.65, "today_invest_alloc": 5.65, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 5.18, "today_value_alloc": 5.18, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 5.65, "today_alloc": 5.65, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 251.65, "current_rate": 275.14, "net_profit": 9.33, "is_active": true}, {"symbol": "WISDOMTREE", "name": "WisdomTree Europe Defence UCITS ETF", "instrument_type": "Stocks", "yesterday_invest_alloc": 5.24, "today_invest_alloc": 5.24, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 4.03, "today_value_alloc": 4.03, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 5.24, "today_alloc": 5.24, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 33.62, "current_rate": 31.14, "net_profit": -8.24, "is_active": true}, {"symbol": "PANW", "name": "Palo Alto Networks", "instrument_type": "Stocks", "yesterday_invest_alloc": 5.15, "today_invest_alloc": 5.15, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 4.24, "today_value_alloc": 4.24, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 5.15, "today_alloc": 5.15, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 339.44, "current_rate": 333.18, "net_profit": -1.84, "is_active": true}, {"symbol": "MRK", "name": "Merck & Co.", "instrument_type": "Stocks", "yesterday_invest_alloc": 5.03, "today_invest_alloc": 5.03, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 4.93, "today_value_alloc": 4.93, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 5.03, "today_alloc": 5.03, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 128.7, "current_rate": 150.33, "net_profit": 16.81, "is_active": true}, {"symbol": "G.MI", "name": "Assicurazioni Generali SpA", "instrument_type": "Stocks", "yesterday_invest_alloc": 4.77, "today_invest_alloc": 4.77, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 4.02, "today_value_alloc": 4.02, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 4.77, "today_alloc": 4.77, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 44.81, "current_rate": 44.82, "net_profit": 0.46, "is_active": true}, {"symbol": "ALL", "name": "Allstate Corp", "instrument_type": "Stocks", "yesterday_invest_alloc": 4.75, "today_invest_alloc": 4.75, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 3.82, "today_value_alloc": 3.82, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 4.75, "today_alloc": 4.75, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 270.58, "current_rate": 259.52, "net_profit": -4.09, "is_active": true}, {"symbol": "MCK", "name": "McKesson Corp", "instrument_type": "Stocks", "yesterday_invest_alloc": 4.69, "today_invest_alloc": 4.69, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 3.96, "today_value_alloc": 3.96, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 4.69, "today_alloc": 4.69, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 899.68, "current_rate": 906.69, "net_profit": 0.78, "is_active": true}, {"symbol": "THE", "name": "The Bank of Nova Scotia", "instrument_type": "Stocks", "yesterday_invest_alloc": 4.54, "today_invest_alloc": 4.54, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 4.22, "today_value_alloc": 4.22, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 4.54, "today_alloc": 4.54, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 84.57, "current_rate": 93.78, "net_profit": 10.89, "is_active": true}, {"symbol": "MERCURY", "name": "Mercury General Corporation", "instrument_type": "Stocks", "yesterday_invest_alloc": 4.47, "today_invest_alloc": 4.47, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 3.53, "today_value_alloc": 3.53, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 4.47, "today_alloc": 4.47, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 110.89, "current_rate": 104.41, "net_profit": -5.84, "is_active": true}, {"symbol": "INTC", "name": "Intel", "instrument_type": "Stocks", "yesterday_invest_alloc": 4.2, "today_invest_alloc": 4.2, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 3.66, "today_value_alloc": 3.66, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 4.2, "today_alloc": 4.2, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 92.17, "current_rate": 95.8, "net_profit": 3.94, "is_active": true}, {"symbol": "LRCX", "name": "Lam Research Corp", "instrument_type": "Stocks", "yesterday_invest_alloc": 4.15, "today_invest_alloc": 4.15, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 4.48, "today_value_alloc": 4.48, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 4.15, "today_alloc": 4.15, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 239.05, "current_rate": 307.67, "net_profit": 28.71, "is_active": true}, {"symbol": "ING", "name": "ING Groep NV", "instrument_type": "Stocks", "yesterday_invest_alloc": 4.06, "today_invest_alloc": 4.06, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 4.22, "today_value_alloc": 4.22, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 4.06, "today_alloc": 4.06, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 25.87, "current_rate": 31.98, "net_profit": 23.97, "is_active": true}, {"symbol": "ROYALTY", "name": "Royalty Pharma PLC", "instrument_type": "Stocks", "yesterday_invest_alloc": 4.06, "today_invest_alloc": 4.06, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 4.29, "today_value_alloc": 4.29, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 4.06, "today_alloc": 4.06, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 50.79, "current_rate": 63.96, "net_profit": 25.92, "is_active": true}, {"symbol": "NKT", "name": "Nkt A/S", "instrument_type": "Stocks", "yesterday_invest_alloc": 3.97, "today_invest_alloc": 3.97, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 3.57, "today_value_alloc": 3.57, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 3.97, "today_alloc": 3.97, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 872.45, "current_rate": 938.5, "net_profit": 7.25, "is_active": true}, {"symbol": "CABK.MC", "name": "Caixabank", "instrument_type": "Stocks", "yesterday_invest_alloc": 3.85, "today_invest_alloc": 3.85, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 3.59, "today_value_alloc": 3.59, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 3.85, "today_alloc": 3.85, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 12.39, "current_rate": 13.53, "net_profit": 10.98, "is_active": true}, {"symbol": "LLY", "name": "Eli Lilly & Co", "instrument_type": "Stocks", "yesterday_invest_alloc": 3.39, "today_invest_alloc": 3.39, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 2.78, "today_value_alloc": 2.78, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 3.39, "today_alloc": 3.39, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 1173.63, "current_rate": 1148.48, "net_profit": -2.14, "is_active": true}, {"symbol": "AMERICAN", "name": "American Healthcare REIT Inc", "instrument_type": "Stocks", "yesterday_invest_alloc": 2.96, "today_invest_alloc": 2.96, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 2.4, "today_value_alloc": 2.4, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 2.96, "today_alloc": 2.96, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 56.68, "current_rate": 54.7, "net_profit": -3.5, "is_active": true}, {"symbol": "MU", "name": "Micron Technology, Inc.", "instrument_type": "Stocks", "yesterday_invest_alloc": 2.71, "today_invest_alloc": 2.71, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 6.11, "today_value_alloc": 6.11, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 2.71, "today_alloc": 2.71, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 377.3, "current_rate": 1015.95, "net_profit": 169.27, "is_active": true}, {"symbol": "NESTE", "name": "Neste Oyj", "instrument_type": "Stocks", "yesterday_invest_alloc": 2.65, "today_invest_alloc": 2.65, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 2.67, "today_value_alloc": 2.67, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 2.65, "today_alloc": 2.65, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 26.65, "current_rate": 31.89, "net_profit": 20.08, "is_active": true}, {"symbol": "LITE", "name": "Lumentum Holdings Inc", "instrument_type": "Stocks", "yesterday_invest_alloc": 2.3, "today_invest_alloc": 2.3, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 1.91, "today_value_alloc": 1.91, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 2.3, "today_alloc": 2.3, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 889.56, "current_rate": 881.67, "net_profit": -0.89, "is_active": true}, {"symbol": "TSM", "name": "Taiwan Semiconductor Manufacturing Co Ltd - ADR", "instrument_type": "Stocks", "yesterday_invest_alloc": 2.08, "today_invest_alloc": 2.08, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 4.47, "today_value_alloc": 4.47, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 2.08, "today_alloc": 2.08, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 167.14, "current_rate": 428.09, "net_profit": 156.13, "is_active": true}, {"symbol": "GOOG", "name": "Alphabet", "instrument_type": "Stocks", "yesterday_invest_alloc": 1.71, "today_invest_alloc": 1.71, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 2.91, "today_value_alloc": 2.91, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 1.71, "today_alloc": 1.71, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 164.68, "current_rate": 335.2, "net_profit": 103.56, "is_active": true}, {"symbol": "CELESTICA", "name": "Celestica Inc", "instrument_type": "Stocks", "yesterday_invest_alloc": 1.37, "today_invest_alloc": 1.37, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 0.95, "today_value_alloc": 0.95, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 1.37, "today_alloc": 1.37, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 377.44, "current_rate": 312.26, "net_profit": -17.27, "is_active": true}, {"symbol": "AMD", "name": "Advanced Micro Devices Inc", "instrument_type": "Stocks", "yesterday_invest_alloc": 1.35, "today_invest_alloc": 1.35, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 1.53, "today_value_alloc": 1.53, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 1.35, "today_alloc": 1.35, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 353.76, "current_rate": 477.34, "net_profit": 34.93, "is_active": true}, {"symbol": "AMZN", "name": "Amazon.com Inc", "instrument_type": "Stocks", "yesterday_invest_alloc": 1.22, "today_invest_alloc": 1.22, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 1.94, "today_value_alloc": 1.94, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 1.22, "today_alloc": 1.22, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 136.09, "current_rate": 258.32, "net_profit": 89.85, "is_active": true}, {"symbol": "AAPL", "name": "Apple", "instrument_type": "Stocks", "yesterday_invest_alloc": 1.07, "today_invest_alloc": 1.07, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 1.46, "today_value_alloc": 1.46, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 1.07, "today_alloc": 1.07, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 197.07, "current_rate": 319.77, "net_profit": 62.26, "is_active": true}, {"symbol": "STERLING", "name": "Sterling Infrastructure Inc", "instrument_type": "Stocks", "yesterday_invest_alloc": 1.05, "today_invest_alloc": 1.05, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 1.0, "today_value_alloc": 1.0, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 1.05, "today_alloc": 1.05, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 430.62, "current_rate": 486.04, "net_profit": 12.87, "is_active": true}, {"symbol": "MSFT", "name": "Microsoft", "instrument_type": "Stocks", "yesterday_invest_alloc": 1.01, "today_invest_alloc": 1.01, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 1.52, "today_value_alloc": 1.52, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 1.01, "today_alloc": 1.01, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 277.66, "current_rate": 499.62, "net_profit": 79.94, "is_active": true}, {"symbol": "CRDO", "name": "Credo Technology Group Holding Ltd", "instrument_type": "Stocks", "yesterday_invest_alloc": 0.85, "today_invest_alloc": 0.85, "invest_diff": 0.0, "invest_status": "UNCHANGED", "invest_status_label": "持平", "invest_status_badge": "⚪ 持平", "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "invest_status_icon": "⚪", "yesterday_value_alloc": 1.72, "today_value_alloc": 1.72, "value_diff": 0.0, "value_status": "UNCHANGED", "value_status_label": "持平", "value_status_badge": "⚪ 持平", "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "value_status_icon": "⚪", "yesterday_alloc": 0.85, "today_alloc": 0.85, "diff": 0.0, "status": "UNCHANGED", "status_label": "持平", "status_badge": "⚪ 持平", "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30", "status_icon": "⚪", "avg_open_rate": 70.27, "current_rate": 170.52, "net_profit": 142.66, "is_active": true}];
+        const isFirstDay = true;
+
+        // 1. Render Donut Chart (Allocation)
+        const donutCtx = document.getElementById('allocationDonutChart').getContext('2d');
+        const donutLabels = portfolioData.slice(0, 15).map(d => d.symbol);
+        const donutValues = portfolioData.slice(0, 15).map(d => d.allocation);
+        
+        const colorPalette = [
+            '#10b981', '#06b6d4', '#3b82f6', '#6366f1', '#8b5cf6', 
+            '#ec4899', '#f43f5e', '#f97316', '#eab308', '#14b8a6',
+            '#a855f7', '#0284c7', '#22c55e', '#64748b', '#94a3b8'
+        ];
+
+        new Chart(donutCtx, {
+            type: 'doughnut',
+            data: {
+                labels: donutLabels,
+                datasets: [{
+                    data: donutValues,
+                    backgroundColor: colorPalette.slice(0, donutLabels.length),
+                    borderColor: '#111827',
+                    borderWidth: 2,
+                    hoverOffset: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            color: '#94a3b8',
+                            font: { family: 'Inter', size: 11 },
+                            padding: 10,
+                            boxWidth: 12
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#1f2937',
+                        titleColor: '#f8fafc',
+                        bodyColor: '#cbd5e1',
+                        callbacks: {
+                            label: function(context) {
+                                const symbol = context.label || '';
+                                const val = context.parsed || 0;
+                                const item = portfolioData.find(p => p.symbol === symbol);
+                                return ` ${symbol} (${item ? item.name : ''}): ${val}%`;
+                            }
+                        }
+                    }
+                },
+                cutout: '68%'
+            }
+        });
+
+        // 2. Render Bar Chart (Top Holdings on First Day / Changes afterwards)
+        const barCtx = document.getElementById('changesBarChart').getContext('2d');
+        let barLabels = [];
+        let barValues = [];
+        let barColors = [];
+
+        if (isFirstDay) {
+            const top10 = portfolioData.slice(0, 10);
+            barLabels = top10.map(d => d.symbol);
+            barValues = top10.map(d => d.allocation);
+            barColors = barValues.map(() => '#10b981');
+        } else {
+            const activeChanges = changesData
+                .filter(d => Math.abs(d.diff) > 0.0001)
+                .sort((a, b) => b.diff - a.diff)
+                .slice(0, 10);
+
+            barLabels = activeChanges.map(d => d.symbol);
+            barValues = activeChanges.map(d => d.diff);
+            barColors = barValues.map(v => v >= 0 ? '#10b981' : '#f43f5e');
+        }
+
+        new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: barLabels.length > 0 ? barLabels : ['無顯著變動'],
+                datasets: [{
+                    label: isFirstDay ? '投資佔比 (%)' : '佔比變動 (Δ%)',
+                    data: barValues.length > 0 ? barValues : [0],
+                    backgroundColor: barColors.length > 0 ? barColors : ['#64748b'],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        grid: { color: '#1f2937' },
+                        ticks: { color: '#94a3b8', callback: v => `${v}%` }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { color: '#f8fafc', font: { weight: 'bold' } }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1f2937',
+                        callbacks: {
+                            label: context => ` ${isFirstDay ? '佔比' : '變動'}: ${context.parsed.x}%`
+                        }
+                    }
+                }
+            }
+        });
+
+        // 3. Table Filtering and Search Functions
+        let currentFilter = 'ALL';
+
+        function filterTable(status) {
+            currentFilter = status;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.dataset.filter === status) {
+                    btn.classList.add('bg-gray-800', 'text-white');
+                    btn.classList.remove('text-gray-400');
+                } else {
+                    btn.classList.remove('bg-gray-800', 'text-white');
+                    btn.classList.add('text-gray-400');
+                }
+            });
+            applyFilters();
+        }
+
+        function searchTable() {
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const query = document.getElementById('tableSearchInput').value.toLowerCase().trim();
+            const rows = document.querySelectorAll('#holdingsTable tbody tr');
+
+            rows.forEach(row => {
+                const status = row.dataset.status;
+                const symbol = (row.dataset.symbol || '').toLowerCase();
+                const name = (row.dataset.name || '').toLowerCase();
+
+                const matchesFilter = (currentFilter === 'ALL' || status === currentFilter);
+                const matchesSearch = (!query || symbol.includes(query) || name.includes(query));
+
+                if (matchesFilter && matchesSearch) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

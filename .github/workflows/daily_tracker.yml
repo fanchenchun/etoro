@@ -51,7 +51,7 @@ jobs:
 
       - name: 執行 eToro 爬蟲與調倉分析 (Run Tracker)
         env:
-          TARGET_USERNAME: ${{ vars.TARGET_USERNAME || 'miulatw' }}
+          TARGET_USERNAME: ${{ vars.TARGET_USERNAME || 'all' }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           PAGES_URL: ${{ secrets.PAGES_URL || vars.PAGES_URL || 'https://fanchenchun.github.io/etoro/' }}
           LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
@@ -79,12 +79,12 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
           git status
-          if [ -n "$(git status --porcelain data/ index.html)" ]; then
-            git add data/latest.json data/history.json index.html
-            git commit -m "chore(data): auto-update etoro portfolio & dashboard [$(date +'%Y-%m-%d')]"
+          if [ -n "$(git status --porcelain data/ *.html)" ]; then
+            git add data/ *.html
+            git commit -m "chore(data): auto-update etoro portfolios & dashboards [$(date +'%Y-%m-%d')]"
             git pull --rebase --autostash origin main || true
             git push origin main
-            echo "✅ 成功更新資料與 index.html 並推送到儲存庫！"
+            echo "✅ 成功更新資料與所有儀表板網頁並推送到儲存庫！"
           else
             echo "⚡ 今日無資料變動，無需提交。"
           fi

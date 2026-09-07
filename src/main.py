@@ -1,12 +1,14 @@
 """
 eToro 投資組合追蹤自動化系統 - 主程式入口 (Main Orchestrator)
-調度流程:
-1. Playwright / SAPI 爬蟲 (抓取持倉與可用餘額)
-2. 數據比對 (今日 vs 昨日，只要 diff > 0 為加碼，diff < 0 為減碼)
-3. Gemini 1.5 Flash AI 摘要生成
-4. 儲存最新狀態至 data/latest.json 與 data/history.json
-5. 生成/更新現代深色科技感 index.html 靜態網頁 (包含 5 大 KPI 卡片與餘額資訊)
-6. 發送多管道推播通知 (LINE Notify / Telegram / Email / Discord)
+支援多投資明星批次追蹤與獨立儀表板生成。
+
+調度流程 (針對各投資人):
+1. Playwright / SAPI 爬蟲 (抓取持倉、可用餘額與動態留言)
+2. 數據比對 (今日 vs 昨日，計算持股權重與現金流動)
+3. Gemini 1.5 Flash AI 繁中調倉深度摘要生成
+4. 儲存最新狀態至 data/<username>/latest.json 與 history.json
+5. 生成/更新專屬靜態網頁 (index.html, jeppekirkbonde.html, cphequities.html 等)
+6. 發送多管道推播通知 (LINE / Telegram / Email / Discord) 附帶各專屬頁面連結
 """
 
 import os
@@ -14,6 +16,7 @@ import sys
 import json
 import logging
 import argparse
+import shutil
 from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 
@@ -36,6 +39,7 @@ if sys.platform == "win32" and hasattr(sys.stdout, "reconfigure"):
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE_DIR)
 
+from src.config import INVESTORS, get_investor
 from src.scraper import EToroScraper, get_mock_portfolio_data, get_mock_comment_data
 from src.analyzer import PortfolioAnalyzer
 from src.ai_summary import generate_ai_summary
@@ -82,23 +86,48 @@ def run_tracker(
     no_notify: bool = False,
     force_notify: bool = False,
     pages_url: str = None
-):
-    logger.info(f"========== 開始執行 eToro 追蹤任務: @{username} ==========")
+) -> bool:
+    inv_info = get_investor(username)
+    display_name = inv_info.get("display_name", username)
+    html_filename = inv_info.get("html_file", f"{username}.html")
+    output_html_path = os.path.join(BASE_DIR, html_filename)
+
+    logger.info(f"========== 開始執行 eToro 追蹤任務: {display_name} (@{username}) ==========")
     now_taipei = get_taipei_now()
     today_date = now_taipei.strftime("%Y-%m-%d")
     now_time_str = now_taipei.strftime("%Y-%m-%d %H:%M:%S")
 
-    data_dir = os.path.join(BASE_DIR, "data")
-    os.makedirs(data_dir, exist_ok=True)
-    history_file = os.path.join(data_dir, "history.json")
-    latest_file = os.path.join(data_dir, "latest.json")
+    # 建立用戶專屬資料目錄 (例如 data/miulatw/, data/jeppekirkbonde/)
+    user_data_dir = os.path.join(BASE_DIR, "data", username)
+    os.makedirs(user_data_dir, exist_ok=True)
+    history_file = os.path.join(user_data_dir, "history.json")
+    latest_file = os.path.join(user_data_dir, "latest.json")
+
+    # 針對 miulatw 執行平滑歷史資料遷移 (若專屬目錄尚無歷史檔，但 root data/ 有，則自動複製遷移)
+    if username.lower() == "miulatw":
+        legacy_history = os.path.join(BASE_DIR, "data", "history.json")
+        legacy_latest = os.path.join(BASE_DIR, "data", "latest.json")
+        if not os.path.exists(history_file) and os.path.exists(legacy_history):
+            try:
+                shutil.copy2(legacy_history, history_file)
+                logger.info(f"已自動將歷史資料從 {legacy_history} 遷移至 {history_file}")
+            except Exception as e:
+                logger.warning(f"遷移歷史檔案失敗: {e}")
+        if not os.path.exists(latest_file) and os.path.exists(legacy_latest):
+            try:
+                shutil.copy2(legacy_latest, latest_file)
+                logger.info(f"已自動將最新資料從 {legacy_latest} 遷移至 {latest_file}")
+            except Exception as e:
+                logger.warning(f"遷移最新檔案失敗: {e}")
 
     # 1. 抓取當前持股資料、餘額與最新動態留言
     if use_mock:
-        logger.info("採用 Mock 模擬模式...")
+        logger.info(f"採用 Mock 模擬模式 ({username})...")
         today_portfolio = get_mock_portfolio_data()
         cash_balance = {"available_cash_pct": 18.46, "total_invested_pct": 81.54}
         today_comment = get_mock_comment_data()
+        today_comment["username"] = username
+        today_comment["author_name"] = display_name
     else:
         scraper = EToroScraper(username=username, headless=headless)
         today_portfolio = scraper.scrape(mock_on_fail=True)
@@ -106,10 +135,10 @@ def run_tracker(
         today_comment = scraper.latest_comment
 
     if not today_portfolio:
-        logger.error("無法取得任何持股資料，程序終止！")
+        logger.error(f"用戶 [{username}] 無法取得任何持股資料，程序終止！")
         return False
 
-    logger.info(f"成功取得今日持股: 共 {len(today_portfolio)} 檔標的。")
+    logger.info(f"成功取得今日持股 ({username}): 共 {len(today_portfolio)} 檔標的。")
 
     # 2. 載入歷史資料並找出昨日部位與現金進行比對
     history = load_history_data(history_file)
@@ -133,11 +162,25 @@ def run_tracker(
         except Exception:
             pass
 
-    # 若未能從網路取得留言，維持使用前次歷史留言或 Mock
+    # 若未能從網路取得留言，維持使用前次歷史留言或預設
     if not today_comment and prev_comment:
         today_comment = prev_comment
     elif not today_comment:
-        today_comment = get_mock_comment_data()
+        today_comment = {
+            "id": f"default-{username}",
+            "author_name": display_name,
+            "username": username,
+            "avatar_url": inv_info.get("avatar_url") or "",
+            "country": "全球",
+            "created_at_formatted": "",
+            "relative_time": "近期",
+            "content": f"{display_name} 暫無最新動態留言",
+            "likes_count": 0,
+            "comments_count": 0,
+            "shares_count": 0,
+            "post_url": f"https://www.etoro.com/zh-tw/people/{username}",
+            "is_new": False
+        }
 
     # 比對動態留言是否有新發布 (ID 是否與前次不同)
     is_new_comment = False
@@ -146,12 +189,12 @@ def run_tracker(
         cur_id = today_comment.get("id")
         if prev_id and cur_id and prev_id != cur_id:
             is_new_comment = True
-            logger.info(f"🔔 偵測到 Miula 發布了新留言 (前次: {prev_id} -> 今日: {cur_id})！")
+            logger.info(f"🔔 偵測到 {display_name} 發布了新留言 (前次: {prev_id} -> 今日: {cur_id})！")
         today_comment["is_new"] = is_new_comment
 
     # 計算現金餘額相較昨日之變動量 (Δ%)
-    today_avail = float(cash_balance.get("available_cash_pct", 18.46))
-    today_invested = float(cash_balance.get("total_invested_pct", 81.54))
+    today_avail = float(cash_balance.get("available_cash_pct", 0.0))
+    today_invested = float(cash_balance.get("total_invested_pct", 100.0))
 
     if yesterday_cash:
         yesterday_avail = float(yesterday_cash.get("available_cash_pct", today_avail))
@@ -184,12 +227,12 @@ def run_tracker(
     analysis_result = PortfolioAnalyzer.analyze(today_portfolio, yesterday_portfolio, threshold=0.0)
     analysis_result["today_date"] = today_date_fmt
     analysis_result["yesterday_date"] = yesterday_date_fmt
-    logger.info(f"比對完成: (基準日 {yesterday_date_fmt} vs 今日 {today_date_fmt}) 新開倉 {analysis_result['stats']['new_count']} 檔, 平倉 {analysis_result['stats']['closed_count']} 檔, 加碼 {analysis_result['stats']['increased_count']} 檔, 減碼 {analysis_result['stats']['decreased_count']} 檔 | 可用現金變動: {diff_avail}%")
+    logger.info(f"[{username}] 比對完成: (基準日 {yesterday_date_fmt} vs 今日 {today_date_fmt}) 新開倉 {analysis_result['stats']['new_count']} 檔, 平倉 {analysis_result['stats']['closed_count']} 檔, 加碼 {analysis_result['stats']['increased_count']} 檔, 減碼 {analysis_result['stats']['decreased_count']} 檔 | 可用現金: {today_avail}% ({diff_avail}%)")
 
     # 4. AI 智能摘要生成
-    logger.info("生成繁體中文深度調倉總結 (Gemini / 規則引擎)...")
+    logger.info(f"[{username}] 生成繁體中文深度調倉總結 (Gemini / 規則引擎)...")
     ai_summary_text = generate_ai_summary(analysis_result, username=username, cash_balance=enhanced_cash_balance)
-    logger.info(f"AI 摘要:\n{ai_summary_text}")
+    logger.info(f"[{username}] AI 摘要:\n{ai_summary_text}")
 
     # 檢查今日是否已成功發送過通知 (防重複通知機制)
     already_notified_today = False
@@ -207,6 +250,7 @@ def run_tracker(
     # 5. 更新 latest.json 與 history.json (先繼承今日是否已成功通知之狀態)
     latest_payload = {
         "username": username,
+        "display_name": display_name,
         "date": today_date,
         "update_time": now_time_str,
         "cash_balance": enhanced_cash_balance,
@@ -236,28 +280,46 @@ def run_tracker(
             json.dump(history, f, ensure_ascii=False, indent=2)
         logger.info(f"已更新歷史快照檔案: {history_file}")
 
-        # 6. 生成靜態 index.html 頁面
-        logger.info("渲染產生 GitHub Pages 儀表板 (index.html)...")
-        builder = PageBuilder()
+        # 向後相容：若為 miulatw，同步維護根目錄 data/latest.json 與 data/history.json
+        if username.lower() == "miulatw":
+            try:
+                root_latest = os.path.join(BASE_DIR, "data", "latest.json")
+                root_history = os.path.join(BASE_DIR, "data", "history.json")
+                with open(root_latest, "w", encoding="utf-8") as f:
+                    json.dump(latest_payload, f, ensure_ascii=False, indent=2)
+                with open(root_history, "w", encoding="utf-8") as f:
+                    json.dump(history, f, ensure_ascii=False, indent=2)
+            except Exception as e:
+                logger.warning(f"同步向後相容根目錄資料失敗: {e}")
+
+        # 6. 生成專屬 HTML 頁面
+        logger.info(f"渲染產生 GitHub Pages 儀表板 ({html_filename})...")
+        builder = PageBuilder(output_path=output_html_path)
         builder.render(
             analysis_result=analysis_result,
             ai_summary=ai_summary_text,
             username=username,
+            display_name=display_name,
             update_time=now_time_str,
             cash_balance=enhanced_cash_balance,
-            latest_comment=today_comment
+            latest_comment=today_comment,
+            investors=INVESTORS,
+            output_path=output_html_path
         )
     else:
-        logger.info("[Dry Run] 跳過寫入 JSON 與 index.html 檔案")
+        logger.info(f"[Dry Run] 跳過寫入 JSON 與 {html_filename} 檔案")
 
-    # 7. 發送推播通知 (具備防重複檢查與實際成功判定)
+    # 7. 發送推播通知 (具備防重複檢查與專屬網址)
+    base_pages_url = pages_url or os.getenv("PAGES_URL") or "https://fanchenchun.github.io/etoro/"
+    user_page_url = base_pages_url if html_filename == "index.html" else f"{base_pages_url.rstrip('/')}/{html_filename}"
+
     if no_notify or dry_run:
         logger.info("已指定 --no-notify 或 dry-run，跳過推播發送。")
     elif already_notified_today and not force_notify:
-        logger.info(f"⚡ 今日 ({today_date}) 已於稍早成功發送過通知，本次排程自動跳過重複發送 Email/推播 (若需強制發送請帶入 --force-notify)。")
+        logger.info(f"⚡ [{username}] 今日 ({today_date}) 已於稍早成功發送過通知，本次排程自動跳過重複發送 (若需強制發送請帶入 --force-notify)。")
     else:
-        logger.info("正在執行推播分發...")
-        dispatcher = NotificationDispatcher(username=username, pages_url=pages_url)
+        logger.info(f"[{username}] 正在執行推播分發 (網址: {user_page_url})...")
+        dispatcher = NotificationDispatcher(username=username, pages_url=user_page_url, display_name=display_name)
         dispatch_results = dispatcher.dispatch(
             analysis_result,
             ai_summary_text,
@@ -265,10 +327,9 @@ def run_tracker(
             latest_comment=today_comment
         )
         
-        # 只要有任一管道成功送出，即記錄今日已通知成功
         any_success = any(dispatch_results.values())
         if any_success:
-            logger.info("✅ 今日通知已成功分發至至少一個推播管道！")
+            logger.info(f"✅ [{username}] 今日通知已成功分發至至少一個推播管道！")
             if not dry_run:
                 latest_payload["notified"] = True
                 history[today_date]["notified"] = True
@@ -276,17 +337,16 @@ def run_tracker(
                     json.dump(latest_payload, f, ensure_ascii=False, indent=2)
                 with open(history_file, "w", encoding="utf-8") as f:
                     json.dump(history, f, ensure_ascii=False, indent=2)
-                logger.info("已更新通知成功狀態 (notified: true)。")
         else:
-            logger.warning("⚠️ 未能成功送出至任何推播管道 (請檢查 GitHub Secrets 或 .env 設定)，今日通知標記保持未發送以供下次重試。")
+            logger.warning(f"⚠️ [{username}] 未能成功送出至任何推播管道，通知標記保持未發送以供下次重試。")
 
-    logger.info("========== eToro 追蹤任務圓滿完成 ==========")
+    logger.info(f"========== eToro 追蹤任務圓滿完成: {display_name} (@{username}) ==========\n")
     return True
 
 
 def main():
     parser = argparse.ArgumentParser(description="eToro Portfolio Daily Tracker")
-    parser.add_argument("--username", default=os.getenv("TARGET_USERNAME") or "miulatw", help="eToro 追蹤用戶名")
+    parser.add_argument("--username", default=os.getenv("TARGET_USERNAME"), help="指定追蹤用戶名 (留空或 'all' 則依序追蹤 INVESTORS 清單中所有投資明星)")
     parser.add_argument("--mock", action="store_true", help="使用 Mock 測試數據")
     parser.add_argument("--no-headless", action="store_true", help="顯示瀏覽器視窗")
     parser.add_argument("--dry-run", action="store_true", help="試運行不儲存歷史資料")
@@ -296,15 +356,28 @@ def main():
 
     args = parser.parse_args()
 
-    run_tracker(
-        username=args.username,
-        use_mock=args.mock,
-        headless=not args.no_headless,
-        dry_run=args.dry_run,
-        no_notify=args.no_notify,
-        force_notify=args.force_notify,
-        pages_url=args.pages_url
-    )
+    raw_user = (args.username or "").strip()
+    if raw_user and raw_user.lower() != "all":
+        targets = [raw_user]
+    else:
+        targets = [inv["username"] for inv in INVESTORS]
+
+    logger.info(f"🚀 即將啟動追蹤任務，目標投資明星清單: {targets}")
+    success_count = 0
+    for u in targets:
+        success = run_tracker(
+            username=u,
+            use_mock=args.mock,
+            headless=not args.no_headless,
+            dry_run=args.dry_run,
+            no_notify=args.no_notify,
+            force_notify=args.force_notify,
+            pages_url=args.pages_url
+        )
+        if success:
+            success_count += 1
+
+    logger.info(f"🎉 全部追蹤任務完成！成功: {success_count}/{len(targets)}")
 
 
 if __name__ == "__main__":
