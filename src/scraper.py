@@ -426,7 +426,11 @@ class EToroScraper:
         inst_ids_int = [int(p["InstrumentID"]) for p in positions]
         rates_map = self._fetch_positions_rates(cid, inst_ids_int, headers)
 
-        # 5. 提取投資佔比與價格資訊
+        # 5. 提取投資佔比與價格資訊 (將 SAPI 原始權重數值精準歸一化為帳戶百分比)
+        total_invested_raw = sum(float(p.get("Invested", 0.0)) for p in positions)
+        total_value_raw = sum(float(p.get("Value", 0.0)) for p in positions)
+        tot_invest_pct = float(self.cash_balance.get("total_invested_pct", 100.0 - avail_cash))
+
         parsed_items = []
 
         for p in positions:
@@ -436,8 +440,18 @@ class EToroScraper:
                 "name": f"Instrument {iid}"
             })
             
-            invested_alloc = round(float(p.get("Invested", 0.0)), 2)
-            value_alloc = round(float(p.get("Value", 0.0)), 2)
+            raw_inv = float(p.get("Invested", 0.0))
+            raw_val = float(p.get("Value", 0.0))
+
+            if total_invested_raw > 0:
+                invested_alloc = round((raw_inv / total_invested_raw) * tot_invest_pct, 2)
+            else:
+                invested_alloc = round(raw_inv, 2)
+
+            if total_value_raw > 0:
+                value_alloc = round((raw_val / total_value_raw) * 100.0, 2)
+            else:
+                value_alloc = round(raw_val, 2)
 
             symbol = KNOWN_INSTRUMENT_SYMBOLS.get(iid, meta["symbol"])
             if str(symbol).isdigit() and int(symbol) in KNOWN_INSTRUMENT_SYMBOLS:

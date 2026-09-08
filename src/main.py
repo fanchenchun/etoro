@@ -362,6 +362,33 @@ def main():
     else:
         targets = [inv["username"] for inv in INVESTORS]
 
+    now_taipei = get_taipei_now()
+    today_date = now_taipei.strftime("%Y-%m-%d")
+
+    # 檢查是否所有目標在今日都已成功發送過通知 (排程快速跳過機制，防重複發信與重試省額度)
+    if not args.force_notify and not args.no_notify and not args.dry_run:
+        all_notified = True
+        for u in targets:
+            user_data_dir = os.path.join(BASE_DIR, "data", u)
+            latest_file = os.path.join(user_data_dir, "latest.json")
+            user_notified = False
+            if os.path.exists(latest_file):
+                try:
+                    with open(latest_file, "r", encoding="utf-8") as f:
+                        cur_latest = json.load(f)
+                        if cur_latest.get("date") == today_date and cur_latest.get("notified", False):
+                            user_notified = True
+                except Exception:
+                    pass
+            if not user_notified:
+                all_notified = False
+                break
+        
+        if all_notified:
+            logger.info(f"✨ 今日 ({today_date}) 目標投資人 ({targets}) 均已成功完成更新並發送通知！")
+            logger.info("⚡ 本次重試排程安全自動跳過，無需重複執行。若需強制重新執行請帶入 --force-notify。")
+            return
+
     logger.info(f"🚀 即將啟動追蹤任務，目標投資明星清單: {targets}")
     success_count = 0
     for u in targets:
