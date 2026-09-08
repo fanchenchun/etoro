@@ -2,7 +2,7 @@
   "username": "jeppekirkbonde",
   "display_name": "Jeppe Kirk Bonde",
   "date": "2026-09-08",
-  "update_time": "2026-09-08 08:26:44",
+  "update_time": "2026-09-08 08:41:28",
   "cash_balance": {
     "available_cash_pct": 0.02,
     "total_invested_pct": 99.98,
@@ -18,33 +18,33 @@
       "name": "Vistra Corp",
       "allocation": 4.79,
       "invest_alloc": 4.79,
-      "value_alloc": 2.78,
+      "value_alloc": 2.79,
       "instrument_type": "Stocks",
-      "net_profit": 4.73,
+      "net_profit": 5.0,
       "avg_open_rate": 146.1,
-      "current_rate": 153.01
+      "current_rate": 153.4
     },
     {
       "symbol": "CONSTELLATION",
       "name": "Constellation Energy Corp",
       "allocation": 4.78,
       "invest_alloc": 4.78,
-      "value_alloc": 2.57,
+      "value_alloc": 2.58,
       "instrument_type": "Stocks",
-      "net_profit": -3.14,
+      "net_profit": -2.92,
       "avg_open_rate": 307.97,
-      "current_rate": 298.29
+      "current_rate": 298.96
     },
     {
       "symbol": "TSM",
       "name": "Taiwan Semiconductor Manufacturing Co Ltd - ADR",
       "allocation": 4.59,
       "invest_alloc": 4.59,
-      "value_alloc": 8.84,
+      "value_alloc": 8.87,
       "instrument_type": "Stocks",
-      "net_profit": 247.15,
+      "net_profit": 248.44,
       "avg_open_rate": 124.02,
-      "current_rate": 430.53
+      "current_rate": 432.13
     },
     {
       "symbol": "RANGE",
@@ -62,7 +62,7 @@
       "name": "EQT Corp",
       "allocation": 3.73,
       "invest_alloc": 3.73,
-      "value_alloc": 3.02,
+      "value_alloc": 3.01,
       "instrument_type": "Stocks",
       "net_profit": 45.71,
       "avg_open_rate": 37.55,
@@ -97,9 +97,9 @@
       "invest_alloc": 2.83,
       "value_alloc": 5.67,
       "instrument_type": "Stocks",
-      "net_profit": 260.32,
+      "net_profit": 260.93,
       "avg_open_rate": 64.25,
-      "current_rate": 231.5
+      "current_rate": 231.89
     },
     {
       "symbol": "HST",
@@ -128,22 +128,22 @@
       "name": "Micron Technology, Inc.",
       "allocation": 2.59,
       "invest_alloc": 2.59,
-      "value_alloc": 10.35,
+      "value_alloc": 10.31,
       "instrument_type": "Stocks",
-      "net_profit": 620.04,
+      "net_profit": 617.42,
       "avg_open_rate": 145.28,
-      "current_rate": 1046.5
+      "current_rate": 1042.29
     },
     {
       "symbol": "BLOOM",
       "name": "Bloom Energy Corp",
       "allocation": 2.51,
       "invest_alloc": 2.51,
-      "value_alloc": 1.57,
+      "value_alloc": 1.56,
       "instrument_type": "Stocks",
-      "net_profit": 12.53,
+      "net_profit": 12.22,
       "avg_open_rate": 241.94,
-      "current_rate": 272.25
+      "current_rate": 271.5
     },
     {
       "symbol": "SKHYNIX",
@@ -163,7 +163,7 @@
       "invest_alloc": 2.37,
       "value_alloc": 2.67,
       "instrument_type": "Stocks",
-      "net_profit": 103.28,
+      "net_profit": 103.25,
       "avg_open_rate": 42.36,
       "current_rate": 79.0
     },
@@ -183,9 +183,9 @@
       "name": "ASML Holding NV",
       "allocation": 2.19,
       "invest_alloc": 2.19,
-      "value_alloc": 2.85,
+      "value_alloc": 2.84,
       "instrument_type": "Stocks",
-      "net_profit": 134.56,
+      "net_profit": 134.59,
       "avg_open_rate": 637.75,
       "current_rate": 1502.2
     },
@@ -229,7 +229,7 @@
       "invest_alloc": 1.82,
       "value_alloc": 0.52,
       "instrument_type": "Stocks",
-      "net_profit": -48.85,
+      "net_profit": -48.84,
       "avg_open_rate": 649.27,
       "current_rate": 298.25
     },
@@ -249,11 +249,11 @@
       "name": "Microsoft",
       "allocation": 1.72,
       "invest_alloc": 1.72,
-      "value_alloc": 1.95,
+      "value_alloc": 1.96,
       "instrument_type": "Stocks",
-      "net_profit": 104.9,
+      "net_profit": 105.33,
       "avg_open_rate": 241.83,
-      "current_rate": 495.5
+      "current_rate": 496.54
     },
     {
       "symbol": "NVTKI.RU",
@@ -273,9 +273,9 @@
       "invest_alloc": 1.68,
       "value_alloc": 2.06,
       "instrument_type": "Stocks",
-      "net_profit": 120.9,
+      "net_profit": 121.3,
       "avg_open_rate": 277.36,
-      "current_rate": 612.7
+      "current_rate": 613.8
     },
     {
       "symbol": "BOLIDEN",
@@ -284,7 +284,7 @@
       "invest_alloc": 1.63,
       "value_alloc": 1.62,
       "instrument_type": "Stocks",
-      "net_profit": 80.12,
+      "net_profit": 80.13,
       "avg_open_rate": 316.36,
       "current_rate": 550.4
     },
@@ -328,9 +328,9 @@
       "invest_alloc": 1.46,
       "value_alloc": 1.32,
       "instrument_type": "Stocks",
-      "net_profit": 62.84,
+      "net_profit": 63.01,
       "avg_open_rate": 157.97,
-      "current_rate": 257.0
+      "current_rate": 257.5
     },
     {
       "symbol": "ISHARES",
@@ -350,7 +350,7 @@
       "invest_alloc": 1.38,
       "value_alloc": 0.67,
       "instrument_type": "Stocks",
-      "net_profit": -12.92,
+      "net_profit": -12.91,
       "avg_open_rate": 263.35,
       "current_rate": 231.4
     },
@@ -383,7 +383,7 @@
       "invest_alloc": 1.2,
       "value_alloc": 0.71,
       "instrument_type": "Stocks",
-      "net_profit": 6.98,
+      "net_profit": 6.99,
       "avg_open_rate": 3632.33,
       "current_rate": 3900.0
     },
@@ -405,9 +405,9 @@
       "invest_alloc": 1.1,
       "value_alloc": 1.79,
       "instrument_type": "Stocks",
-      "net_profit": 193.03,
+      "net_profit": 193.85,
       "avg_open_rate": 588.62,
-      "current_rate": 1724.84
+      "current_rate": 1729.68
     },
     {
       "symbol": "LDOS",
@@ -427,7 +427,7 @@
       "invest_alloc": 0.91,
       "value_alloc": 2.22,
       "instrument_type": "Stocks",
-      "net_profit": 338.34,
+      "net_profit": 338.3,
       "avg_open_rate": 11.01,
       "current_rate": 44.37
     },
@@ -438,7 +438,7 @@
       "invest_alloc": 0.91,
       "value_alloc": 1.09,
       "instrument_type": "Stocks",
-      "net_profit": 116.55,
+      "net_profit": 116.58,
       "avg_open_rate": 473.68,
       "current_rate": 955.5
     },
@@ -471,7 +471,7 @@
       "invest_alloc": 0.84,
       "value_alloc": 0.44,
       "instrument_type": "Stocks",
-      "net_profit": -5.29,
+      "net_profit": -5.28,
       "avg_open_rate": 19658.68,
       "current_rate": 18400.0
     },
@@ -493,9 +493,9 @@
       "invest_alloc": 0.75,
       "value_alloc": 0.5,
       "instrument_type": "Stocks",
-      "net_profit": 19.94,
+      "net_profit": 20.46,
       "avg_open_rate": 436.05,
-      "current_rate": 523.0
+      "current_rate": 525.28
     },
     {
       "symbol": "JPM",
@@ -504,9 +504,9 @@
       "invest_alloc": 0.71,
       "value_alloc": 1.37,
       "instrument_type": "Stocks",
-      "net_profit": 249.79,
+      "net_profit": 250.77,
       "avg_open_rate": 101.49,
-      "current_rate": 355.0
+      "current_rate": 356.0
     },
     {
       "symbol": "NOC",
@@ -524,7 +524,7 @@
       "name": "Samsung Electronics Co Ltd - GDR",
       "allocation": 0.69,
       "invest_alloc": 0.69,
-      "value_alloc": 1.35,
+      "value_alloc": 1.34,
       "instrument_type": "Stocks",
       "net_profit": 250.44,
       "avg_open_rate": 1439.62,
@@ -553,17 +553,6 @@
       "current_rate": 11.73
     },
     {
-      "symbol": "SANDISK",
-      "name": "Sandisk Corp/DE",
-      "allocation": 0.6,
-      "invest_alloc": 0.6,
-      "value_alloc": 0.33,
-      "instrument_type": "Stocks",
-      "net_profit": -2.08,
-      "avg_open_rate": 1776.33,
-      "current_rate": 1739.42
-    },
-    {
       "symbol": "AMAZON.COM",
       "name": "Amazon.com Inc",
       "allocation": 0.6,
@@ -586,6 +575,17 @@
       "current_rate": 2.78
     },
     {
+      "symbol": "SANDISK",
+      "name": "Sandisk Corp/DE",
+      "allocation": 0.6,
+      "invest_alloc": 0.6,
+      "value_alloc": 0.33,
+      "instrument_type": "Stocks",
+      "net_profit": -2.08,
+      "avg_open_rate": 1776.33,
+      "current_rate": 1739.42
+    },
+    {
       "symbol": "HAS",
       "name": "Hasbro Inc",
       "allocation": 0.57,
@@ -601,11 +601,11 @@
       "name": "Riot Platforms Inc",
       "allocation": 0.57,
       "invest_alloc": 0.57,
-      "value_alloc": 0.97,
+      "value_alloc": 0.98,
       "instrument_type": "Stocks",
-      "net_profit": 208.09,
+      "net_profit": 212.86,
       "avg_open_rate": 6.92,
-      "current_rate": 21.32
+      "current_rate": 21.65
     },
     {
       "symbol": "FORTUM",
@@ -614,7 +614,7 @@
       "invest_alloc": 0.54,
       "value_alloc": 0.56,
       "instrument_type": "Stocks",
-      "net_profit": 88.19,
+      "net_profit": 88.21,
       "avg_open_rate": 12.11,
       "current_rate": 21.28
     },
@@ -625,7 +625,7 @@
       "invest_alloc": 0.5,
       "value_alloc": 0.38,
       "instrument_type": "Stocks",
-      "net_profit": 34.75,
+      "net_profit": 34.76,
       "avg_open_rate": 79.27,
       "current_rate": 92.45
     },
@@ -658,7 +658,7 @@
       "invest_alloc": 0.48,
       "value_alloc": 0.61,
       "instrument_type": "Stocks",
-      "net_profit": 130.71,
+      "net_profit": 130.73,
       "avg_open_rate": 73.78,
       "current_rate": 174.7
     },
@@ -702,9 +702,9 @@
       "invest_alloc": 0.32,
       "value_alloc": 0.66,
       "instrument_type": "Stocks",
-      "net_profit": 277.74,
+      "net_profit": 278.29,
       "avg_open_rate": 89.39,
-      "current_rate": 337.65
+      "current_rate": 338.14
     },
     {
       "symbol": "TAIWAN",
@@ -735,7 +735,7 @@
       "invest_alloc": 0.16,
       "value_alloc": 1.14,
       "instrument_type": "Stocks",
-      "net_profit": 1180.85,
+      "net_profit": 1181.01,
       "avg_open_rate": 78.96,
       "current_rate": 1024.2
     },
@@ -746,9 +746,9 @@
       "invest_alloc": 0.13,
       "value_alloc": 1.34,
       "instrument_type": "Stocks",
-      "net_profit": 1796.89,
+      "net_profit": 1798.63,
       "avg_open_rate": 9.19,
-      "current_rate": 174.32
+      "current_rate": 174.48
     }
   ],
   "latest_comment": {
@@ -800,8 +800,8 @@
         "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "invest_status_icon": "⚪",
         "yesterday_value_alloc": 2.59,
-        "today_value_alloc": 2.57,
-        "value_diff": -0.02,
+        "today_value_alloc": 2.58,
+        "value_diff": -0.01,
         "value_status": "DECREASED",
         "value_status_label": "減少",
         "value_status_badge": "🔴 減少",
@@ -816,8 +816,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 307.97,
-        "current_rate": 298.29,
-        "net_profit": -3.14,
+        "current_rate": 298.96,
+        "net_profit": -2.92,
         "is_active": true
       },
       {
@@ -833,13 +833,13 @@
         "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "invest_status_icon": "⚪",
         "yesterday_value_alloc": 8.85,
-        "today_value_alloc": 8.84,
-        "value_diff": -0.01,
-        "value_status": "DECREASED",
-        "value_status_label": "減少",
-        "value_status_badge": "🔴 減少",
-        "value_status_color": "text-amber-400 bg-amber-950/60 border-amber-500/30",
-        "value_status_icon": "🔴",
+        "today_value_alloc": 8.87,
+        "value_diff": 0.02,
+        "value_status": "INCREASED",
+        "value_status_label": "增加",
+        "value_status_badge": "🟢 增加",
+        "value_status_color": "text-green-400 bg-green-950/60 border-green-500/30",
+        "value_status_icon": "🟢",
         "yesterday_alloc": 4.59,
         "today_alloc": 4.59,
         "diff": 0.0,
@@ -849,8 +849,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 124.02,
-        "current_rate": 430.53,
-        "net_profit": 247.15,
+        "current_rate": 432.13,
+        "net_profit": 248.44,
         "is_active": true
       },
       {
@@ -899,8 +899,8 @@
         "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "invest_status_icon": "⚪",
         "yesterday_value_alloc": 3.06,
-        "today_value_alloc": 3.02,
-        "value_diff": -0.04,
+        "today_value_alloc": 3.01,
+        "value_diff": -0.05,
         "value_status": "DECREASED",
         "value_status_label": "減少",
         "value_status_badge": "🔴 減少",
@@ -1014,8 +1014,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 64.25,
-        "current_rate": 231.5,
-        "net_profit": 260.32,
+        "current_rate": 231.89,
+        "net_profit": 260.93,
         "is_active": true
       },
       {
@@ -1097,8 +1097,8 @@
         "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "invest_status_icon": "⚪",
         "yesterday_value_alloc": 10.12,
-        "today_value_alloc": 10.35,
-        "value_diff": 0.23,
+        "today_value_alloc": 10.31,
+        "value_diff": 0.19,
         "value_status": "INCREASED",
         "value_status_label": "增加",
         "value_status_badge": "🟢 增加",
@@ -1113,8 +1113,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 145.28,
-        "current_rate": 1046.5,
-        "net_profit": 620.04,
+        "current_rate": 1042.29,
+        "net_profit": 617.42,
         "is_active": true
       },
       {
@@ -1130,8 +1130,8 @@
         "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "invest_status_icon": "⚪",
         "yesterday_value_alloc": 1.47,
-        "today_value_alloc": 1.57,
-        "value_diff": 0.1,
+        "today_value_alloc": 1.56,
+        "value_diff": 0.09,
         "value_status": "INCREASED",
         "value_status_label": "增加",
         "value_status_badge": "🟢 增加",
@@ -1146,8 +1146,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 241.94,
-        "current_rate": 272.25,
-        "net_profit": 12.53,
+        "current_rate": 271.5,
+        "net_profit": 12.22,
         "is_active": true
       },
       {
@@ -1213,7 +1213,7 @@
         "status_icon": "⚪",
         "avg_open_rate": 42.36,
         "current_rate": 79.0,
-        "net_profit": 103.28,
+        "net_profit": 103.25,
         "is_active": true
       },
       {
@@ -1378,7 +1378,7 @@
         "status_icon": "⚪",
         "avg_open_rate": 649.27,
         "current_rate": 298.25,
-        "net_profit": -48.85,
+        "net_profit": -48.84,
         "is_active": true
       },
       {
@@ -1427,8 +1427,8 @@
         "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "invest_status_icon": "⚪",
         "yesterday_value_alloc": 1.98,
-        "today_value_alloc": 1.95,
-        "value_diff": -0.03,
+        "today_value_alloc": 1.96,
+        "value_diff": -0.02,
         "value_status": "DECREASED",
         "value_status_label": "減少",
         "value_status_badge": "🔴 減少",
@@ -1443,8 +1443,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 241.83,
-        "current_rate": 495.5,
-        "net_profit": 104.9,
+        "current_rate": 496.54,
+        "net_profit": 105.33,
         "is_active": true
       },
       {
@@ -1509,8 +1509,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 277.36,
-        "current_rate": 612.7,
-        "net_profit": 120.9,
+        "current_rate": 613.8,
+        "net_profit": 121.3,
         "is_active": true
       },
       {
@@ -1543,7 +1543,7 @@
         "status_icon": "⚪",
         "avg_open_rate": 316.36,
         "current_rate": 550.4,
-        "net_profit": 80.12,
+        "net_profit": 80.13,
         "is_active": true
       },
       {
@@ -1641,8 +1641,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 157.97,
-        "current_rate": 257.0,
-        "net_profit": 62.84,
+        "current_rate": 257.5,
+        "net_profit": 63.01,
         "is_active": true
       },
       {
@@ -1708,7 +1708,7 @@
         "status_icon": "⚪",
         "avg_open_rate": 263.35,
         "current_rate": 231.4,
-        "net_profit": -12.92,
+        "net_profit": -12.91,
         "is_active": true
       },
       {
@@ -1807,7 +1807,7 @@
         "status_icon": "⚪",
         "avg_open_rate": 3632.33,
         "current_rate": 3900.0,
-        "net_profit": 6.98,
+        "net_profit": 6.99,
         "is_active": true
       },
       {
@@ -1872,8 +1872,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 588.62,
-        "current_rate": 1724.84,
-        "net_profit": 193.03,
+        "current_rate": 1729.68,
+        "net_profit": 193.85,
         "is_active": true
       },
       {
@@ -1939,7 +1939,7 @@
         "status_icon": "⚪",
         "avg_open_rate": 473.68,
         "current_rate": 955.5,
-        "net_profit": 116.55,
+        "net_profit": 116.58,
         "is_active": true
       },
       {
@@ -1972,7 +1972,7 @@
         "status_icon": "⚪",
         "avg_open_rate": 11.01,
         "current_rate": 44.37,
-        "net_profit": 338.34,
+        "net_profit": 338.3,
         "is_active": true
       },
       {
@@ -2071,7 +2071,7 @@
         "status_icon": "⚪",
         "avg_open_rate": 19658.68,
         "current_rate": 18400.0,
-        "net_profit": -5.29,
+        "net_profit": -5.28,
         "is_active": true
       },
       {
@@ -2136,8 +2136,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 436.05,
-        "current_rate": 523.0,
-        "net_profit": 19.94,
+        "current_rate": 525.28,
+        "net_profit": 20.46,
         "is_active": true
       },
       {
@@ -2169,8 +2169,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 101.49,
-        "current_rate": 355.0,
-        "net_profit": 249.79,
+        "current_rate": 356.0,
+        "net_profit": 250.77,
         "is_active": true
       },
       {
@@ -2219,8 +2219,8 @@
         "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "invest_status_icon": "⚪",
         "yesterday_value_alloc": 1.32,
-        "today_value_alloc": 1.35,
-        "value_diff": 0.03,
+        "today_value_alloc": 1.34,
+        "value_diff": 0.02,
         "value_status": "INCREASED",
         "value_status_label": "增加",
         "value_status_badge": "🟢 增加",
@@ -2450,8 +2450,8 @@
         "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "invest_status_icon": "⚪",
         "yesterday_value_alloc": 1.0,
-        "today_value_alloc": 0.97,
-        "value_diff": -0.03,
+        "today_value_alloc": 0.98,
+        "value_diff": -0.02,
         "value_status": "DECREASED",
         "value_status_label": "減少",
         "value_status_badge": "🔴 減少",
@@ -2466,8 +2466,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 6.92,
-        "current_rate": 21.32,
-        "net_profit": 208.09,
+        "current_rate": 21.65,
+        "net_profit": 212.86,
         "is_active": true
       },
       {
@@ -2500,7 +2500,7 @@
         "status_icon": "⚪",
         "avg_open_rate": 12.11,
         "current_rate": 21.28,
-        "net_profit": 88.19,
+        "net_profit": 88.21,
         "is_active": true
       },
       {
@@ -2533,7 +2533,7 @@
         "status_icon": "⚪",
         "avg_open_rate": 79.27,
         "current_rate": 92.45,
-        "net_profit": 34.75,
+        "net_profit": 34.76,
         "is_active": true
       },
       {
@@ -2632,7 +2632,7 @@
         "status_icon": "⚪",
         "avg_open_rate": 73.78,
         "current_rate": 174.7,
-        "net_profit": 130.71,
+        "net_profit": 130.73,
         "is_active": true
       },
       {
@@ -2763,8 +2763,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 89.39,
-        "current_rate": 337.65,
-        "net_profit": 277.74,
+        "current_rate": 338.14,
+        "net_profit": 278.29,
         "is_active": true
       },
       {
@@ -2863,7 +2863,7 @@
         "status_icon": "⚪",
         "avg_open_rate": 78.96,
         "current_rate": 1024.2,
-        "net_profit": 1180.85,
+        "net_profit": 1181.01,
         "is_active": true
       },
       {
@@ -2895,8 +2895,8 @@
         "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
         "status_icon": "⚪",
         "avg_open_rate": 9.19,
-        "current_rate": 174.32,
-        "net_profit": 1796.89,
+        "current_rate": 174.48,
+        "net_profit": 1798.63,
         "is_active": true
       }
     ],
@@ -2906,33 +2906,33 @@
         "name": "Vistra Corp",
         "allocation": 4.79,
         "invest_alloc": 4.79,
-        "value_alloc": 2.78,
+        "value_alloc": 2.79,
         "instrument_type": "Stocks",
-        "net_profit": 4.73,
+        "net_profit": 5.0,
         "avg_open_rate": 146.1,
-        "current_rate": 153.01
+        "current_rate": 153.4
       },
       {
         "symbol": "CONSTELLATION",
         "name": "Constellation Energy Corp",
         "allocation": 4.78,
         "invest_alloc": 4.78,
-        "value_alloc": 2.57,
+        "value_alloc": 2.58,
         "instrument_type": "Stocks",
-        "net_profit": -3.14,
+        "net_profit": -2.92,
         "avg_open_rate": 307.97,
-        "current_rate": 298.29
+        "current_rate": 298.96
       },
       {
         "symbol": "TSM",
         "name": "Taiwan Semiconductor Manufacturing Co Ltd - ADR",
         "allocation": 4.59,
         "invest_alloc": 4.59,
-        "value_alloc": 8.84,
+        "value_alloc": 8.87,
         "instrument_type": "Stocks",
-        "net_profit": 247.15,
+        "net_profit": 248.44,
         "avg_open_rate": 124.02,
-        "current_rate": 430.53
+        "current_rate": 432.13
       },
       {
         "symbol": "RANGE",
@@ -2950,7 +2950,7 @@
         "name": "EQT Corp",
         "allocation": 3.73,
         "invest_alloc": 3.73,
-        "value_alloc": 3.02,
+        "value_alloc": 3.01,
         "instrument_type": "Stocks",
         "net_profit": 45.71,
         "avg_open_rate": 37.55,
@@ -2985,9 +2985,9 @@
         "invest_alloc": 2.83,
         "value_alloc": 5.67,
         "instrument_type": "Stocks",
-        "net_profit": 260.32,
+        "net_profit": 260.93,
         "avg_open_rate": 64.25,
-        "current_rate": 231.5
+        "current_rate": 231.89
       },
       {
         "symbol": "HST",
@@ -3016,22 +3016,22 @@
         "name": "Micron Technology, Inc.",
         "allocation": 2.59,
         "invest_alloc": 2.59,
-        "value_alloc": 10.35,
+        "value_alloc": 10.31,
         "instrument_type": "Stocks",
-        "net_profit": 620.04,
+        "net_profit": 617.42,
         "avg_open_rate": 145.28,
-        "current_rate": 1046.5
+        "current_rate": 1042.29
       },
       {
         "symbol": "BLOOM",
         "name": "Bloom Energy Corp",
         "allocation": 2.51,
         "invest_alloc": 2.51,
-        "value_alloc": 1.57,
+        "value_alloc": 1.56,
         "instrument_type": "Stocks",
-        "net_profit": 12.53,
+        "net_profit": 12.22,
         "avg_open_rate": 241.94,
-        "current_rate": 272.25
+        "current_rate": 271.5
       },
       {
         "symbol": "SKHYNIX",
@@ -3051,7 +3051,7 @@
         "invest_alloc": 2.37,
         "value_alloc": 2.67,
         "instrument_type": "Stocks",
-        "net_profit": 103.28,
+        "net_profit": 103.25,
         "avg_open_rate": 42.36,
         "current_rate": 79.0
       },
@@ -3071,9 +3071,9 @@
         "name": "ASML Holding NV",
         "allocation": 2.19,
         "invest_alloc": 2.19,
-        "value_alloc": 2.85,
+        "value_alloc": 2.84,
         "instrument_type": "Stocks",
-        "net_profit": 134.56,
+        "net_profit": 134.59,
         "avg_open_rate": 637.75,
         "current_rate": 1502.2
       },
@@ -3117,7 +3117,7 @@
         "invest_alloc": 1.82,
         "value_alloc": 0.52,
         "instrument_type": "Stocks",
-        "net_profit": -48.85,
+        "net_profit": -48.84,
         "avg_open_rate": 649.27,
         "current_rate": 298.25
       },
@@ -3137,11 +3137,11 @@
         "name": "Microsoft",
         "allocation": 1.72,
         "invest_alloc": 1.72,
-        "value_alloc": 1.95,
+        "value_alloc": 1.96,
         "instrument_type": "Stocks",
-        "net_profit": 104.9,
+        "net_profit": 105.33,
         "avg_open_rate": 241.83,
-        "current_rate": 495.5
+        "current_rate": 496.54
       },
       {
         "symbol": "NVTKI.RU",
@@ -3161,9 +3161,9 @@
         "invest_alloc": 1.68,
         "value_alloc": 2.06,
         "instrument_type": "Stocks",
-        "net_profit": 120.9,
+        "net_profit": 121.3,
         "avg_open_rate": 277.36,
-        "current_rate": 612.7
+        "current_rate": 613.8
       },
       {
         "symbol": "BOLIDEN",
@@ -3172,7 +3172,7 @@
         "invest_alloc": 1.63,
         "value_alloc": 1.62,
         "instrument_type": "Stocks",
-        "net_profit": 80.12,
+        "net_profit": 80.13,
         "avg_open_rate": 316.36,
         "current_rate": 550.4
       },
@@ -3216,9 +3216,9 @@
         "invest_alloc": 1.46,
         "value_alloc": 1.32,
         "instrument_type": "Stocks",
-        "net_profit": 62.84,
+        "net_profit": 63.01,
         "avg_open_rate": 157.97,
-        "current_rate": 257.0
+        "current_rate": 257.5
       },
       {
         "symbol": "ISHARES",
@@ -3238,7 +3238,7 @@
         "invest_alloc": 1.38,
         "value_alloc": 0.67,
         "instrument_type": "Stocks",
-        "net_profit": -12.92,
+        "net_profit": -12.91,
         "avg_open_rate": 263.35,
         "current_rate": 231.4
       },
@@ -3271,7 +3271,7 @@
         "invest_alloc": 1.2,
         "value_alloc": 0.71,
         "instrument_type": "Stocks",
-        "net_profit": 6.98,
+        "net_profit": 6.99,
         "avg_open_rate": 3632.33,
         "current_rate": 3900.0
       },
@@ -3293,9 +3293,9 @@
         "invest_alloc": 1.1,
         "value_alloc": 1.79,
         "instrument_type": "Stocks",
-        "net_profit": 193.03,
+        "net_profit": 193.85,
         "avg_open_rate": 588.62,
-        "current_rate": 1724.84
+        "current_rate": 1729.68
       },
       {
         "symbol": "LDOS",
@@ -3315,7 +3315,7 @@
         "invest_alloc": 0.91,
         "value_alloc": 2.22,
         "instrument_type": "Stocks",
-        "net_profit": 338.34,
+        "net_profit": 338.3,
         "avg_open_rate": 11.01,
         "current_rate": 44.37
       },
@@ -3326,7 +3326,7 @@
         "invest_alloc": 0.91,
         "value_alloc": 1.09,
         "instrument_type": "Stocks",
-        "net_profit": 116.55,
+        "net_profit": 116.58,
         "avg_open_rate": 473.68,
         "current_rate": 955.5
       },
@@ -3359,7 +3359,7 @@
         "invest_alloc": 0.84,
         "value_alloc": 0.44,
         "instrument_type": "Stocks",
-        "net_profit": -5.29,
+        "net_profit": -5.28,
         "avg_open_rate": 19658.68,
         "current_rate": 18400.0
       },
@@ -3381,9 +3381,9 @@
         "invest_alloc": 0.75,
         "value_alloc": 0.5,
         "instrument_type": "Stocks",
-        "net_profit": 19.94,
+        "net_profit": 20.46,
         "avg_open_rate": 436.05,
-        "current_rate": 523.0
+        "current_rate": 525.28
       },
       {
         "symbol": "JPM",
@@ -3392,9 +3392,9 @@
         "invest_alloc": 0.71,
         "value_alloc": 1.37,
         "instrument_type": "Stocks",
-        "net_profit": 249.79,
+        "net_profit": 250.77,
         "avg_open_rate": 101.49,
-        "current_rate": 355.0
+        "current_rate": 356.0
       },
       {
         "symbol": "NOC",
@@ -3412,7 +3412,7 @@
         "name": "Samsung Electronics Co Ltd - GDR",
         "allocation": 0.69,
         "invest_alloc": 0.69,
-        "value_alloc": 1.35,
+        "value_alloc": 1.34,
         "instrument_type": "Stocks",
         "net_profit": 250.44,
         "avg_open_rate": 1439.62,
@@ -3441,17 +3441,6 @@
         "current_rate": 11.73
       },
       {
-        "symbol": "SANDISK",
-        "name": "Sandisk Corp/DE",
-        "allocation": 0.6,
-        "invest_alloc": 0.6,
-        "value_alloc": 0.33,
-        "instrument_type": "Stocks",
-        "net_profit": -2.08,
-        "avg_open_rate": 1776.33,
-        "current_rate": 1739.42
-      },
-      {
         "symbol": "AMAZON.COM",
         "name": "Amazon.com Inc",
         "allocation": 0.6,
@@ -3474,6 +3463,17 @@
         "current_rate": 2.78
       },
       {
+        "symbol": "SANDISK",
+        "name": "Sandisk Corp/DE",
+        "allocation": 0.6,
+        "invest_alloc": 0.6,
+        "value_alloc": 0.33,
+        "instrument_type": "Stocks",
+        "net_profit": -2.08,
+        "avg_open_rate": 1776.33,
+        "current_rate": 1739.42
+      },
+      {
         "symbol": "HAS",
         "name": "Hasbro Inc",
         "allocation": 0.57,
@@ -3489,11 +3489,11 @@
         "name": "Riot Platforms Inc",
         "allocation": 0.57,
         "invest_alloc": 0.57,
-        "value_alloc": 0.97,
+        "value_alloc": 0.98,
         "instrument_type": "Stocks",
-        "net_profit": 208.09,
+        "net_profit": 212.86,
         "avg_open_rate": 6.92,
-        "current_rate": 21.32
+        "current_rate": 21.65
       },
       {
         "symbol": "FORTUM",
@@ -3502,7 +3502,7 @@
         "invest_alloc": 0.54,
         "value_alloc": 0.56,
         "instrument_type": "Stocks",
-        "net_profit": 88.19,
+        "net_profit": 88.21,
         "avg_open_rate": 12.11,
         "current_rate": 21.28
       },
@@ -3513,7 +3513,7 @@
         "invest_alloc": 0.5,
         "value_alloc": 0.38,
         "instrument_type": "Stocks",
-        "net_profit": 34.75,
+        "net_profit": 34.76,
         "avg_open_rate": 79.27,
         "current_rate": 92.45
       },
@@ -3546,7 +3546,7 @@
         "invest_alloc": 0.48,
         "value_alloc": 0.61,
         "instrument_type": "Stocks",
-        "net_profit": 130.71,
+        "net_profit": 130.73,
         "avg_open_rate": 73.78,
         "current_rate": 174.7
       },
@@ -3590,9 +3590,9 @@
         "invest_alloc": 0.32,
         "value_alloc": 0.66,
         "instrument_type": "Stocks",
-        "net_profit": 277.74,
+        "net_profit": 278.29,
         "avg_open_rate": 89.39,
-        "current_rate": 337.65
+        "current_rate": 338.14
       },
       {
         "symbol": "TAIWAN",
@@ -3623,7 +3623,7 @@
         "invest_alloc": 0.16,
         "value_alloc": 1.14,
         "instrument_type": "Stocks",
-        "net_profit": 1180.85,
+        "net_profit": 1181.01,
         "avg_open_rate": 78.96,
         "current_rate": 1024.2
       },
@@ -3634,9 +3634,9 @@
         "invest_alloc": 0.13,
         "value_alloc": 1.34,
         "instrument_type": "Stocks",
-        "net_profit": 1796.89,
+        "net_profit": 1798.63,
         "avg_open_rate": 9.19,
-        "current_rate": 174.32
+        "current_rate": 174.48
       }
     ],
     "yesterday_portfolio": [

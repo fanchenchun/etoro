@@ -379,7 +379,7 @@
     "notified": false
   },
   "2026-09-08": {
-    "update_time": "2026-09-08 08:26:48",
+    "update_time": "2026-09-08 08:41:32",
     "cash_balance": {
       "available_cash_pct": 0.0,
       "total_invested_pct": 100.0,
@@ -395,11 +395,11 @@
         "name": "ExxonMobil Holdings Corp",
         "allocation": 5.7,
         "invest_alloc": 5.7,
-        "value_alloc": 4.86,
+        "value_alloc": 4.84,
         "instrument_type": "Stocks",
-        "net_profit": 2.16,
+        "net_profit": 1.66,
         "avg_open_rate": 156.41,
-        "current_rate": 159.79
+        "current_rate": 159.0
       },
       {
         "symbol": "JNJ",
@@ -419,7 +419,7 @@
         "invest_alloc": 5.24,
         "value_alloc": 4.0,
         "instrument_type": "Stocks",
-        "net_profit": -8.57,
+        "net_profit": -8.56,
         "avg_open_rate": 33.62,
         "current_rate": 30.98
       },
@@ -430,9 +430,9 @@
         "invest_alloc": 5.15,
         "value_alloc": 4.2,
         "instrument_type": "Stocks",
-        "net_profit": -2.46,
+        "net_profit": -2.37,
         "avg_open_rate": 339.44,
-        "current_rate": 331.1
+        "current_rate": 331.39
       },
       {
         "symbol": "MRK",
@@ -452,7 +452,7 @@
         "invest_alloc": 4.77,
         "value_alloc": 4.01,
         "instrument_type": "Stocks",
-        "net_profit": 0.6,
+        "net_profit": 0.62,
         "avg_open_rate": 44.81,
         "current_rate": 44.82
       },
@@ -505,22 +505,22 @@
         "name": "Intel",
         "allocation": 4.2,
         "invest_alloc": 4.2,
-        "value_alloc": 3.75,
+        "value_alloc": 3.77,
         "instrument_type": "Stocks",
-        "net_profit": 7.04,
+        "net_profit": 7.41,
         "avg_open_rate": 92.17,
-        "current_rate": 98.7
+        "current_rate": 99.0
       },
       {
         "symbol": "LRCX",
         "name": "Lam Research Corp",
         "allocation": 4.15,
         "invest_alloc": 4.15,
-        "value_alloc": 4.52,
+        "value_alloc": 4.51,
         "instrument_type": "Stocks",
-        "net_profit": 30.54,
+        "net_profit": 30.08,
         "avg_open_rate": 239.05,
-        "current_rate": 312.04
+        "current_rate": 311.5
       },
       {
         "symbol": "ROYALTY",
@@ -540,7 +540,7 @@
         "invest_alloc": 4.06,
         "value_alloc": 4.23,
         "instrument_type": "Stocks",
-        "net_profit": 24.62,
+        "net_profit": 24.64,
         "avg_open_rate": 25.87,
         "current_rate": 32.1
       },
@@ -551,7 +551,7 @@
         "invest_alloc": 3.97,
         "value_alloc": 3.62,
         "instrument_type": "Stocks",
-        "net_profit": 9.34,
+        "net_profit": 9.36,
         "avg_open_rate": 872.45,
         "current_rate": 955.5
       },
@@ -562,7 +562,7 @@
         "invest_alloc": 3.85,
         "value_alloc": 3.55,
         "instrument_type": "Stocks",
-        "net_profit": 10.27,
+        "net_profit": 10.29,
         "avg_open_rate": 12.39,
         "current_rate": 13.43
       },
@@ -571,11 +571,11 @@
         "name": "Eli Lilly & Co",
         "allocation": 3.39,
         "invest_alloc": 3.39,
-        "value_alloc": 2.75,
+        "value_alloc": 2.77,
         "instrument_type": "Stocks",
-        "net_profit": -2.95,
+        "net_profit": -2.44,
         "avg_open_rate": 1173.63,
-        "current_rate": 1139.03
+        "current_rate": 1145.0
       },
       {
         "symbol": "AMERICAN",
@@ -593,11 +593,11 @@
         "name": "Micron Technology, Inc.",
         "allocation": 2.71,
         "invest_alloc": 2.71,
-        "value_alloc": 6.27,
+        "value_alloc": 6.25,
         "instrument_type": "Stocks",
-        "net_profit": 177.36,
+        "net_profit": 176.25,
         "avg_open_rate": 377.3,
-        "current_rate": 1046.5
+        "current_rate": 1042.3
       },
       {
         "symbol": "NESTE",
@@ -606,7 +606,7 @@
         "invest_alloc": 2.65,
         "value_alloc": 2.73,
         "instrument_type": "Stocks",
-        "net_profit": 23.11,
+        "net_profit": 23.13,
         "avg_open_rate": 26.65,
         "current_rate": 32.65
       },
@@ -615,33 +615,33 @@
         "name": "Lumentum Holdings Inc",
         "allocation": 2.3,
         "invest_alloc": 2.3,
-        "value_alloc": 1.95,
+        "value_alloc": 1.94,
         "instrument_type": "Stocks",
-        "net_profit": 1.17,
+        "net_profit": 0.89,
         "avg_open_rate": 889.56,
-        "current_rate": 900.0
+        "current_rate": 897.46
       },
       {
         "symbol": "TSM",
         "name": "Taiwan Semiconductor Manufacturing Co Ltd - ADR",
         "allocation": 2.08,
         "invest_alloc": 2.08,
-        "value_alloc": 4.48,
+        "value_alloc": 4.5,
         "instrument_type": "Stocks",
-        "net_profit": 157.59,
+        "net_profit": 158.53,
         "avg_open_rate": 167.14,
-        "current_rate": 430.53
+        "current_rate": 432.1
       },
       {
         "symbol": "GOOG",
         "name": "Alphabet",
         "allocation": 1.71,
         "invest_alloc": 1.71,
-        "value_alloc": 2.89,
+        "value_alloc": 2.9,
         "instrument_type": "Stocks",
-        "net_profit": 103.07,
+        "net_profit": 103.3,
         "avg_open_rate": 164.68,
-        "current_rate": 334.39
+        "current_rate": 334.76
       },
       {
         "symbol": "CELESTICA",
@@ -661,20 +661,20 @@
         "invest_alloc": 1.35,
         "value_alloc": 1.54,
         "instrument_type": "Stocks",
-        "net_profit": 36.17,
+        "net_profit": 36.34,
         "avg_open_rate": 353.76,
-        "current_rate": 481.73
+        "current_rate": 482.3
       },
       {
         "symbol": "AMZN",
         "name": "Amazon.com Inc",
         "allocation": 1.22,
         "invest_alloc": 1.22,
-        "value_alloc": 1.92,
+        "value_alloc": 1.93,
         "instrument_type": "Stocks",
-        "net_profit": 88.87,
+        "net_profit": 89.24,
         "avg_open_rate": 136.09,
-        "current_rate": 257.0
+        "current_rate": 257.5
       },
       {
         "symbol": "AAPL",
@@ -683,9 +683,9 @@
         "invest_alloc": 1.07,
         "value_alloc": 1.45,
         "instrument_type": "Stocks",
-        "net_profit": 61.47,
+        "net_profit": 61.63,
         "avg_open_rate": 197.07,
-        "current_rate": 318.2
+        "current_rate": 318.52
       },
       {
         "symbol": "STERLING",
@@ -703,11 +703,11 @@
         "name": "Microsoft",
         "allocation": 1.01,
         "invest_alloc": 1.01,
-        "value_alloc": 1.5,
+        "value_alloc": 1.51,
         "instrument_type": "Stocks",
-        "net_profit": 78.46,
+        "net_profit": 78.83,
         "avg_open_rate": 277.66,
-        "current_rate": 495.5
+        "current_rate": 496.54
       },
       {
         "symbol": "CRDO",
@@ -716,9 +716,9 @@
         "invest_alloc": 0.85,
         "value_alloc": 1.75,
         "instrument_type": "Stocks",
-        "net_profit": 147.33,
+        "net_profit": 147.73,
         "avg_open_rate": 70.27,
-        "current_rate": 173.8
+        "current_rate": 174.08
       }
     ],
     "latest_comment": {
