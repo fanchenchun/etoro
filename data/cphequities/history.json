@@ -379,7 +379,7 @@
     "notified": false
   },
   "2026-09-08": {
-    "update_time": "2026-09-08 12:39:16",
+    "update_time": "2026-09-08 13:16:30",
     "cash_balance": {
       "available_cash_pct": 0.02,
       "total_invested_pct": 99.98,
@@ -395,31 +395,31 @@
         "name": "ExxonMobil Holdings Corp",
         "allocation": 5.7,
         "invest_alloc": 5.7,
-        "value_alloc": 4.83,
+        "value_alloc": 4.85,
         "instrument_type": "Stocks",
-        "net_profit": 1.66,
+        "net_profit": 1.98,
         "avg_open_rate": 156.41,
-        "current_rate": 159.0
+        "current_rate": 159.5
       },
       {
         "symbol": "JNJ",
         "name": "Johnson & Johnson",
         "allocation": 5.65,
         "invest_alloc": 5.65,
-        "value_alloc": 5.07,
+        "value_alloc": 5.08,
         "instrument_type": "Stocks",
-        "net_profit": 7.69,
+        "net_profit": 7.79,
         "avg_open_rate": 251.65,
-        "current_rate": 271.0
+        "current_rate": 271.27
       },
       {
         "symbol": "WISDOMTREE",
         "name": "WisdomTree Europe Defence UCITS ETF",
         "allocation": 5.24,
         "invest_alloc": 5.24,
-        "value_alloc": 3.99,
+        "value_alloc": 4.0,
         "instrument_type": "Stocks",
-        "net_profit": -8.59,
+        "net_profit": -8.57,
         "avg_open_rate": 33.62,
         "current_rate": 30.98
       },
@@ -428,11 +428,11 @@
         "name": "Palo Alto Networks",
         "allocation": 5.15,
         "invest_alloc": 5.15,
-        "value_alloc": 4.2,
+        "value_alloc": 4.22,
         "instrument_type": "Stocks",
-        "net_profit": -2.19,
+        "net_profit": -1.9,
         "avg_open_rate": 339.44,
-        "current_rate": 332.0
+        "current_rate": 333.0
       },
       {
         "symbol": "MRK",
@@ -450,9 +450,9 @@
         "name": "Assicurazioni Generali SpA",
         "allocation": 4.77,
         "invest_alloc": 4.77,
-        "value_alloc": 4.0,
+        "value_alloc": 4.01,
         "instrument_type": "Stocks",
-        "net_profit": 0.58,
+        "net_profit": 0.6,
         "avg_open_rate": 44.81,
         "current_rate": 44.82
       },
@@ -505,22 +505,33 @@
         "name": "Intel",
         "allocation": 4.2,
         "invest_alloc": 4.2,
-        "value_alloc": 3.82,
+        "value_alloc": 3.79,
         "instrument_type": "Stocks",
-        "net_profit": 9.11,
+        "net_profit": 8.21,
         "avg_open_rate": 92.17,
-        "current_rate": 100.57
+        "current_rate": 99.74
       },
       {
         "symbol": "LRCX",
         "name": "Lam Research Corp",
         "allocation": 4.14,
         "invest_alloc": 4.14,
-        "value_alloc": 4.55,
+        "value_alloc": 4.53,
         "instrument_type": "Stocks",
-        "net_profit": 31.59,
+        "net_profit": 31.15,
         "avg_open_rate": 239.05,
-        "current_rate": 314.55
+        "current_rate": 313.5
+      },
+      {
+        "symbol": "ROYALTY",
+        "name": "Royalty Pharma PLC",
+        "allocation": 4.06,
+        "invest_alloc": 4.06,
+        "value_alloc": 4.27,
+        "instrument_type": "Stocks",
+        "net_profit": 25.92,
+        "avg_open_rate": 50.79,
+        "current_rate": 63.96
       },
       {
         "symbol": "ING",
@@ -529,20 +540,9 @@
         "invest_alloc": 4.06,
         "value_alloc": 4.22,
         "instrument_type": "Stocks",
-        "net_profit": 24.6,
+        "net_profit": 24.62,
         "avg_open_rate": 25.87,
         "current_rate": 32.1
-      },
-      {
-        "symbol": "ROYALTY",
-        "name": "Royalty Pharma PLC",
-        "allocation": 4.06,
-        "invest_alloc": 4.06,
-        "value_alloc": 4.26,
-        "instrument_type": "Stocks",
-        "net_profit": 25.92,
-        "avg_open_rate": 50.79,
-        "current_rate": 63.96
       },
       {
         "symbol": "NKT",
@@ -551,7 +551,7 @@
         "invest_alloc": 3.97,
         "value_alloc": 3.62,
         "instrument_type": "Stocks",
-        "net_profit": 9.32,
+        "net_profit": 9.34,
         "avg_open_rate": 872.45,
         "current_rate": 955.5
       },
@@ -562,7 +562,7 @@
         "invest_alloc": 3.85,
         "value_alloc": 3.54,
         "instrument_type": "Stocks",
-        "net_profit": 10.25,
+        "net_profit": 10.27,
         "avg_open_rate": 12.39,
         "current_rate": 13.43
       },
@@ -571,11 +571,11 @@
         "name": "Eli Lilly & Co",
         "allocation": 3.39,
         "invest_alloc": 3.39,
-        "value_alloc": 2.75,
+        "value_alloc": 2.76,
         "instrument_type": "Stocks",
-        "net_profit": -2.63,
+        "net_profit": -2.52,
         "avg_open_rate": 1173.63,
-        "current_rate": 1142.75
+        "current_rate": 1144.0
       },
       {
         "symbol": "AMERICAN",
@@ -593,20 +593,20 @@
         "name": "Micron Technology, Inc.",
         "allocation": 2.71,
         "invest_alloc": 2.71,
-        "value_alloc": 6.28,
+        "value_alloc": 6.26,
         "instrument_type": "Stocks",
-        "net_profit": 178.36,
+        "net_profit": 177.21,
         "avg_open_rate": 377.3,
-        "current_rate": 1050.25
+        "current_rate": 1045.9
       },
       {
         "symbol": "NESTE",
         "name": "Neste Oyj",
         "allocation": 2.65,
         "invest_alloc": 2.65,
-        "value_alloc": 2.72,
+        "value_alloc": 2.73,
         "instrument_type": "Stocks",
-        "net_profit": 23.09,
+        "net_profit": 23.11,
         "avg_open_rate": 26.65,
         "current_rate": 32.65
       },
@@ -615,11 +615,11 @@
         "name": "Lumentum Holdings Inc",
         "allocation": 2.3,
         "invest_alloc": 2.3,
-        "value_alloc": 1.96,
+        "value_alloc": 1.95,
         "instrument_type": "Stocks",
-        "net_profit": 2.14,
+        "net_profit": 1.75,
         "avg_open_rate": 889.56,
-        "current_rate": 908.3
+        "current_rate": 905.09
       },
       {
         "symbol": "TSM",
@@ -628,9 +628,9 @@
         "invest_alloc": 2.08,
         "value_alloc": 4.5,
         "instrument_type": "Stocks",
-        "net_profit": 159.24,
+        "net_profit": 158.78,
         "avg_open_rate": 167.14,
-        "current_rate": 433.3
+        "current_rate": 432.53
       },
       {
         "symbol": "GOOG",
@@ -639,9 +639,9 @@
         "invest_alloc": 1.7,
         "value_alloc": 2.89,
         "instrument_type": "Stocks",
-        "net_profit": 103.56,
+        "net_profit": 103.15,
         "avg_open_rate": 164.68,
-        "current_rate": 335.2
+        "current_rate": 334.52
       },
       {
         "symbol": "CELESTICA",
@@ -659,22 +659,22 @@
         "name": "Advanced Micro Devices Inc",
         "allocation": 1.35,
         "invest_alloc": 1.35,
-        "value_alloc": 1.56,
+        "value_alloc": 1.55,
         "instrument_type": "Stocks",
-        "net_profit": 37.78,
+        "net_profit": 37.47,
         "avg_open_rate": 353.76,
-        "current_rate": 487.42
+        "current_rate": 486.33
       },
       {
         "symbol": "AMZN",
         "name": "Amazon.com Inc",
         "allocation": 1.22,
         "invest_alloc": 1.22,
-        "value_alloc": 1.93,
+        "value_alloc": 1.92,
         "instrument_type": "Stocks",
-        "net_profit": 89.73,
+        "net_profit": 89.39,
         "avg_open_rate": 136.09,
-        "current_rate": 258.17
+        "current_rate": 257.7
       },
       {
         "symbol": "AAPL",
@@ -683,9 +683,9 @@
         "invest_alloc": 1.07,
         "value_alloc": 1.45,
         "instrument_type": "Stocks",
-        "net_profit": 62.04,
+        "net_profit": 61.91,
         "avg_open_rate": 197.07,
-        "current_rate": 319.33
+        "current_rate": 319.07
       },
       {
         "symbol": "STERLING",
@@ -705,9 +705,9 @@
         "invest_alloc": 1.01,
         "value_alloc": 1.5,
         "instrument_type": "Stocks",
-        "net_profit": 79.12,
+        "net_profit": 79.0,
         "avg_open_rate": 277.66,
-        "current_rate": 497.34
+        "current_rate": 497.0
       },
       {
         "symbol": "CRDO",
@@ -716,9 +716,9 @@
         "invest_alloc": 0.85,
         "value_alloc": 1.76,
         "instrument_type": "Stocks",
-        "net_profit": 149.52,
+        "net_profit": 148.75,
         "avg_open_rate": 70.27,
-        "current_rate": 175.34
+        "current_rate": 174.8
       }
     ],
     "latest_comment": {
