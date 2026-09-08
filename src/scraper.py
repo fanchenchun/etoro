@@ -49,12 +49,15 @@ KNOWN_INSTRUMENT_SYMBOLS = {
     3017: "XLV",
     4124: "PANW",
     4236: "AVGO",
+    4244: "ASML",
     4273: "ETN",
     4294: "ANET",
     4356: "STX",
+    4363: "VISTRA",
     4430: "SLV",
     4434: "LITE",
     4481: "TSM",
+    4509: "ASML.NV",
     5506: "CRWD",
     5604: "KTOS",
     5712: "NET",
@@ -62,13 +65,17 @@ KNOWN_INSTRUMENT_SYMBOLS = {
     6094: "COHR",
     6549: "TER",
     7991: "PLTR",
+    8601: "CONSTELLATION",
     8867: "VRT",
     8886: "MP",
     9450: "ACHR",
     9471: "CRDO",
+    10002: "EMAAR",
+    10005: "EMAARDEV",
     10805: "COPX",
     10963: "RDW",
     12200: "ETOR",
+    13642: "VISTRA.RTH",
     15239: "SKHYNIX",
     15618: "SPACEX",
     100000: "BTC"
@@ -516,6 +523,9 @@ class EToroScraper:
                         name = item.get("InstrumentDisplayName", "Unknown")
                         symbol = KNOWN_INSTRUMENT_SYMBOLS.get(iid)
 
+                        sym_full = item.get("SymbolFull", "") or ""
+                        is_rth = ".RTH" in sym_full.upper()
+
                         if not symbol:
                             for img in item.get("Images", []):
                                 uri = img.get("Uri", "")
@@ -529,10 +539,25 @@ class EToroScraper:
                         if not symbol:
                             symbol = name.split()[0].upper() if name else str(iid)
 
+                        # 若為盤後延時交易標的 (.RTH)，確保代號後綴帶有 .RTH 避免與主要交易部位衝突
+                        if is_rth and not symbol.endswith(".RTH"):
+                            symbol = f"{symbol}.RTH"
+
                         meta_map[iid] = {
                             "symbol": symbol,
                             "name": name
                         }
+                    
+                    # 第二道防護：確保 meta_map 中不同 InstrumentID 不會產生相同 symbol
+                    seen_symbols: Dict[str, int] = {}
+                    for iid, m_info in meta_map.items():
+                        sym = m_info["symbol"]
+                        if sym in seen_symbols and seen_symbols[sym] != iid:
+                            # 發生重複，若是 .RTH 部位則加後綴，或加上 InstrumentID
+                            m_info["symbol"] = f"{sym}.{iid}"
+                        else:
+                            seen_symbols[sym] = iid
+
                     if meta_map:
                         break
             except Exception as e:

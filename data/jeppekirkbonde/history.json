@@ -397,7 +397,7 @@
         "current_rate": 390.8
       },
       {
-        "symbol": "ASML",
+        "symbol": "ASML.NV",
         "name": "ASML Holding NV",
         "allocation": 1.1,
         "invest_alloc": 1.1,
@@ -639,7 +639,7 @@
         "current_rate": 93.1
       },
       {
-        "symbol": "EMAAR",
+        "symbol": "EMAARDEV",
         "name": "Emaar Development PJSC",
         "allocation": 0.49,
         "invest_alloc": 0.49,
@@ -716,7 +716,7 @@
         "current_rate": 428.1
       },
       {
-        "symbol": "VISTRA",
+        "symbol": "VISTRA.RTH",
         "name": "Vistra Corp",
         "allocation": 0.26,
         "invest_alloc": 0.26,
@@ -775,14 +775,14 @@
       "closed_count": 0,
       "increased_count": 0,
       "decreased_count": 0,
-      "unchanged_count": 64,
+      "unchanged_count": 67,
       "new_symbols": [],
       "closed_symbols": [],
       "increased_symbols": [],
       "decreased_symbols": [],
       "has_significant_changes": false
     },
-    "ai_summary": "【建立持倉基準】jeppekirkbonde 目前投資組合共持有 67 檔美股與 ETF 標的。\n前五大核心重倉依序為：CONSTELLATION(4.78%)、TSM(4.59%)、RANGE(3.79%)、EQT(3.73%)、FCX(3.62%)。\n系統已建立今日歷史基準快照，自下一個交易日起將每日自動追蹤比對調倉增減與新開平倉動作。",
+    "ai_summary": "【建立持倉基準】jeppekirkbonde 目前組合一共 67 檔美股與 ETF 標的。\n前五大核心持倉依序為：VISTRA(4.79%)、CONSTELLATION(4.78%)、TSM(4.59%)、RANGE(3.79%)、EQT(3.73%)。\n系統已建立歷史基準快照，自下一個交易日起將每日自動追蹤持倉權重增減與新開倉動作。",
     "notified": false
   }
 }

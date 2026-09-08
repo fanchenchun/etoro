@@ -46,8 +46,30 @@ class PortfolioAnalyzer:
         """
         is_first_day = not yesterday_portfolio or len(yesterday_portfolio) == 0
 
-        today_map = {item["symbol"].upper(): item for item in today_portfolio}
-        yesterday_map = {item["symbol"].upper(): item for item in (yesterday_portfolio or [])}
+        def build_symbol_map(portfolio: List[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
+            s_map: Dict[str, Dict[str, Any]] = {}
+            for item in (portfolio or []):
+                sym = item.get("symbol", "").upper()
+                if not sym:
+                    continue
+                if sym not in s_map:
+                    s_map[sym] = item
+                else:
+                    logger.warning(f"比對分析偵測到重複標的代號: {sym} (現有佔比: {s_map[sym].get('invest_alloc')}%, 新部位佔比: {item.get('invest_alloc')}%)")
+                    existing_alloc = float(s_map[sym].get("invest_alloc", s_map[sym].get("allocation", 0.0)))
+                    new_alloc = float(item.get("invest_alloc", item.get("allocation", 0.0)))
+                    # 保留較大佔比者為主要代號，較小者指派唯一後綴以防資料被吃掉
+                    if new_alloc > existing_alloc:
+                        alt_sym = f"{sym}.ALT"
+                        s_map[alt_sym] = s_map[sym]
+                        s_map[sym] = item
+                    else:
+                        alt_sym = f"{sym}.ALT"
+                        s_map[alt_sym] = item
+            return s_map
+
+        today_map = build_symbol_map(today_portfolio)
+        yesterday_map = build_symbol_map(yesterday_portfolio or [])
 
         all_symbols = sorted(list(set(today_map.keys()) | set(yesterday_map.keys())))
         

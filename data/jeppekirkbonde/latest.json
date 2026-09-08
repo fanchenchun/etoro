@@ -399,7 +399,7 @@
       "current_rate": 390.8
     },
     {
-      "symbol": "ASML",
+      "symbol": "ASML.NV",
       "name": "ASML Holding NV",
       "allocation": 1.1,
       "invest_alloc": 1.1,
@@ -641,7 +641,7 @@
       "current_rate": 93.1
     },
     {
-      "symbol": "EMAAR",
+      "symbol": "EMAARDEV",
       "name": "Emaar Development PJSC",
       "allocation": 0.49,
       "invest_alloc": 0.49,
@@ -718,7 +718,7 @@
       "current_rate": 428.1
     },
     {
-      "symbol": "VISTRA",
+      "symbol": "VISTRA.RTH",
       "name": "Vistra Corp",
       "allocation": 0.26,
       "invest_alloc": 0.26,
@@ -769,7 +769,7 @@
     "post_url": "https://www.etoro.com/zh-tw/people/jeppekirkbonde",
     "is_new": false
   },
-  "ai_summary": "【建立持倉基準】jeppekirkbonde 目前投資組合共持有 67 檔美股與 ETF 標的。\n前五大核心重倉依序為：CONSTELLATION(4.78%)、TSM(4.59%)、RANGE(3.79%)、EQT(3.73%)、FCX(3.62%)。\n系統已建立今日歷史基準快照，自下一個交易日起將每日自動追蹤比對調倉增減與新開平倉動作。",
+  "ai_summary": "【建立持倉基準】jeppekirkbonde 目前組合一共 67 檔美股與 ETF 標的。\n前五大核心持倉依序為：VISTRA(4.79%)、CONSTELLATION(4.78%)、TSM(4.59%)、RANGE(3.79%)、EQT(3.73%)。\n系統已建立歷史基準快照，自下一個交易日起將每日自動追蹤持倉權重增減與新開倉動作。",
   "analysis": {
     "stats": {
       "is_first_day": true,
@@ -779,7 +779,7 @@
       "closed_count": 0,
       "increased_count": 0,
       "decreased_count": 0,
-      "unchanged_count": 64,
+      "unchanged_count": 67,
       "new_symbols": [],
       "closed_symbols": [],
       "increased_symbols": [],
@@ -787,6 +787,39 @@
       "has_significant_changes": false
     },
     "changes": [
+      {
+        "symbol": "VISTRA",
+        "name": "Vistra Corp",
+        "instrument_type": "Stocks",
+        "yesterday_invest_alloc": 4.79,
+        "today_invest_alloc": 4.79,
+        "invest_diff": 0.0,
+        "invest_status": "UNCHANGED",
+        "invest_status_label": "持平",
+        "invest_status_badge": "⚪ 持平",
+        "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
+        "invest_status_icon": "⚪",
+        "yesterday_value_alloc": 2.73,
+        "today_value_alloc": 2.73,
+        "value_diff": 0.0,
+        "value_status": "UNCHANGED",
+        "value_status_label": "持平",
+        "value_status_badge": "⚪ 持平",
+        "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
+        "value_status_icon": "⚪",
+        "yesterday_alloc": 4.79,
+        "today_alloc": 4.79,
+        "diff": 0.0,
+        "status": "UNCHANGED",
+        "status_label": "持平",
+        "status_badge": "⚪ 持平",
+        "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
+        "status_icon": "⚪",
+        "avg_open_rate": 146.1,
+        "current_rate": 149.17,
+        "net_profit": 2.1,
+        "is_active": true
+      },
       {
         "symbol": "CONSTELLATION",
         "name": "Constellation Energy Corp",
@@ -1250,6 +1283,39 @@
         "is_active": true
       },
       {
+        "symbol": "ASML",
+        "name": "ASML Holding NV",
+        "instrument_type": "Stocks",
+        "yesterday_invest_alloc": 2.19,
+        "today_invest_alloc": 2.19,
+        "invest_diff": 0.0,
+        "invest_status": "UNCHANGED",
+        "invest_status_label": "持平",
+        "invest_status_badge": "⚪ 持平",
+        "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
+        "invest_status_icon": "⚪",
+        "yesterday_value_alloc": 2.8,
+        "today_value_alloc": 2.8,
+        "value_diff": 0.0,
+        "value_status": "UNCHANGED",
+        "value_status_label": "持平",
+        "value_status_badge": "⚪ 持平",
+        "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
+        "value_status_icon": "⚪",
+        "yesterday_alloc": 2.19,
+        "today_alloc": 2.19,
+        "diff": 0.0,
+        "status": "UNCHANGED",
+        "status_label": "持平",
+        "status_badge": "⚪ 持平",
+        "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
+        "status_icon": "⚪",
+        "avg_open_rate": 637.75,
+        "current_rate": 1471.8,
+        "net_profit": 129.49,
+        "is_active": true
+      },
+      {
         "symbol": "NEUROCRINE",
         "name": "Neurocrine Biosciences Inc",
         "instrument_type": "Stocks",
@@ -1580,6 +1646,39 @@
         "is_active": true
       },
       {
+        "symbol": "EMAAR",
+        "name": "Emaar Properties PJSC",
+        "instrument_type": "Stocks",
+        "yesterday_invest_alloc": 1.51,
+        "today_invest_alloc": 1.51,
+        "invest_diff": 0.0,
+        "invest_status": "UNCHANGED",
+        "invest_status_label": "持平",
+        "invest_status_badge": "⚪ 持平",
+        "invest_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
+        "invest_status_icon": "⚪",
+        "yesterday_value_alloc": 0.76,
+        "today_value_alloc": 0.76,
+        "value_diff": 0.0,
+        "value_status": "UNCHANGED",
+        "value_status_label": "持平",
+        "value_status_badge": "⚪ 持平",
+        "value_status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
+        "value_status_icon": "⚪",
+        "yesterday_alloc": 1.51,
+        "today_alloc": 1.51,
+        "diff": 0.0,
+        "status": "UNCHANGED",
+        "status_label": "持平",
+        "status_badge": "⚪ 持平",
+        "status_color": "text-slate-400 bg-slate-800/60 border-slate-700/30",
+        "status_icon": "⚪",
+        "avg_open_rate": 13.34,
+        "current_rate": 10.98,
+        "net_profit": -10.34,
+        "is_active": true
+      },
+      {
         "symbol": "AEROVIRONMENT",
         "name": "AeroVironment Inc.",
         "instrument_type": "Stocks",
@@ -1844,7 +1943,7 @@
         "is_active": true
       },
       {
-        "symbol": "ASML",
+        "symbol": "ASML.NV",
         "name": "ASML Holding NV",
         "instrument_type": "Stocks",
         "yesterday_invest_alloc": 1.1,
@@ -2570,7 +2669,7 @@
         "is_active": true
       },
       {
-        "symbol": "EMAAR",
+        "symbol": "EMAARDEV",
         "name": "Emaar Development PJSC",
         "instrument_type": "Stocks",
         "yesterday_invest_alloc": 0.49,
@@ -2801,7 +2900,7 @@
         "is_active": true
       },
       {
-        "symbol": "VISTRA",
+        "symbol": "VISTRA.RTH",
         "name": "Vistra Corp",
         "instrument_type": "Stocks",
         "yesterday_invest_alloc": 0.26,
@@ -3287,7 +3386,7 @@
         "current_rate": 390.8
       },
       {
-        "symbol": "ASML",
+        "symbol": "ASML.NV",
         "name": "ASML Holding NV",
         "allocation": 1.1,
         "invest_alloc": 1.1,
@@ -3529,7 +3628,7 @@
         "current_rate": 93.1
       },
       {
-        "symbol": "EMAAR",
+        "symbol": "EMAARDEV",
         "name": "Emaar Development PJSC",
         "allocation": 0.49,
         "invest_alloc": 0.49,
@@ -3606,7 +3705,7 @@
         "current_rate": 428.1
       },
       {
-        "symbol": "VISTRA",
+        "symbol": "VISTRA.RTH",
         "name": "Vistra Corp",
         "allocation": 0.26,
         "invest_alloc": 0.26,
