@@ -195,28 +195,72 @@ def expand_tags_and_format(raw_text: str, tags: Optional[list]) -> tuple[str, st
     return expanded_text, html_text
 
 
-def get_mock_comment_data() -> Dict[str, Any]:
+def get_mock_comment_data(
+    username: str = "miulatw",
+    display_name: str = "Miula",
+    avatar_url: Optional[str] = None
+) -> Dict[str, Any]:
     """
-    提供最新留言模擬資料 (包含完整標的名稱與 HTML 高亮)
+    提供最新留言模擬資料 (包含完整標的名稱與 HTML 高亮，依目標投資人生成專屬資料)
     """
+    default_avatars = {
+        "miulatw": "https://etoro-cdn.etorostatic.com/avatars/50X50/8220524/1.jpg",
+        "jeppekirkbonde": "https://etoro-cdn.etorostatic.com/avatars/50X50/2988943/7.jpg",
+        "cphequities": "https://etoro-cdn.etorostatic.com/avatars/50X50/6216244/9.jpg",
+    }
+    user_avatar = avatar_url or default_avatars.get(username.lower(), "https://etoro-cdn.etorostatic.com/avatars/50X50/8220524/1.jpg")
+    is_tw = username.lower() == "miulatw"
+
+    mock_samples = {
+        "miulatw": {
+            "author_name": "Yueh Nung Hung",
+            "raw": "買進 $KTOS",
+            "content": "買進 $KTOS (Kratos Defense & Security Solutions Inc)",
+            "html": '買進 <span class="text-emerald-400 font-semibold">$KTOS (Kratos Defense & Security Solutions Inc)</span>',
+            "likes": 5, "comments": 1
+        },
+        "jeppekirkbonde": {
+            "author_name": "Jeppe Kirk Bonde",
+            "raw": "Weekly portfolio update and market outlook.",
+            "content": "Weekly portfolio update and market outlook.",
+            "html": "Weekly portfolio update and market outlook.",
+            "likes": 88, "comments": 25
+        },
+        "cphequities": {
+            "author_name": "Blue Screen Media ApS",
+            "raw": "Portfolio review and risk management update.",
+            "content": "Portfolio review and risk management update.",
+            "html": "Portfolio review and risk management update.",
+            "likes": 63, "comments": 42
+        }
+    }
+    sample = mock_samples.get(username.lower(), {
+        "author_name": display_name,
+        "raw": f"{display_name} 投資組合持續穩健配置中",
+        "content": f"{display_name} 投資組合持續穩健配置中",
+        "html": f"{display_name} 投資組合持續穩健配置中",
+        "likes": 0, "comments": 0
+    })
+
     return {
-        "id": "mock-comment-001",
-        "author_name": "Yueh Nung Hung",
-        "username": "miulatw",
-        "avatar_url": "https://etoro-cdn.etorostatic.com/avatars/50X50/8220524/1.jpg",
-        "country": "臺灣",
+        "id": f"mock-comment-{username.lower()}",
+        "author_name": sample["author_name"],
+        "username": username,
+        "avatar_url": user_avatar,
+        "country": "臺灣" if is_tw else "全球",
         "created_at": "2026-08-21T14:23:13.853Z",
         "created_at_formatted": "2026/08/21 22:23",
-        "relative_time": "7 天前",
-        "raw_content": "買進 $KTOS",
-        "content": "買進 $KTOS (Kratos Defense & Security Solutions Inc)",
-        "content_html": "買進 <span class=\"text-emerald-400 font-semibold\">$KTOS (Kratos Defense & Security Solutions Inc)</span>",
-        "likes_count": 5,
-        "comments_count": 1,
+        "relative_time": "近期",
+        "raw_content": sample["raw"],
+        "content": sample["content"],
+        "content_html": sample["html"],
+        "likes_count": sample["likes"],
+        "comments_count": sample["comments"],
         "shares_count": 0,
-        "post_url": "https://www.etoro.com/zh-tw/people/miulatw",
+        "post_url": f"https://www.etoro.com/zh-tw/people/{username}",
         "is_new": False
     }
+
 
 
 # eToro 已知用戶 GCID 與 RealCID 對應表 (加速 API 調用)
@@ -268,9 +312,74 @@ class EToroScraper:
                 time.sleep(1)
         return False
 
-    def fetch_latest_comment(self) -> Optional[Dict[str, Any]]:
+    def _parse_discussion(self, top_disc: dict) -> Optional[Dict[str, Any]]:
+        """解析 eToro discussion 物件為標準留言結構，並嚴格校驗發布者"""
+        if not isinstance(top_disc, dict):
+            return None
+        post = top_disc.get("post") or {}
+        owner = post.get("owner") or {}
+        tags = post.get("tags") or []
+
+        owner_uname = owner.get("username", "").strip()
+        # 嚴格驗證用戶名，防止跨用戶串貼文
+        if owner_uname and self.username and owner_uname.lower() != self.username.lower():
+            logger.warning(f"貼文作者 [@{owner_uname}] 與目標用戶 [@{self.username}] 不相符，予以忽略")
+            return None
+
+        emotions = top_disc.get("emotionsData") or {}
+        likes = 0
+        if isinstance(emotions, dict):
+            likes = (emotions.get("like") or {}).get("paging", {}).get("totalCount", 0)
+        if not likes:
+            likes = (top_disc.get("reactions") or {}).get("totalReactionsCount", 0)
+
+        summary_obj = top_disc.get("summary") or {}
+        comments_count = summary_obj.get("totalCommentsAndReplies", 0) if isinstance(summary_obj, dict) else 0
+        if not comments_count:
+            comments_count = top_disc.get("commentsCount", 0)
+
+        shares_count = summary_obj.get("sharedCount", 0) if isinstance(summary_obj, dict) else 0
+        if not shares_count:
+            shares_count = top_disc.get("sharesCount", 0)
+
+        created_at = post.get("created", "")
+        message_obj = post.get("message") or {}
+        raw_content = message_obj.get("text", "").strip() if isinstance(message_obj, dict) else ""
+
+        # 展開標的名稱與生成高亮 HTML
+        expanded_content, content_html = expand_tags_and_format(raw_content, tags)
+
+        first_name = owner.get("firstName", "") or ""
+        last_name = owner.get("lastName", "") or ""
+        author_name = f"{first_name} {last_name}".strip() or self.username
+        avatar = (owner.get("avatar") or {}).get("medium") or (owner.get("avatar") or {}).get("small") or "https://etoro-cdn.etorostatic.com/avatars/50X50/8220524/1.jpg"
+
+        country_code = owner.get("countryCode")
+        country_name = "臺灣" if country_code == 199 else "全球"
+
+        return {
+            "id": post.get("id"),
+            "author_name": author_name,
+            "username": owner.get("username", self.username),
+            "avatar_url": avatar,
+            "country": country_name,
+            "created_at": created_at,
+            "created_at_formatted": format_iso_to_taipei(created_at),
+            "relative_time": format_relative_time(created_at),
+            "raw_content": raw_content,
+            "content": expanded_content,
+            "content_html": content_html,
+            "likes_count": likes,
+            "comments_count": comments_count,
+            "shares_count": shares_count,
+            "post_url": f"https://www.etoro.com/zh-tw/people/{self.username}",
+            "is_new": False
+        }
+
+    def fetch_latest_comment(self, fallback_discussion_id: Optional[str] = None) -> Optional[Dict[str, Any]]:
         """
-        抓取用戶在 eToro 上最新一則留言/貼文 (Feed / Comment) 並展開標的完整名稱
+        抓取用戶在 eToro 上最新一則留言/貼文 (Feed / Comment) 並展開標的完整名稱。
+        若 top feed 為空但提供了 fallback_discussion_id，則嘗試向 discussion API 更新該貼文狀態。
         """
         logger.info(f"嘗試抓取用戶 [{self.username}] 最新動態留言 (Comment / Feed)...")
         if not self.gcid:
@@ -288,6 +397,7 @@ class EToroScraper:
             "Application-Identifier": "ReToro"
         }
 
+        # 1. 優先從用戶的 top feed 抓取最新動態
         req_id = str(uuid.uuid4())
         feed_url = f"https://www.etoro.com/api/edm-streams/v1/feed/user/top/{self.gcid}?take=10&offset=0&reactionsPageSize=20&client_request_id={req_id}"
 
@@ -297,73 +407,34 @@ class EToroScraper:
                 if res.status_code == 200:
                     data = res.json()
                     discussions = data.get("discussions", [])
-                    if not discussions:
-                        logger.warning("動態貼文清單為空")
-                        return None
-
-                    # 取出最新一則 discussion
-                    top_disc = discussions[0] if isinstance(discussions, list) and len(discussions) > 0 else {}
-                    if not isinstance(top_disc, dict):
-                        return None
-                    post = top_disc.get("post") or {}
-                    owner = post.get("owner") or {}
-                    tags = post.get("tags") or []
-
-                    emotions = top_disc.get("emotionsData") or {}
-                    likes = 0
-                    if isinstance(emotions, dict):
-                        likes = (emotions.get("like") or {}).get("paging", {}).get("totalCount", 0)
-                    if not likes:
-                        likes = (top_disc.get("reactions") or {}).get("totalReactionsCount", 0)
-
-                    summary_obj = top_disc.get("summary") or {}
-                    comments_count = summary_obj.get("totalCommentsAndReplies", 0) if isinstance(summary_obj, dict) else 0
-                    if not comments_count:
-                        comments_count = top_disc.get("commentsCount", 0)
-
-                    shares_count = summary_obj.get("sharedCount", 0) if isinstance(summary_obj, dict) else 0
-                    if not shares_count:
-                        shares_count = top_disc.get("sharesCount", 0)
-
-                    created_at = post.get("created", "")
-                    message_obj = post.get("message") or {}
-                    raw_content = message_obj.get("text", "").strip() if isinstance(message_obj, dict) else ""
-
-                    # 展開標的名稱與生成高亮 HTML
-                    expanded_content, content_html = expand_tags_and_format(raw_content, tags)
-
-                    author_name = f"{owner.get('firstName', '')} {owner.get('lastName', '')}".strip() or self.username
-                    avatar = (owner.get("avatar") or {}).get("medium") or (owner.get("avatar") or {}).get("small") or "https://etoro-cdn.etorostatic.com/avatars/50X50/8220524/1.jpg"
-
-                    country_code = owner.get("countryCode")
-                    country_name = "臺灣" if country_code == 199 else "全球"
-
-                    comment_info = {
-                        "id": post.get("id"),
-                        "author_name": author_name,
-                        "username": owner.get("username", self.username),
-                        "avatar_url": avatar,
-                        "country": country_name,
-                        "created_at": created_at,
-                        "created_at_formatted": format_iso_to_taipei(created_at),
-                        "relative_time": format_relative_time(created_at),
-                        "raw_content": raw_content,
-                        "content": expanded_content,
-                        "content_html": content_html,
-                        "likes_count": likes,
-                        "comments_count": comments_count,
-                        "shares_count": shares_count,
-                        "post_url": f"https://www.etoro.com/zh-tw/people/{self.username}",
-                        "is_new": False
-                    }
-
-                    self.latest_comment = comment_info
-                    logger.info(f"✨ 成功獲取最新動態: [{author_name}] {expanded_content[:45]}... ({comment_info['relative_time']})")
-                    return comment_info
+                    if discussions and isinstance(discussions, list):
+                        parsed = self._parse_discussion(discussions[0])
+                        if parsed:
+                            self.latest_comment = parsed
+                            logger.info(f"✨ 成功獲取最新動態: [{parsed['author_name']}] {parsed['content'][:45]}... ({parsed['relative_time']})")
+                            return parsed
+                    break
             except Exception as e:
                 logger.warning(f"抓取最新動態嘗試 {attempt}/3 失敗: {e}")
                 time.sleep(1.5)
 
+        # 2. 若 top feed 為空，但已知上一則合法貼文 ID，嘗試向 discussion API 獲取並更新狀態
+        if fallback_discussion_id and not fallback_discussion_id.startswith("mock-") and not fallback_discussion_id.startswith("default-"):
+            logger.info(f"Top 貼文流為空，嘗試透過歷史貼文 ID [{fallback_discussion_id}] 查詢最新狀態...")
+            disc_url = f"https://www.etoro.com/api/edm-streams/v1/feed/discussion/{fallback_discussion_id}"
+            try:
+                disc_res = requests.get(disc_url, headers=headers, timeout=10)
+                if disc_res.status_code == 200:
+                    disc_data = disc_res.json()
+                    parsed = self._parse_discussion(disc_data)
+                    if parsed:
+                        self.latest_comment = parsed
+                        logger.info(f"✨ 成功自歷史貼文 ID 刷新動態狀態: [{parsed['author_name']}] ({parsed['relative_time']})")
+                        return parsed
+            except Exception as e:
+                logger.warning(f"透過貼文 ID 刷新狀態失敗: {e}")
+
+        logger.info(f"用戶 [{self.username}] 無法自網路取得最新動態貼文")
         return None
 
     def fetch_via_direct_api(self) -> Optional[List[Dict[str, Any]]]:
@@ -627,7 +698,7 @@ class EToroScraper:
 
         return None
 
-    def scrape(self, mock_on_fail: bool = True) -> List[Dict[str, Any]]:
+    def scrape(self, mock_on_fail: bool = False, fallback_discussion_id: Optional[str] = None) -> List[Dict[str, Any]]:
         """
         執行爬蟲抓取流程 (包含持倉部位、餘額與最新動態留言)
         """
@@ -636,8 +707,8 @@ class EToroScraper:
         if not data:
             data = self.fetch_via_playwright()
 
-        # 抓取最新動態留言
-        self.fetch_latest_comment()
+        # 抓取最新動態留言 (若有 fallback_discussion_id 則在 top 為空時查詢上一則貼文)
+        self.fetch_latest_comment(fallback_discussion_id=fallback_discussion_id)
 
         if not data:
             if mock_on_fail:
@@ -646,9 +717,8 @@ class EToroScraper:
             else:
                 data = []
 
-        if not self.latest_comment and mock_on_fail:
-            logger.warning("未能從網路獲取到動態留言，降級使用 Mock 留言數據。")
-            self.latest_comment = get_mock_comment_data()
+        # 注意：動態留言若為 None，保持 None 交由上層 main.py 比對歷史留言或安全回退，
+        # 絕不可在此降級為其他用戶之 Mock 數據，防止跨用戶資料污染。
 
         return self._clean_and_sort(data)
 

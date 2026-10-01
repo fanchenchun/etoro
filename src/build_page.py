@@ -97,15 +97,20 @@ class PageBuilder:
         current_display = display_name or inv_info.get("display_name", username)
         inv_list = investors if investors is not None else INVESTORS
 
+        # 嚴格校驗傳入的留言作者是否屬於當前用戶，防止跨用戶污染
+        if latest_comment and latest_comment.get("username", "").lower() != username.lower():
+            logger.warning(f"渲染頁面時發現留言用戶名 [{latest_comment.get('username')}] 與頁面目標 [{username}] 不符合，已強制重設為空白留言！")
+            latest_comment = None
+
         comment = latest_comment or {
-            "id": "default",
+            "id": f"default-{username.lower()}",
             "author_name": current_display,
             "username": username,
-            "avatar_url": inv_info.get("avatar_url") or "https://etoro-cdn.etorostatic.com/avatars/50X50/8220524/1.jpg",
-            "country": "全球",
+            "avatar_url": inv_info.get("avatar_url") or "",
+            "country": "臺灣" if username.lower() == "miulatw" else "全球",
             "created_at_formatted": "",
             "relative_time": "近期",
-            "content": "暫無最新動態留言",
+            "content": f"{current_display} 暫無最新動態留言",
             "likes_count": 0,
             "comments_count": 0,
             "shares_count": 0,

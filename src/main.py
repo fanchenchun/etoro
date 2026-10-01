@@ -40,7 +40,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE_DIR)
 
 from src.config import INVESTORS, get_investor
-from src.scraper import EToroScraper, get_mock_portfolio_data, get_mock_comment_data
+from src.scraper import EToroScraper, get_mock_portfolio_data, get_mock_comment_data, format_relative_time
 from src.analyzer import PortfolioAnalyzer
 from src.ai_summary import generate_ai_summary
 from src.notifier import NotificationDispatcher
@@ -120,27 +120,7 @@ def run_tracker(
             except Exception as e:
                 logger.warning(f"遷移最新檔案失敗: {e}")
 
-    # 1. 抓取當前持股資料、餘額與最新動態留言
-    if use_mock:
-        logger.info(f"採用 Mock 模擬模式 ({username})...")
-        today_portfolio = get_mock_portfolio_data()
-        cash_balance = {"available_cash_pct": 18.46, "total_invested_pct": 81.54}
-        today_comment = get_mock_comment_data()
-        today_comment["username"] = username
-        today_comment["author_name"] = display_name
-    else:
-        scraper = EToroScraper(username=username, headless=headless)
-        today_portfolio = scraper.scrape(mock_on_fail=True)
-        cash_balance = scraper.cash_balance
-        today_comment = scraper.latest_comment
-
-    if not today_portfolio:
-        logger.error(f"用戶 [{username}] 無法取得任何持股資料，程序終止！")
-        return False
-
-    logger.info(f"成功取得今日持股 ({username}): 共 {len(today_portfolio)} 檔標的。")
-
-    # 2. 載入歷史資料並找出昨日部位與現金進行比對
+    # 1. 載入歷史資料並找出昨日部位、現金與歷史留言
     history = load_history_data(history_file)
     sorted_prev_dates = sorted([d for d in history.keys() if d < today_date], reverse=True)
     yesterday_date_raw = sorted_prev_dates[0] if sorted_prev_dates else None
@@ -162,12 +142,44 @@ def run_tracker(
         except Exception:
             pass
 
-    # 若未能從網路取得留言，維持使用前次歷史留言或預設
+    # 嚴格校驗 prev_comment 是否屬於該用戶 (清理被歷史污染的跨用戶留言)
+    if prev_comment and prev_comment.get("username", "").lower() != username.lower():
+        logger.warning(f"偵測到歷史留言用戶名 [{prev_comment.get('username')}] 與目標用戶 [{username}] 不符合，已忽略此污染數據")
+        prev_comment = None
+
+    fallback_disc_id = prev_comment.get("id") if (prev_comment and not str(prev_comment.get("id", "")).startswith("mock-") and not str(prev_comment.get("id", "")).startswith("default-")) else None
+
+    # 2. 抓取當前持股資料、餘額與最新動態留言
+    if use_mock:
+        logger.info(f"採用 Mock 模擬模式 ({username})...")
+        today_portfolio = get_mock_portfolio_data()
+        cash_balance = {"available_cash_pct": 18.46, "total_invested_pct": 81.54}
+        today_comment = get_mock_comment_data(username=username, display_name=display_name, avatar_url=inv_info.get("avatar_url"))
+    else:
+        scraper = EToroScraper(username=username, headless=headless)
+        today_portfolio = scraper.scrape(mock_on_fail=False, fallback_discussion_id=fallback_disc_id)
+        cash_balance = scraper.cash_balance
+        today_comment = scraper.latest_comment
+
+    if not today_portfolio:
+        logger.error(f"用戶 [{username}] 無法取得任何持股資料，程序終止！")
+        return False
+
+    logger.info(f"成功取得今日持股 ({username}): 共 {len(today_portfolio)} 檔標的。")
+
+    # 3. 嚴格校驗 today_comment 是否確實屬於該用戶
+    if today_comment and today_comment.get("username", "").lower() != username.lower():
+        logger.warning(f"動態留言用戶名 [{today_comment.get('username')}] 與當前目標 [{username}] 不符合，已予以捨棄！")
+        today_comment = None
+
+    # 若未能從網路取得即時貼文，回退使用前次合法歷史留言並即時刷新相對時間
     if not today_comment and prev_comment:
-        today_comment = prev_comment
+        today_comment = dict(prev_comment)
+        if today_comment.get("created_at"):
+            today_comment["relative_time"] = format_relative_time(today_comment["created_at"])
     elif not today_comment:
         today_comment = {
-            "id": f"default-{username}",
+            "id": f"default-{username.lower()}",
             "author_name": display_name,
             "username": username,
             "avatar_url": inv_info.get("avatar_url") or "",
@@ -182,12 +194,14 @@ def run_tracker(
             "is_new": False
         }
 
-    # 比對動態留言是否有新發布 (ID 是否與前次不同)
+    # 比對動態留言是否有新發布 (ID 是否與前次不同且非 mock/default)
     is_new_comment = False
     if today_comment:
         prev_id = prev_comment.get("id") if prev_comment else None
         cur_id = today_comment.get("id")
-        if prev_id and cur_id and prev_id != cur_id:
+        if (prev_id and cur_id and prev_id != cur_id 
+                and not str(cur_id).startswith("mock-") 
+                and not str(cur_id).startswith("default-")):
             is_new_comment = True
             logger.info(f"🔔 偵測到 {display_name} 發布了新留言 (前次: {prev_id} -> 今日: {cur_id})！")
         today_comment["is_new"] = is_new_comment
