@@ -30041,5 +30041,448 @@
     },
     "ai_summary": "【今日調倉焦點】\n• 加碼：QQQ (+0.38% ➔ 5.92%), XLV (+0.16% ➔ 3.52%), GEV (+0.12% ➔ 2.01%), COPX (+0.1% ➔ 3.89%), MU (+0.1% ➔ 3.07%), CRWD (+0.08% ➔ 2.54%), TSLA (+0.08% ➔ 1.88%), SE (+0.01% ➔ 2.81%), AVGO (+0.01% ➔ 2.35%), INTC (+0.01% ➔ 1.97%), CRDO (+0.01% ➔ 1.69%), TER (+0.01% ➔ 1.36%), ETOR (+0.01% ➔ 1.34%), ANET (+0.01% ➔ 1.32%)\n• 減碼：NVDA (-0.8% ➔ 2.5%), RDW (-0.12% ➔ 2.34%), PLTR (-0.07% ➔ 2.52%), NET (-0.06% ➔ 1.77%), COHR (-0.06% ➔ 1.15%)\n\n【策略觀點與板塊輪動】\n資金明顯呈現「權值巨頭獲利調節，轉進高動能垂直賽道」。投資人適度減碼了大型巨頭與晶片股 (NVDA)，將資金精準分流至 大盤指數ETF QQQ、防禦型醫療 XLV、能源電網 GEV、關鍵原物料 COPX、記憶體 MU、資安防禦 CRWD、電動車/自駕 TSLA、電商金融 SE、半導體 AVGO、半導體 INTC、高速傳輸晶片 CRDO、半導體設備 TER、金融科技 ETOR、雲端網通 ANET。目前總持股維持 34 檔，在控制標的數量的同時持續優化內部比重。未投資現金水位為 14.86% (變動 +0.02%)，整體部位攻守兼備並保留充裕機動性。",
     "notified": true
+  },
+  "2026-11-12": {
+    "update_time": "2026-11-12 13:48:55",
+    "cash_balance": {
+      "available_cash_pct": 14.86,
+      "total_invested_pct": 85.14,
+      "yesterday_available_cash_pct": 14.86,
+      "yesterday_total_invested_pct": 85.14,
+      "diff": 0.0,
+      "invested_diff": 0.0,
+      "has_yesterday": true
+    },
+    "portfolio": [
+      {
+        "symbol": "QQQ",
+        "name": "Invesco QQQ",
+        "allocation": 5.81,
+        "invest_alloc": 5.81,
+        "value_alloc": 4.67,
+        "instrument_type": "Stocks",
+        "net_profit": 6.01,
+        "avg_open_rate": 643.84,
+        "current_rate": 682.5
+      },
+      {
+        "symbol": "GOOG",
+        "name": "Alphabet",
+        "allocation": 4.76,
+        "invest_alloc": 4.76,
+        "value_alloc": 5.76,
+        "instrument_type": "Stocks",
+        "net_profit": 59.9,
+        "avg_open_rate": 181.9,
+        "current_rate": 290.89
+      },
+      {
+        "symbol": "SPACEX",
+        "name": "Space Exploration Technologies Corp",
+        "allocation": 4.68,
+        "invest_alloc": 4.68,
+        "value_alloc": 4.21,
+        "instrument_type": "Stocks",
+        "net_profit": 18.66,
+        "avg_open_rate": 116.87,
+        "current_rate": 138.69
+      },
+      {
+        "symbol": "COPX",
+        "name": "Global X Copper Miners Etf",
+        "allocation": 3.89,
+        "invest_alloc": 3.89,
+        "value_alloc": 3.1,
+        "instrument_type": "Stocks",
+        "net_profit": 5.19,
+        "avg_open_rate": 69.8,
+        "current_rate": 73.42
+      },
+      {
+        "symbol": "XLV",
+        "name": "State Street Health Care Select Sector SPDR ETF",
+        "allocation": 3.58,
+        "invest_alloc": 3.58,
+        "value_alloc": 3.1,
+        "instrument_type": "Stocks",
+        "net_profit": 14.21,
+        "avg_open_rate": 165.42,
+        "current_rate": 188.93
+      },
+      {
+        "symbol": "AAPL",
+        "name": "Apple",
+        "allocation": 3.25,
+        "invest_alloc": 3.25,
+        "value_alloc": 4.16,
+        "instrument_type": "Stocks",
+        "net_profit": 68.9,
+        "avg_open_rate": 210.44,
+        "current_rate": 355.43
+      },
+      {
+        "symbol": "MSFT",
+        "name": "Microsoft",
+        "allocation": 3.17,
+        "invest_alloc": 3.17,
+        "value_alloc": 5.77,
+        "instrument_type": "Stocks",
+        "net_profit": 140.04,
+        "avg_open_rate": 216.63,
+        "current_rate": 520.0
+      },
+      {
+        "symbol": "SE",
+        "name": "Sea Ltd-ADR",
+        "allocation": 3.1,
+        "invest_alloc": 3.1,
+        "value_alloc": 3.07,
+        "instrument_type": "Stocks",
+        "net_profit": 30.51,
+        "avg_open_rate": 56.66,
+        "current_rate": 73.95
+      },
+      {
+        "symbol": "AMZN",
+        "name": "Amazon.com Inc",
+        "allocation": 3.07,
+        "invest_alloc": 3.07,
+        "value_alloc": 5.16,
+        "instrument_type": "Stocks",
+        "net_profit": 121.26,
+        "avg_open_rate": 120.25,
+        "current_rate": 266.06
+      },
+      {
+        "symbol": "MU",
+        "name": "Micron Technology, Inc.",
+        "allocation": 3.0,
+        "invest_alloc": 3.0,
+        "value_alloc": 3.33,
+        "instrument_type": "Stocks",
+        "net_profit": 46.48,
+        "avg_open_rate": 531.8,
+        "current_rate": 779.0
+      },
+      {
+        "symbol": "NFLX",
+        "name": "Netflix, Inc.",
+        "allocation": 2.75,
+        "invest_alloc": 2.75,
+        "value_alloc": 2.16,
+        "instrument_type": "Stocks",
+        "net_profit": 3.78,
+        "avg_open_rate": 61.94,
+        "current_rate": 64.28
+      },
+      {
+        "symbol": "MP",
+        "name": "MP Materials Corp.",
+        "allocation": 2.6,
+        "invest_alloc": 2.6,
+        "value_alloc": 2.12,
+        "instrument_type": "Stocks",
+        "net_profit": 7.83,
+        "avg_open_rate": 34.07,
+        "current_rate": 36.74
+      },
+      {
+        "symbol": "META",
+        "name": "Meta Platforms Inc",
+        "allocation": 2.55,
+        "invest_alloc": 2.55,
+        "value_alloc": 5.03,
+        "instrument_type": "Stocks",
+        "net_profit": 160.66,
+        "avg_open_rate": 240.18,
+        "current_rate": 626.24
+      },
+      {
+        "symbol": "CRWD",
+        "name": "Crowdstrike Holdings",
+        "allocation": 2.54,
+        "invest_alloc": 2.54,
+        "value_alloc": 3.16,
+        "instrument_type": "Stocks",
+        "net_profit": 64.44,
+        "avg_open_rate": 137.05,
+        "current_rate": 225.37
+      },
+      {
+        "symbol": "PLTR",
+        "name": "Palantir Technologies Inc.",
+        "allocation": 2.52,
+        "invest_alloc": 2.52,
+        "value_alloc": 5.23,
+        "instrument_type": "Stocks",
+        "net_profit": 173.43,
+        "avg_open_rate": 61.72,
+        "current_rate": 168.75
+      },
+      {
+        "symbol": "WMT",
+        "name": "Walmart Inc.",
+        "allocation": 2.45,
+        "invest_alloc": 2.45,
+        "value_alloc": 2.24,
+        "instrument_type": "Stocks",
+        "net_profit": 20.51,
+        "avg_open_rate": 104.26,
+        "current_rate": 125.65
+      },
+      {
+        "symbol": "ROK",
+        "name": "Rockwell Automation Inc",
+        "allocation": 2.44,
+        "invest_alloc": 2.44,
+        "value_alloc": 2.11,
+        "instrument_type": "Stocks",
+        "net_profit": 14.01,
+        "avg_open_rate": 354.6,
+        "current_rate": 404.28
+      },
+      {
+        "symbol": "RDW",
+        "name": "Redwire Corp",
+        "allocation": 2.34,
+        "invest_alloc": 2.34,
+        "value_alloc": 2.18,
+        "instrument_type": "Stocks",
+        "net_profit": 22.57,
+        "avg_open_rate": 6.62,
+        "current_rate": 8.12
+      },
+      {
+        "symbol": "NVDA",
+        "name": "NVIDIA Corporation",
+        "allocation": 2.32,
+        "invest_alloc": 2.32,
+        "value_alloc": 3.94,
+        "instrument_type": "Stocks",
+        "net_profit": 123.77,
+        "avg_open_rate": 71.47,
+        "current_rate": 159.96
+      },
+      {
+        "symbol": "AVGO",
+        "name": "Broadcom Inc",
+        "allocation": 2.28,
+        "invest_alloc": 2.28,
+        "value_alloc": 2.19,
+        "instrument_type": "Stocks",
+        "net_profit": 26.94,
+        "avg_open_rate": 274.55,
+        "current_rate": 348.53
+      },
+      {
+        "symbol": "GEV",
+        "name": "GE Vernova LLC",
+        "allocation": 2.0,
+        "invest_alloc": 2.0,
+        "value_alloc": 1.57,
+        "instrument_type": "Stocks",
+        "net_profit": 3.37,
+        "avg_open_rate": 769.07,
+        "current_rate": 795.01
+      },
+      {
+        "symbol": "INTC",
+        "name": "Intel",
+        "allocation": 1.97,
+        "invest_alloc": 1.97,
+        "value_alloc": 1.67,
+        "instrument_type": "Stocks",
+        "net_profit": 12.33,
+        "avg_open_rate": 53.52,
+        "current_rate": 60.12
+      },
+      {
+        "symbol": "ETN",
+        "name": "Eaton Corp PLC",
+        "allocation": 1.93,
+        "invest_alloc": 1.93,
+        "value_alloc": 1.57,
+        "instrument_type": "Stocks",
+        "net_profit": 7.29,
+        "avg_open_rate": 329.59,
+        "current_rate": 353.62
+      },
+      {
+        "symbol": "TSLA",
+        "name": "Tesla Motors, Inc.",
+        "allocation": 1.88,
+        "invest_alloc": 1.88,
+        "value_alloc": 4.24,
+        "instrument_type": "Stocks",
+        "net_profit": 198.16,
+        "avg_open_rate": 129.42,
+        "current_rate": 385.87
+      },
+      {
+        "symbol": "NET",
+        "name": "Cloudflare",
+        "allocation": 1.71,
+        "invest_alloc": 1.71,
+        "value_alloc": 3.42,
+        "instrument_type": "Stocks",
+        "net_profit": 163.28,
+        "avg_open_rate": 119.34,
+        "current_rate": 314.19
+      },
+      {
+        "symbol": "CRDO",
+        "name": "Credo Technology Group Holding Ltd",
+        "allocation": 1.69,
+        "invest_alloc": 1.69,
+        "value_alloc": 1.65,
+        "instrument_type": "Stocks",
+        "net_profit": 29.21,
+        "avg_open_rate": 103.84,
+        "current_rate": 134.2
+      },
+      {
+        "symbol": "TSM",
+        "name": "Taiwan Semiconductor Manufacturing Co Ltd - ADR",
+        "allocation": 1.68,
+        "invest_alloc": 1.68,
+        "value_alloc": 4.22,
+        "instrument_type": "Stocks",
+        "net_profit": 231.51,
+        "avg_open_rate": 120.66,
+        "current_rate": 400.0
+      },
+      {
+        "symbol": "SKHYNIX",
+        "name": "SK hynix Inc ADR",
+        "allocation": 1.44,
+        "invest_alloc": 1.44,
+        "value_alloc": 1.22,
+        "instrument_type": "Stocks",
+        "net_profit": 11.76,
+        "avg_open_rate": 127.26,
+        "current_rate": 142.23
+      },
+      {
+        "symbol": "TER",
+        "name": "Teradyne Inc",
+        "allocation": 1.36,
+        "invest_alloc": 1.36,
+        "value_alloc": 1.72,
+        "instrument_type": "Stocks",
+        "net_profit": 67.7,
+        "avg_open_rate": 151.31,
+        "current_rate": 253.74
+      },
+      {
+        "symbol": "BLOOM",
+        "name": "Bloom Energy Corp",
+        "allocation": 1.35,
+        "invest_alloc": 1.35,
+        "value_alloc": 1.01,
+        "instrument_type": "Stocks",
+        "net_profit": -1.0,
+        "avg_open_rate": 202.91,
+        "current_rate": 200.87
+      },
+      {
+        "symbol": "KTOS",
+        "name": "Kratos Defense & Security Solutions Inc",
+        "allocation": 1.34,
+        "invest_alloc": 1.34,
+        "value_alloc": 1.1,
+        "instrument_type": "Stocks",
+        "net_profit": 8.46,
+        "avg_open_rate": 33.82,
+        "current_rate": 36.68
+      },
+      {
+        "symbol": "ANET",
+        "name": "Arista Networks Inc",
+        "allocation": 1.32,
+        "invest_alloc": 1.32,
+        "value_alloc": 1.61,
+        "instrument_type": "Stocks",
+        "net_profit": 61.12,
+        "avg_open_rate": 118.63,
+        "current_rate": 191.13
+      },
+      {
+        "symbol": "BTC",
+        "name": "Bitcoin",
+        "allocation": 1.22,
+        "invest_alloc": 1.22,
+        "value_alloc": 1.14,
+        "instrument_type": "Stocks",
+        "net_profit": 23.7,
+        "avg_open_rate": 59432.6,
+        "current_rate": 73519.61
+      },
+      {
+        "symbol": "COHR",
+        "name": "Coherent Corp",
+        "allocation": 1.15,
+        "invest_alloc": 1.15,
+        "value_alloc": 1.14,
+        "instrument_type": "Stocks",
+        "net_profit": 30.71,
+        "avg_open_rate": 169.18,
+        "current_rate": 221.16
+      }
+    ],
+    "latest_comment": {
+      "id": "2a316da0-c9fc-11f1-8080-80017cdee9d1",
+      "author_name": "Yueh Nung Hung",
+      "username": "miulatw",
+      "avatar_url": "https://etoro-cdn.etorostatic.com/avatars/50X50/8220524/1.jpg",
+      "country": "臺灣",
+      "created_at": "2026-10-17T07:27:10.202Z",
+      "created_at_formatted": "2026/10/17 15:27",
+      "relative_time": "25 天前",
+      "raw_content": "ETORO 示範帳戶 2026/09 績效檢討:\n\n2026/09 績效 +2.87%\n\n同期相比:\nQQQ:  +3.31%\nARKK: +4.13%\nSPY:  -0.33%\n\nBenchmark: 70% QQQ + 20% ARKK + 10% SPY= +3.11%\n本月投資組合的績效，落後 Benchmark 對照組達 0.24%\n\n本月績效回顧 -\n1. 本月表現最好的標的 META +27%  TER +15% CRWD +15%\n2. 本月表現較差的標的 NFLX -14% SE -14% MP -14%\n目前現金水位: 10%",
+      "content": "ETORO 示範帳戶 2026/09 績效檢討:\n\n2026/09 績效 +2.87%\n\n同期相比:\nQQQ:  +3.31%\nARKK: +4.13%\nSPY:  -0.33%\n\nBenchmark: 70% QQQ + 20% ARKK + 10% SPY= +3.11%\n本月投資組合的績效，落後 Benchmark 對照組達 0.24%\n\n本月績效回顧 -\n1. 本月表現最好的標的 META +27%  TER +15% CRWD +15%\n2. 本月表現較差的標的 NFLX -14% SE -14% MP -14%\n目前現金水位: 10%",
+      "content_html": "ETORO 示範帳戶 2026/09 績效檢討:\n\n2026/09 績效 +2.87%\n\n同期相比:\nQQQ:  +3.31%\nARKK: +4.13%\nSPY:  -0.33%\n\nBenchmark: 70% QQQ + 20% ARKK + 10% SPY= +3.11%\n本月投資組合的績效，落後 Benchmark 對照組達 0.24%\n\n本月績效回顧 -\n1. 本月表現最好的標的 META +27%  TER +15% CRWD +15%\n2. 本月表現較差的標的 NFLX -14% SE -14% MP -14%\n目前現金水位: 10%",
+      "likes_count": 3,
+      "comments_count": 0,
+      "shares_count": 0,
+      "post_url": "https://www.etoro.com/zh-tw/people/miulatw",
+      "is_new": false
+    },
+    "stats": {
+      "is_first_day": false,
+      "total_today": 34,
+      "total_yesterday": 34,
+      "new_count": 1,
+      "closed_count": 1,
+      "increased_count": 6,
+      "decreased_count": 8,
+      "unchanged_count": 19,
+      "new_symbols": [
+        "BLOOM"
+      ],
+      "closed_symbols": [
+        "ETOR"
+      ],
+      "increased_symbols": [
+        "AMZN",
+        "META",
+        "MSFT",
+        "SE",
+        "SPACEX",
+        "XLV"
+      ],
+      "decreased_symbols": [
+        "AVGO",
+        "GEV",
+        "GOOG",
+        "MU",
+        "NET",
+        "NVDA",
+        "QQQ",
+        "TSM"
+      ],
+      "has_significant_changes": true
+    },
+    "ai_summary": "【今日調倉焦點】\n• 新開倉：BLOOM (Bloom Energy Corp, 佔比 1.35%)\n• 全數平倉：ETOR (eToro, 原佔比 1.34%)\n• 加碼：SE (+0.29% ➔ 3.1%), MSFT (+0.11% ➔ 3.17%), SPACEX (+0.08% ➔ 4.68%), META (+0.08% ➔ 2.55%), AMZN (+0.07% ➔ 3.07%), XLV (+0.06% ➔ 3.58%)\n• 減碼：NVDA (-0.18% ➔ 2.32%), GOOG (-0.14% ➔ 4.76%), QQQ (-0.11% ➔ 5.81%), MU (-0.07% ➔ 3.0%), AVGO (-0.07% ➔ 2.28%), NET (-0.06% ➔ 1.71%), TSM (-0.06% ➔ 1.68%), GEV (-0.01% ➔ 2.0%)\n\n【策略觀點與板塊輪動】\n資金明顯呈現「權值巨頭獲利調節，轉進高動能垂直賽道」。投資人適度減碼了大型巨頭與晶片股 (NVDA, GOOG)，將資金精準分流至 電商金融 SE、科技巨頭 MSFT、太空航太 SPACEX、科技巨頭 META、科技巨頭 AMZN、防禦型醫療 XLV。目前總持股維持 34 檔，在控制標的數量的同時持續優化內部比重。未投資現金水位為 14.86%，整體部位攻守兼備並保留充裕機動性。",
+    "notified": true
   }
 }
